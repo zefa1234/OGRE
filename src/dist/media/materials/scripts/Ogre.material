@@ -1,0 +1,91 @@
+material Ogre/Earring : Ogre/Base
+{
+	technique Tech_TEST
+	{
+		pass Tech_TEST/Pass
+		{
+			diffuse 0.7 0.7 0
+
+			texture_unit
+			{
+				texture spheremap.png
+				colour_op_ex add src_texture src_current
+				colour_op_multipass_fallback one one
+				env_map spherical
+			}
+		}
+	}
+}
+
+material Ogre/SkinBase : Ogre/Base
+{
+	technique Tech_TEST
+	{
+		pass Tech_TEST/Pass
+		{
+
+			texture_unit Tech_TEST/Pass/Tex0
+			{
+				texture GreenSkin.jpg
+				tex_address_mode mirror
+			}
+		}
+	}
+}
+
+material Ogre/Skin : Ogre/SkinBase
+{
+	technique Tech_TEST
+	{
+		pass Tech_TEST/Pass
+		{
+			texture_unit Tech_TEST/Pass/Tex1
+			{
+				texture stain.jpg
+			}
+		}
+	}
+}
+
+material Ogre/Tusks : Ogre/Base
+{
+	technique Tech_TEST
+	{
+		pass Tech_TEST/Pass
+		{
+			
+
+			texture_unit
+			{
+				texture tusk.jpg
+				scale 0.2 0.2
+			}
+		}
+	}
+}
+
+material Ogre/Eyes : Ogre/Base
+{
+	technique Tech_TEST
+	{
+		pass Tech_TEST/Pass
+		{
+			
+			diffuse 1 0.7 0
+			emissive 0.3 0.1 0
+		}
+	}
+}
+
+material Ogre/Base
+{
+
+	technique Tech_TEST
+	{
+		pass Tech_TEST/Pass
+		{
+			ambient 1 1 1
+		}
+	}
+
+}
