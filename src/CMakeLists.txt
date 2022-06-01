@@ -78,6 +78,7 @@ if(WIN32)
 		${OGRE_BINARY_DIR}/OgreOverlay.dll
 		${OGRE_BINARY_DIR}/zlib.dll
 		${OGRE_BINARY_DIR}/SDL2.dll
+		${OGRE_BINARY_DIR}/OgreTerrain.dll
 		DESTINATION bin
 		CONFIGURATIONS Release RelWithDebInfo MinSizeRel Debug
 	)

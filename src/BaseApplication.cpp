@@ -93,10 +93,12 @@ void BaseApplication::createCamera(void)
 	mCameraNode->attachObject(mCamera);
 
 	// Position it at 80 in Z direction
-	mCameraNode->setPosition(0, 0, 80);
+	mCameraNode->setPosition(0, 40, -50);
 	mCamera->setNearClipDistance(5);
 
 	mCameraMan = new CameraMan(mCameraNode);   // create a default camera controller
+	mCameraMan->setStyle(CameraStyle::CS_MANUAL);
+	
 }
 
 

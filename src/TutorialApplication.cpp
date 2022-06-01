@@ -31,6 +31,8 @@ THE SOFTWARE
 
 //-------------------------------------------------------------------------------------
 TutorialApplication::TutorialApplication() : mSinbadNode(nullptr),
+	floor(nullptr),
+	floorNode(nullptr),
 	mSinbad(nullptr),
 	mSwordL(nullptr),
 	mSwordR(nullptr),
@@ -71,10 +73,12 @@ void TutorialApplication::setup(void)
 
 
 	//MoveSpeed.push_back(mTrayMgr->createLongSlider(TL_RIGHT, "MoveSpeed", "MoveSpeed", 250, 80, 44, 0, 1, 11));
-	Move = mTrayMgr->createLongSlider(TL_RIGHT, "MoveSpeed", "MoveSpeed", 250, 80, 44, 0, 10, 11);
+	Move = mTrayMgr->createLongSlider(TL_RIGHT, "MoveSpeed", "MoveSpeed", 250, 80, 44, 0, 20, 11);
 	Height = mTrayMgr->createLongSlider(TL_NONE, "JumpHeight", "JumpHeight", 250, 80, 44, 0, 10, 11);
 	Move->setValue(5);
 	Height->setValue(5);
+
+	
 }
 
 
@@ -87,13 +91,20 @@ void TutorialApplication::createScene(void)
 	mSwordL = mSceneMgr->createEntity("SwordL", "Sword.mesh"); 
 	mSwordR = mSceneMgr->createEntity("SwordR", "Sword.mesh"); 
 
+	floor = mSceneMgr->createEntity("Floor", "cube.mesh");
+
 	// Attach each sword entity to sheath
 	mSinbad->attachObjectToBone("Sheath.L", mSwordL);
 	mSinbad->attachObjectToBone("Sheath.R", mSwordR);
 
 	// Create SceneNode and attach the entity
-	mSinbadNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("SinbadNode", Vector3(0, 0, 65)); 
+	mSinbadNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("SinbadNode", Vector3(0, 5, 0)); 
 	mSinbadNode->attachObject(mSinbad);
+	/*
+	floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("FloorNode", Vector3(0, 32, 0));
+	floorNode->attachObject(floor);
+	floorNode->setScale(Vector3(1, 0.05, 1));
+	*/
 
 	// Set cumulative blending mode
 	mSinbad->getSkeleton()->setBlendMode(ANIMBLEND_CUMULATIVE);
@@ -145,52 +156,97 @@ void TutorialApplication::createScene(void)
 	SceneNode* lightNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("LightNode");
 	lightNode->attachObject(light);
 	lightNode->setPosition(200, 600, 500);
+
+
+	Plane plane(Vector3::UNIT_Y, 0);
+
+	MeshManager::getSingleton().createPlane(
+		"ground", RGN_DEFAULT,
+		plane,
+		150, 150, 20, 20,
+		true,
+		1, 5, 5,
+		Vector3::UNIT_Z);
+
+	Entity* groundEntity = mSceneMgr->createEntity("ground");
+	mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(groundEntity);
+
+	groundEntity->setCastShadows(false);
+
+	groundEntity->setMaterialName("Examples/Rockwall");
+
+	//mSinbadNode->addChild(mCameraNode);
+
+	mCameraNode->setAutoTracking(true, mSinbadNode);
+
+	mCameraNode->setFixedYawAxis(true);
+
+
+	mSceneMgr->setSkyDome(true, "Examples/CloudySky", 3, 8);
+
 }
 
 
+
+
 //-------------------------------------------------------------------------------------
-bool TutorialApplication::frameRenderingQueued(const FrameEvent &evt)
+bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 {
 	if (!BaseApplication::frameRenderingQueued(evt)) return false;
-
-	// Check keyboard to determine running mode
-	bool bRunning = false;
-	bool bJumpStart = false;
-	bool bJumpLoop = false;
-	bool bJumpEnd = false;
 	
-	if ((mPressKeySet.count('j') != 0) && (mPressKeySet.count('l') == 0))
+
+		// Check keyboard to determine running mode
+		
+
+		updateControl(evt);
+		updateAnimate(evt);
+		
+
+
+		bRunning = false;
+		bJumpStart = false;
+		bJumpLoop = false;
+		bJumpEnd = false;
+
+		return true;
+	
+}
+
+void TutorialApplication::updateControl(const FrameEvent& evt) {
+
+	if ((mPressKeySet.count('a') == 0) && (mPressKeySet.count('d') != 0))
 	{
 		// Turn left and run
 		bRunning = true;
 		mSinbadNode->translate(Vector3(-Move->getValue(), 0, 0) * evt.timeSinceLastFrame);
-		mSinbadNode->resetOrientation();
-		mSinbadNode->yaw(Radian(-Math::HALF_PI));
+		
+		lturn = true;
 	}
-	else if ((mPressKeySet.count('j') == 0) && (mPressKeySet.count('l') != 0))
+	else if ((mPressKeySet.count('a') != 0) && (mPressKeySet.count('d') == 0))
 	{
 		// Turn right and run
 		bRunning = true;
 		mSinbadNode->translate(Vector3(Move->getValue(), 0, 0) * evt.timeSinceLastFrame);
-		mSinbadNode->resetOrientation();
-		mSinbadNode->yaw(Radian(Math::HALF_PI));
+		
+		rturn = true;
 	}
-	else if ((mPressKeySet.count('i') != 0) && (mPressKeySet.count('k') == 0))
+	if ((mPressKeySet.count('w') == 0) && (mPressKeySet.count('s') != 0))
 	{
 		// Turn right and run
 		bRunning = true;
 		mSinbadNode->translate(Vector3(0, 0, -Move->getValue()) * evt.timeSinceLastFrame);
-		mSinbadNode->resetOrientation();
-		mSinbadNode->yaw(Radian(Math::PI));
+		
+		forward = true;
 	}
-	else if ((mPressKeySet.count('i') == 0) && (mPressKeySet.count('k') != 0))
+	else if ((mPressKeySet.count('w') != 0) && (mPressKeySet.count('s') == 0))
 	{
 		// Turn right and run
 		bRunning = true;
 		mSinbadNode->translate(Vector3(0, 0, Move->getValue()) * evt.timeSinceLastFrame);
-		mSinbadNode->resetOrientation();
-		//mSinbadNode->yaw(Radian(Math::HALF_PI));
+		
+		backward = true;
 	}
+
 
 	if ((mPressKeySet.count(' ') != 0))
 	{
@@ -201,15 +257,50 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent &evt)
 	{
 		mSwordsVertical->setEnabled(true);
 	}
-	
+
 
 	if ((mPressKeySet.count('x') != 0))
 	{
 		mSwordsHorizon->setEnabled(true);
 	}
-	
-	if(mSwordsVertical->getEnabled())
-	{ 
+
+	if (mJumpLoop->getEnabled())
+	{
+		
+		if(!mJumpLoop->hasEnded())
+		{
+
+			if (mJumpLoop->getTimePosition() < 0.5 * mJumpLoop->getLength())
+			{
+
+				mSinbadNode->translate(Vector3(0, Height->getValue(), 0) * evt.timeSinceLastFrame);
+			}
+			else
+			{
+				mSinbadNode->translate(Vector3(0, -Height->getValue(), 0) * evt.timeSinceLastFrame);
+			}
+
+		}
+
+
+	}
+
+}
+
+void TutorialApplication::updateAnimate(const FrameEvent& evt) {
+
+
+	if (lturn == true) {
+
+	}
+	else if (rturn == true) {
+
+
+	}
+
+
+	if (mSwordsVertical->getEnabled())
+	{
 		mSwordsVertical->addTime(evt.timeSinceLastFrame);
 		if (mSwordsVertical->hasEnded())
 		{
@@ -245,22 +336,9 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent &evt)
 		if (mJumpLoop->hasEnded())
 		{
 			mJumpEnd->setEnabled(true);
-			
-		}
-		else 
-		{ 
-		
-			if (mJumpLoop->getTimePosition() < 0.5 * mJumpLoop->getLength())
-			{
-				
-				mSinbadNode->translate(Vector3(0, Height->getValue(), 0) * evt.timeSinceLastFrame);
-			}
-			else
-			{
-				mSinbadNode->translate(Vector3(0, -Height->getValue(), 0) * evt.timeSinceLastFrame);
-			}
 
 		}
+		
 
 
 	}
@@ -280,9 +358,9 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent &evt)
 		mJumpLoop->setTimePosition(0);
 		mJumpEnd->setTimePosition(0);
 	}
-	
 
-	if(bRunning)
+
+	if (bRunning)
 	{
 		// Advance the animation
 		mRunBaseState->setEnabled(true);
@@ -300,29 +378,29 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent &evt)
 		mRunTopState->setTimePosition(0);
 	}
 
-	
 
-	
+
+
 
 	// Check if swords are being drawn or put
-	if(mSwordState->getEnabled())
+	if (mSwordState->getEnabled())
 	{
 		// Continue drawing or putting swords until ended
-		if(mSwordState->hasEnded())
+		if (mSwordState->hasEnded())
 		{
 			mSwordState->setEnabled(false);
 			mSwordState->setTimePosition(0);
 
 			mSwordAtHand = !mSwordAtHand;
 		}
-		else if(mSwordState->getTimePosition() >= (0.5 * mSwordState->getLength()))
+		else if (mSwordState->getTimePosition() >= (0.5 * mSwordState->getLength()))
 		{
 			// Dettach each sword entity
 			mSinbad->detachObjectFromBone(mSwordL);
 			mSinbad->detachObjectFromBone(mSwordR);
 
 			// Attach each sword entity to sheath or hand
-			if(mSwordAtHand)
+			if (mSwordAtHand)
 			{
 				mSinbad->attachObjectToBone("Sheath.L", mSwordL);
 				mSinbad->attachObjectToBone("Sheath.R", mSwordR);
@@ -336,7 +414,7 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent &evt)
 
 		mSwordState->addTime(evt.timeSinceLastFrame);
 	}
-	else if(mPressMouseSet.count(BUTTON_LEFT) != 0)
+	else if (mPressMouseSet.count(BUTTON_LEFT) != 0)
 	{
 		// Start drawing or putting swords
 		mSwordState->setEnabled(true);
@@ -346,15 +424,12 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent &evt)
 		mRunTopState->setEnabled(false);
 		mRunTopState->setTimePosition(0);
 	}
-	else if(bRunning)
+	else if (bRunning)
 	{
 		mRunTopState->setEnabled(true);
 		mRunTopState->addTime(evt.timeSinceLastFrame);
 	}
-
-	return true;
 }
-
 
 //-------------------------------------------------------------------------------------
 bool TutorialApplication::keyPressed(const KeyboardEvent &evt)

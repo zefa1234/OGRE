@@ -1,9 +1,10 @@
-material Ogre/Earring : Ogre/Base
+material Ogre/Earring
 {
-	technique Tech_TEST
+	technique
 	{
-		pass Tech_TEST/Pass
+		pass
 		{
+			ambient 0.7 0.7 0
 			diffuse 0.7 0.7 0
 
 			texture_unit
@@ -17,14 +18,15 @@ material Ogre/Earring : Ogre/Base
 	}
 }
 
-material Ogre/SkinBase : Ogre/Base
+material Ogre/Skin
 {
-	technique Tech_TEST
+	technique
 	{
-		pass Tech_TEST/Pass
+		pass
 		{
+			ambient 0.3 0.8 0.3
 
-			texture_unit Tech_TEST/Pass/Tex0
+			texture_unit
 			{
 				texture GreenSkin.jpg
 				tex_address_mode mirror
@@ -33,27 +35,13 @@ material Ogre/SkinBase : Ogre/Base
 	}
 }
 
-material Ogre/Skin : Ogre/SkinBase
+material Ogre/Tusks
 {
-	technique Tech_TEST
+	technique
 	{
-		pass Tech_TEST/Pass
+		pass
 		{
-			texture_unit Tech_TEST/Pass/Tex1
-			{
-				texture stain.jpg
-			}
-		}
-	}
-}
-
-material Ogre/Tusks : Ogre/Base
-{
-	technique Tech_TEST
-	{
-		pass Tech_TEST/Pass
-		{
-			
+			ambient 0.7 0.7 0.6
 
 			texture_unit
 			{
@@ -64,28 +52,15 @@ material Ogre/Tusks : Ogre/Base
 	}
 }
 
-material Ogre/Eyes : Ogre/Base
+material Ogre/Eyes
 {
-	technique Tech_TEST
+	technique
 	{
-		pass Tech_TEST/Pass
+		pass
 		{
-			
+			ambient 1 0.4 0.4
 			diffuse 1 0.7 0
 			emissive 0.3 0.1 0
 		}
 	}
-}
-
-material Ogre/Base
-{
-
-	technique Tech_TEST
-	{
-		pass Tech_TEST/Pass
-		{
-			ambient 1 1 1
-		}
-	}
-
 }

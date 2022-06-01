@@ -29,7 +29,16 @@ THE SOFTWARE
 #ifndef __TutorialApplication_h_
 #define __TutorialApplication_h_
 
+
+
+
 #include "BaseApplication.h"
+#include "OgrePageManager.h"
+#include "OgreTerrain.h"
+#include "OgreTerrainGroup.h"
+#include "OgreTerrainQuadTreeNode.h"
+#include "OgreTerrainMaterialGeneratorA.h"
+#include "OgreTerrainPaging.h"
 
 using namespace Ogre;
 using namespace OgreBites;
@@ -50,11 +59,15 @@ protected:
 	virtual bool keyReleased(const KeyboardEvent &evt);
 	virtual bool mousePressed(const MouseButtonEvent &evt);
 	virtual bool mouseReleased(const MouseButtonEvent &evt);
+	void updateControl(const FrameEvent& evt);
+	void updateAnimate(const FrameEvent& evt);
 
 	SceneNode* mSinbadNode;
+	SceneNode* floorNode;
 	Entity* mSinbad;
 	Entity* mSwordL;
 	Entity* mSwordR;
+	Entity* floor;
 
 	bool mSwordAtHand;
 
@@ -67,15 +80,25 @@ protected:
 	AnimationState* mSwordsVertical;
 	AnimationState* mSwordsHorizon;
 
+
 	WidgetList MoveSpeed;
 	WidgetList JumpHeight;
 
 	Slider *Move;
 	Slider* Height;
+
 	
 	float startjumptime = 2;
 	float loopjumptime = 6;
 	float endjumptime = 2;
+	bool rturn = false;
+	bool lturn = false;
+	bool forward = false;
+	bool backward = false;
+	bool bRunning = false;
+	bool bJumpStart = false;
+	bool bJumpLoop = false;
+	bool bJumpEnd = false;
 
 	std::set<Keycode> mPressKeySet;
 	std::set<unsigned char> mPressMouseSet;
