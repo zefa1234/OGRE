@@ -75,8 +75,8 @@ void TutorialApplication::setup(void)
 	//MoveSpeed.push_back(mTrayMgr->createLongSlider(TL_RIGHT, "MoveSpeed", "MoveSpeed", 250, 80, 44, 0, 1, 11));
 	Move = mTrayMgr->createLongSlider(TL_RIGHT, "MoveSpeed", "MoveSpeed", 250, 80, 44, 0, 20, 11);
 	Height = mTrayMgr->createLongSlider(TL_NONE, "JumpHeight", "JumpHeight", 250, 80, 44, 0, 10, 11);
-	Move->setValue(5);
-	Height->setValue(5);
+	Move->setValue(15);
+	Height->setValue(10);
 
 	
 }
@@ -207,6 +207,10 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		bJumpStart = false;
 		bJumpLoop = false;
 		bJumpEnd = false;
+		rturn = false;
+		lturn = false;
+		forward = false;
+		backward = false;
 
 		return true;
 	
@@ -219,23 +223,23 @@ void TutorialApplication::updateControl(const FrameEvent& evt) {
 		// Turn left and run
 		bRunning = true;
 		mSinbadNode->translate(Vector3(-Move->getValue(), 0, 0) * evt.timeSinceLastFrame);
-		
-		lturn = true;
+		//mSinbadNode->setDirection(Vector3(1, 0, 0));
+		rturn = true;
 	}
 	else if ((mPressKeySet.count('a') != 0) && (mPressKeySet.count('d') == 0))
 	{
 		// Turn right and run
 		bRunning = true;
 		mSinbadNode->translate(Vector3(Move->getValue(), 0, 0) * evt.timeSinceLastFrame);
-		
-		rturn = true;
+		//mSinbadNode->setDirection(Vector3(-1, 0, 0));
+		lturn = true;
 	}
 	if ((mPressKeySet.count('w') == 0) && (mPressKeySet.count('s') != 0))
 	{
 		// Turn right and run
 		bRunning = true;
 		mSinbadNode->translate(Vector3(0, 0, -Move->getValue()) * evt.timeSinceLastFrame);
-		
+		//mSinbadNode->setDirection(Vector3(0, 0, 1));
 		forward = true;
 	}
 	else if ((mPressKeySet.count('w') != 0) && (mPressKeySet.count('s') == 0))
@@ -243,7 +247,7 @@ void TutorialApplication::updateControl(const FrameEvent& evt) {
 		// Turn right and run
 		bRunning = true;
 		mSinbadNode->translate(Vector3(0, 0, Move->getValue()) * evt.timeSinceLastFrame);
-		
+		//mSinbadNode->setDirection(Vector3(0, 0, -1));
 		backward = true;
 	}
 
@@ -290,11 +294,34 @@ void TutorialApplication::updateControl(const FrameEvent& evt) {
 void TutorialApplication::updateAnimate(const FrameEvent& evt) {
 
 
-	if (lturn == true) {
+	if (rturn == true && forward == true) {
+		mSinbadNode->setDirection(Vector3(1, 0, 1));
+	}
+	else if (rturn == true && backward == true) {
+
+		mSinbadNode->setDirection(Vector3(1, 0, -1));
+	}
+	else if (lturn == true && forward == true) {
+		mSinbadNode->setDirection(Vector3(-1, 0, 1));
+	}
+	else if (lturn == true && backward == true) {
+		mSinbadNode->setDirection(Vector3(-1, 0, -1));
 
 	}
 	else if (rturn == true) {
+		mSinbadNode->setDirection(Vector3(1, 0, 0));
 
+	}
+	else if (lturn == true) {
+		mSinbadNode->setDirection(Vector3(-1, 0, 0));
+
+	}
+	else if (forward == true) {
+		mSinbadNode->setDirection(Vector3(0, 0, 1));
+
+	}
+	else if (backward == true) {
+		mSinbadNode->setDirection(Vector3(0, 0, -1));
 
 	}
 
@@ -369,7 +396,7 @@ void TutorialApplication::updateAnimate(const FrameEvent& evt) {
 	else
 	{
 		// Reset node orientation and time position
-		mSinbadNode->resetOrientation();
+		//mSinbadNode->resetOrientation();
 
 		mRunBaseState->setEnabled(false);
 		mRunBaseState->setTimePosition(0);
