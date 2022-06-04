@@ -59,15 +59,23 @@ protected:
 	virtual bool keyReleased(const KeyboardEvent &evt);
 	virtual bool mousePressed(const MouseButtonEvent &evt);
 	virtual bool mouseReleased(const MouseButtonEvent &evt);
+	virtual bool mouseMoved(const MouseMotionEvent& evt);
 	void updateControl(const FrameEvent& evt);
 	void updateAnimate(const FrameEvent& evt);
 
 	SceneNode* mSinbadNode;
 	SceneNode* floorNode;
+	SceneNode* enemyNode;
+	Camera* sinCamera;
+	SceneNode* sinCameraNode;
+	SceneNode* yawNode;
+	SceneNode* testYawNode;
+	SceneNode* rollNode;
 	Entity* mSinbad;
 	Entity* mSwordL;
 	Entity* mSwordR;
 	Entity* floor;
+	Entity* enemy;
 
 	bool mSwordAtHand;
 

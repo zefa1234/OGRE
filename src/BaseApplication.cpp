@@ -85,19 +85,21 @@ void BaseApplication::createSceneManager(void)
 //-------------------------------------------------------------------------------------
 void BaseApplication::createCamera(void)
 {
+
 	// Create the camera
 	mCameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("CameraNode");
 	mCamera = mSceneMgr->createCamera("myCam");
 
 	mCamera->setAutoAspectRatio(true);
 	mCameraNode->attachObject(mCamera);
-
+	
 	// Position it at 80 in Z direction
 	mCameraNode->setPosition(0, 40, -50);
 	mCamera->setNearClipDistance(5);
 
 	mCameraMan = new CameraMan(mCameraNode);   // create a default camera controller
-	mCameraMan->setStyle(CameraStyle::CS_MANUAL);
+	mCameraMan->setStyle(CameraStyle::CS_FREELOOK);
+	
 	
 }
 
@@ -106,9 +108,9 @@ void BaseApplication::createCamera(void)
 void BaseApplication::createTray(void)
 {
 	// Create the camera
-	mTrayMgr = new TrayManager("InterfaceName", mWindow, this);
+	mTrayMgr = new TrayManager("InterfaceName", mWindow, this);/*
 	mTrayMgr->showFrameStats(TL_BOTTOMLEFT);
-	mTrayMgr->showLogo(TL_BOTTOMRIGHT);
+	mTrayMgr->showLogo(TL_BOTTOMRIGHT);*/
 	mTrayMgr->hideCursor();
 
 	// Create a params panel for displaying sample details
@@ -335,6 +337,7 @@ bool BaseApplication::keyReleased(const KeyboardEvent &evt)
 bool BaseApplication::mouseMoved(const MouseMotionEvent &evt)
 {
 	if (mTrayMgr->mouseMoved(evt)) return true;
+	
 	return mCameraMan->mouseMoved(evt);
 }
 
