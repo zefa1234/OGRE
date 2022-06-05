@@ -98,7 +98,7 @@ void BaseApplication::createCamera(void)
 	mCamera->setNearClipDistance(5);
 
 	mCameraMan = new CameraMan(mCameraNode);   // create a default camera controller
-	mCameraMan->setStyle(CameraStyle::CS_FREELOOK);
+	mCameraMan->setStyle(CameraStyle::CS_MANUAL);
 	
 	
 }

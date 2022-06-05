@@ -73,8 +73,9 @@ void TutorialApplication::setup(void)
 
 
 	//MoveSpeed.push_back(mTrayMgr->createLongSlider(TL_RIGHT, "MoveSpeed", "MoveSpeed", 250, 80, 44, 0, 1, 11));
-	Move = mTrayMgr->createLongSlider(TL_RIGHT, "MoveSpeed", "MoveSpeed", 250, 80, 44, 0, 20, 11);
-	Height = mTrayMgr->createLongSlider(TL_NONE, "JumpHeight", "JumpHeight", 250, 80, 44, 0, 10, 11);
+	Move = mTrayMgr->createLongSlider(TrayLocation::TL_BOTTOMRIGHT, "MoveSpeed", "MoveSpeed", 250, 80, 44, 0, 20, 11);
+	Height = mTrayMgr->createLongSlider(TrayLocation::TL_BOTTOMRIGHT, "JumpHeight", "JumpHeight", 250, 80, 44, 0, 10, 11);
+	
 	Move->setValue(15);
 	Height->setValue(10);
 
@@ -190,45 +191,45 @@ void TutorialApplication::createScene(void)
 
 	groundEntity->setMaterialName("Examples/Rockwall");
 
+	createOgreCamera();
+	
+
+
+	mSceneMgr->setSkyDome(true, "Examples/CloudySky", 3, 8);
+	
+	
+	
+}
+
+
+void TutorialApplication::createOgreCamera() {
+
 	testYawNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("testYawNode");
 	rollNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("testRollNode");
 
 	yawNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("pitchNode");
 
 
-	mCameraNode->detachObject("myCam");
-	sinCameraNode = yawNode->createChildSceneNode("sinCameraNode");
-	sinCameraNode->attachObject(mCamera);
-	sinCameraNode->setPosition(0, 20, -30);
-	sinCameraNode->setAutoTracking(true, yawNode);
-	sinCameraNode->setFixedYawAxis(true);
-	
-	/*
-	yawNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("pitchNode");
-	
+	mouseCamera = mSceneMgr->createCamera("mouseCam");
+	mouseCamera->setAutoAspectRatio(true);
+	mouseCamera->setNearClipDistance(5);
+	muoseCameraNode = yawNode->createChildSceneNode("mouseCameraNode");
+	muoseCameraNode->attachObject(mouseCamera);
+	muoseCameraNode->setPosition(0, 50, 0);
+	muoseCameraNode->setAutoTracking(true, yawNode);
+	muoseCameraNode->setFixedYawAxis(true);
 
 	mCameraNode->detachObject("myCam");
 	sinCameraNode = yawNode->createChildSceneNode("sinCameraNode");
 	sinCameraNode->attachObject(mCamera);
-	sinCameraNode->setPosition(0, 40, -50);
+	sinCameraNode->setPosition(0, 35, -40);
 	sinCameraNode->setAutoTracking(true, yawNode);
 	sinCameraNode->setFixedYawAxis(true);
-	*/
 
-	//mCameraNode->setAutoTracking(true, mSinbadNode);
+	mCameraNode->setAutoTracking(true, yawNode);
+	mCameraNode->setFixedYawAxis(true);
 
-	//mCameraNode->setFixedYawAxis(true);
-
-
-	mSceneMgr->setSkyDome(true, "Examples/CloudySky", 3, 8);
-
-
-	
-	
 }
-
-
-
 
 //-------------------------------------------------------------------------------------
 bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
@@ -238,9 +239,11 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 
 		// Check keyboard to determine running mode
 		
-		mTrayMgr->hideCursor();
+		//mTrayMgr->hideCursor();
 		
+		r = mTrayMgr->getCursorRay(mouseCamera);
 		
+		mSinbadNode->setDirection(Vector3(-r.getDirection().x,0, -r.getDirection().z));
 		updateControl(evt);
 		updateAnimate(evt);
 		yawNode->setPosition(mSinbadNode->getPosition());
@@ -556,10 +559,10 @@ bool TutorialApplication::mouseReleased(const MouseButtonEvent &evt)
 
 bool TutorialApplication::mouseMoved(const MouseMotionEvent& evt) {
 
-	//yawNode->yaw(Radian(Degree(-evt.xrel*0.2)));
-	testYawNode->yaw(Radian(Degree(-evt.xrel * 0.3)));
-	rollNode->pitch(Radian(Degree(evt.yrel * 0.3)));
 	
+	//testYawNode->yaw(Radian(Degree(-evt.xrel * 0.3)));
+	//rollNode->pitch(Radian(Degree(evt.yrel * 0.3)));
+	//mSinbadNode->setDirection(Vector3(evt.x, 0, evt.y));
 
 	return BaseApplication::mouseMoved(evt);
 }

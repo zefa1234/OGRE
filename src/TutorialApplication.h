@@ -65,6 +65,7 @@ protected:
 	virtual bool mouseMoved(const MouseMotionEvent& evt);
 	void updateControl(const FrameEvent& evt);
 	void updateAnimate(const FrameEvent& evt);
+	void createOgreCamera();
 
 	SceneNode* mSinbadNode;
 	SceneNode* floorNode;
@@ -74,6 +75,7 @@ protected:
 	SceneNode* yawNode;
 	SceneNode* testYawNode;
 	SceneNode* rollNode;
+	SceneNode* muoseCameraNode;
 	Entity* mSinbad;
 	Entity* mSwordL;
 	Entity* mSwordR;
@@ -97,6 +99,7 @@ protected:
 	AnimationState* mSwordsVertical;
 	AnimationState* mSwordsHorizon;
 
+	Camera* mouseCamera;
 
 	WidgetList MoveSpeed;
 	WidgetList JumpHeight;
@@ -104,6 +107,7 @@ protected:
 	Slider *Move;
 	Slider* Height;
 
+	Ray r;
 	
 	float startjumptime = 2;
 	float loopjumptime = 6;
