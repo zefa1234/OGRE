@@ -91,7 +91,8 @@ void TutorialApplication::createScene(void)
 	mSwordL = mSceneMgr->createEntity("SwordL", "Sword.mesh"); 
 	mSwordR = mSceneMgr->createEntity("SwordR", "Sword.mesh"); 
 
-	floor = mSceneMgr->createEntity("Floor", "cube.mesh");
+	//floor = mSceneMgr->createEntity("Floor", "cube.mesh");
+	enemy = mSceneMgr->createEntity("Floor", "fish.mesh");
 
 	// Attach each sword entity to sheath
 	mSinbad->attachObjectToBone("Sheath.L", mSwordL);
@@ -101,6 +102,7 @@ void TutorialApplication::createScene(void)
 	mSinbadNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("SinbadNode", Vector3(0, 5, 0)); 
 	mSinbadNode->attachObject(mSinbad);
 
+<<<<<<< HEAD
 
 	//-----------------------------------------random test
 	randomSinbad[0] = mSceneMgr->createEntity("RadomSinbad1", "Sinbad.mesh"); 
@@ -119,6 +121,10 @@ void TutorialApplication::createScene(void)
 	randomSinbadNode[3] = mSceneMgr->getRootSceneNode()->createChildSceneNode("randomSinbadNode4", Vector3(Math::RangeRandom(-10, 20), 5, Math::RangeRandom(-10, 20)));
 	randomSinbadNode[3]->attachObject(randomSinbad[3]);
 	//---------------------------------------------
+=======
+	enemyNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("enemyNode", Vector3(20, 5, 0));
+	enemyNode->attachObject(enemy);
+>>>>>>> 85fe3a72266b9ba82a3be26fdaa20dd36f78586e
 	/*
 	floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("FloorNode", Vector3(0, 32, 0));
 	floorNode->attachObject(floor);
@@ -194,17 +200,45 @@ void TutorialApplication::createScene(void)
 
 	groundEntity->setMaterialName("Examples/Rockwall");
 
-	//mSinbadNode->addChild(mCameraNode);
+	testYawNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("testYawNode");
+	rollNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("testRollNode");
 
-	mCameraNode->setAutoTracking(true, mSinbadNode);
+	yawNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("pitchNode");
 
-	mCameraNode->setFixedYawAxis(true);
+
+	mCameraNode->detachObject("myCam");
+	sinCameraNode = yawNode->createChildSceneNode("sinCameraNode");
+	sinCameraNode->attachObject(mCamera);
+	sinCameraNode->setPosition(0, 20, -30);
+	sinCameraNode->setAutoTracking(true, yawNode);
+	sinCameraNode->setFixedYawAxis(true);
+	
+	/*
+	yawNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("pitchNode");
+	
+
+	mCameraNode->detachObject("myCam");
+	sinCameraNode = yawNode->createChildSceneNode("sinCameraNode");
+	sinCameraNode->attachObject(mCamera);
+	sinCameraNode->setPosition(0, 40, -50);
+	sinCameraNode->setAutoTracking(true, yawNode);
+	sinCameraNode->setFixedYawAxis(true);
+	*/
+
+	//mCameraNode->setAutoTracking(true, mSinbadNode);
+
+	//mCameraNode->setFixedYawAxis(true);
 
 
 	mSceneMgr->setSkyDome(true, "Examples/CloudySky", 3, 8);
+<<<<<<< HEAD
 
 	int rand = Math::RangeRandom(0, 10);
 
+=======
+	
+	
+>>>>>>> 85fe3a72266b9ba82a3be26fdaa20dd36f78586e
 }
 
 
@@ -218,11 +252,17 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 
 		// Check keyboard to determine running mode
 		
-
+		mTrayMgr->hideCursor();
+		
+		
 		updateControl(evt);
 		updateAnimate(evt);
-		
+		yawNode->setPosition(mSinbadNode->getPosition());
+		yawNode->setOrientation(testYawNode->getOrientation()* rollNode->getOrientation());
+		float tempdis = enemyNode->getPosition().distance(mSinbadNode->getPosition());
+		Vector3 temp = Vector3((enemyNode->getPosition().x-mSinbadNode->getPosition().x), (enemyNode->getPosition().y - mSinbadNode->getPosition().y) , (enemyNode->getPosition().z - mSinbadNode->getPosition().z) )/ tempdis * evt.timeSinceLastFrame*8;
 
+		enemyNode->setPosition(enemyNode->getPosition() - temp);
 
 		bRunning = false;
 		bJumpStart = false;
@@ -243,33 +283,78 @@ void TutorialApplication::updateControl(const FrameEvent& evt) {
 	{
 		// Turn left and run
 		bRunning = true;
-		mSinbadNode->translate(Vector3(-Move->getValue(), 0, 0) * evt.timeSinceLastFrame);
-		//mSinbadNode->setDirection(Vector3(1, 0, 0));
+		
+		//mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
+		
 		rturn = true;
 	}
 	else if ((mPressKeySet.count('a') != 0) && (mPressKeySet.count('d') == 0))
 	{
 		// Turn right and run
 		bRunning = true;
-		mSinbadNode->translate(Vector3(Move->getValue(), 0, 0) * evt.timeSinceLastFrame);
-		//mSinbadNode->setDirection(Vector3(-1, 0, 0));
+		
+		//mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
 		lturn = true;
 	}
 	if ((mPressKeySet.count('w') == 0) && (mPressKeySet.count('s') != 0))
 	{
 		// Turn right and run
 		bRunning = true;
-		mSinbadNode->translate(Vector3(0, 0, -Move->getValue()) * evt.timeSinceLastFrame);
-		//mSinbadNode->setDirection(Vector3(0, 0, 1));
-		forward = true;
+		
+		//mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
+		backward = true;
 	}
 	else if ((mPressKeySet.count('w') != 0) && (mPressKeySet.count('s') == 0))
 	{
 		// Turn right and run
 		bRunning = true;
-		mSinbadNode->translate(Vector3(0, 0, Move->getValue()) * evt.timeSinceLastFrame);
+		
+		//mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
+		forward = true;
+	}
+
+	if (rturn == true && forward == true) {
+		//mSinbadNode->setDirection(Vector3(1, 0, 1));
+		mSinbadNode->setOrientation(Quaternion(yawNode->getOrientation().getYaw() - Radian(Degree(45)), testYawNode->getOrientation().yAxis()));
+		mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
+
+	}
+	else if (rturn == true && backward == true) {
+
+		//mSinbadNode->setDirection(Vector3(1, 0, -1));
+		mSinbadNode->setOrientation(Quaternion(yawNode->getOrientation().getYaw() - Radian(Degree(135)), testYawNode->getOrientation().yAxis()));
+		mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
+	}
+	else if (lturn == true && forward == true) {
+		//mSinbadNode->setDirection(Vector3(-1, 0, 1));
+		mSinbadNode->setOrientation(Quaternion(yawNode->getOrientation().getYaw() + Radian(Degree(45)), testYawNode->getOrientation().yAxis()));
+		mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
+	}
+	else if (lturn == true && backward == true) {
+		//mSinbadNode->setDirection(Vector3(-1, 0, -1));
+		mSinbadNode->setOrientation(Quaternion(yawNode->getOrientation().getYaw() + Radian(Degree(135)), testYawNode->getOrientation().yAxis()));
+		mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
+
+	}
+	else if (rturn == true) {
+		//mSinbadNode->setDirection(Vector3(1, 0, 0));
+		mSinbadNode->setDirection(Vector3(yawNode->getOrientation().xAxis().x, 0, yawNode->getOrientation().xAxis().z));
+		mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
+	}
+	else if (lturn == true) {
+		//mSinbadNode->setDirection(Vector3(-1, 0, 0));
+		mSinbadNode->setDirection(Vector3(-yawNode->getOrientation().xAxis().x, 0, -yawNode->getOrientation().xAxis().z));
+		mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
+	}
+	else if (forward == true) {
+		//mSinbadNode->setDirection(Vector3(0, 0, 1));
+		mSinbadNode->setDirection(Vector3(-yawNode->getOrientation().zAxis().x, 0, -yawNode->getOrientation().zAxis().z));
+		mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
+	}
+	else if (backward == true) {
 		//mSinbadNode->setDirection(Vector3(0, 0, -1));
-		backward = true;
+		mSinbadNode->setDirection(Vector3(yawNode->getOrientation().zAxis().x, 0, yawNode->getOrientation().zAxis().z));
+		mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
 	}
 
 
@@ -288,6 +373,9 @@ void TutorialApplication::updateControl(const FrameEvent& evt) {
 	{
 		mSwordsHorizon->setEnabled(true);
 	}
+
+
+	
 
 	if (mJumpLoop->getEnabled())
 	{
@@ -313,37 +401,7 @@ void TutorialApplication::updateControl(const FrameEvent& evt) {
 void TutorialApplication::updateAnimate(const FrameEvent& evt) {
 
 
-	if (rturn == true && forward == true) {
-		mSinbadNode->setDirection(Vector3(1, 0, 1));
-	}
-	else if (rturn == true && backward == true) {
-
-		mSinbadNode->setDirection(Vector3(1, 0, -1));
-	}
-	else if (lturn == true && forward == true) {
-		mSinbadNode->setDirection(Vector3(-1, 0, 1));
-	}
-	else if (lturn == true && backward == true) {
-		mSinbadNode->setDirection(Vector3(-1, 0, -1));
-
-	}
-	else if (rturn == true) {
-		mSinbadNode->setDirection(Vector3(1, 0, 0));
-
-	}
-	else if (lturn == true) {
-		mSinbadNode->setDirection(Vector3(-1, 0, 0));
-
-	}
-	else if (forward == true) {
-		mSinbadNode->setDirection(Vector3(0, 0, 1));
-
-	}
-	else if (backward == true) {
-		mSinbadNode->setDirection(Vector3(0, 0, -1));
-
-	}
-
+	
 
 	if (mSwordsVertical->getEnabled())
 	{
@@ -508,6 +566,15 @@ bool TutorialApplication::mouseReleased(const MouseButtonEvent &evt)
 	return BaseApplication::mouseReleased(evt);
 }
 
+bool TutorialApplication::mouseMoved(const MouseMotionEvent& evt) {
+
+	//yawNode->yaw(Radian(Degree(-evt.xrel*0.2)));
+	testYawNode->yaw(Radian(Degree(-evt.xrel * 0.3)));
+	rollNode->pitch(Radian(Degree(evt.yrel * 0.3)));
+	
+
+	return BaseApplication::mouseMoved(evt);
+}
 
 //-------------------------------------------------------------------------------------
 int main(int argc, char **argv)

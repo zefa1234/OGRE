@@ -42,6 +42,8 @@ THE SOFTWARE
 using namespace Ogre;
 using namespace OgreBites;
 
+
+
 class BaseApplication : public ApplicationContext, public InputListener, public TrayListener
 {
 public:
