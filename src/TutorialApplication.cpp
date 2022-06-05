@@ -92,7 +92,7 @@ void TutorialApplication::createScene(void)
 	mSwordR = mSceneMgr->createEntity("SwordR", "Sword.mesh"); 
 
 	//floor = mSceneMgr->createEntity("Floor", "cube.mesh");
-	enemy = mSceneMgr->createEntity("Floor", "fish.mesh");
+	//enemy = mSceneMgr->createEntity("Floor", "fish.mesh");
 
 	// Attach each sword entity to sheath
 	mSinbad->attachObjectToBone("Sheath.L", mSwordL);
@@ -102,29 +102,19 @@ void TutorialApplication::createScene(void)
 	mSinbadNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("SinbadNode", Vector3(0, 5, 0)); 
 	mSinbadNode->attachObject(mSinbad);
 
-<<<<<<< HEAD
 
-	//-----------------------------------------random test
-	randomSinbad[0] = mSceneMgr->createEntity("RadomSinbad1", "Sinbad.mesh"); 
-	randomSinbadNode[0] = mSceneMgr->getRootSceneNode()->createChildSceneNode("randomSinbadNode1", Vector3(Math::RangeRandom(-10, 20) , 5, Math::RangeRandom(-10, 20)));
-	randomSinbadNode[0]->attachObject(randomSinbad[0]);
-
-	randomSinbad[1] = mSceneMgr->createEntity("RadomSinbad2", "Sinbad.mesh");
-	randomSinbadNode[1] = mSceneMgr->getRootSceneNode()->createChildSceneNode("randomSinbadNode2", Vector3(Math::RangeRandom(-10, 20), 5, Math::RangeRandom(-10, 20)));
-	randomSinbadNode[1]->attachObject(randomSinbad[1]);
-
-	randomSinbad[2] = mSceneMgr->createEntity("RadomSinbad3", "Sinbad.mesh");
-	randomSinbadNode[2] = mSceneMgr->getRootSceneNode()->createChildSceneNode("randomSinbadNode3", Vector3(Math::RangeRandom(-10, 20), 5, Math::RangeRandom(-10, 20)));
-	randomSinbadNode[2]->attachObject(randomSinbad[2]);
-
-	randomSinbad[3] = mSceneMgr->createEntity("RadomSinbad4", "Sinbad.mesh");
-	randomSinbadNode[3] = mSceneMgr->getRootSceneNode()->createChildSceneNode("randomSinbadNode4", Vector3(Math::RangeRandom(-10, 20), 5, Math::RangeRandom(-10, 20)));
-	randomSinbadNode[3]->attachObject(randomSinbad[3]);
+	//-----------------------------------------enemy
+	for (int a = 0; a < 10; a++)//fish
+	{
+		enemy[a] = mSceneMgr->createEntity(enemySinbadName[a], "fish.mesh");
+		enemyNode[a] = mSceneMgr->getRootSceneNode()->createChildSceneNode(enemyNodeName[a], Vector3(Math::RangeRandom(-50, 50), 5, 50));
+		enemyNode[a]->attachObject(enemy[a]);
+	}
 	//---------------------------------------------
-=======
-	enemyNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("enemyNode", Vector3(20, 5, 0));
-	enemyNode->attachObject(enemy);
->>>>>>> 85fe3a72266b9ba82a3be26fdaa20dd36f78586e
+
+	/*enemyNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("enemyNode", Vector3(20, 5, 0));
+	enemyNode->attachObject(enemy);*/
+
 	/*
 	floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("FloorNode", Vector3(0, 32, 0));
 	floorNode->attachObject(floor);
@@ -231,14 +221,10 @@ void TutorialApplication::createScene(void)
 
 
 	mSceneMgr->setSkyDome(true, "Examples/CloudySky", 3, 8);
-<<<<<<< HEAD
 
-	int rand = Math::RangeRandom(0, 10);
 
-=======
 	
 	
->>>>>>> 85fe3a72266b9ba82a3be26fdaa20dd36f78586e
 }
 
 
@@ -259,10 +245,13 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		updateAnimate(evt);
 		yawNode->setPosition(mSinbadNode->getPosition());
 		yawNode->setOrientation(testYawNode->getOrientation()* rollNode->getOrientation());
-		float tempdis = enemyNode->getPosition().distance(mSinbadNode->getPosition());
-		Vector3 temp = Vector3((enemyNode->getPosition().x-mSinbadNode->getPosition().x), (enemyNode->getPosition().y - mSinbadNode->getPosition().y) , (enemyNode->getPosition().z - mSinbadNode->getPosition().z) )/ tempdis * evt.timeSinceLastFrame*8;
+		for (int a = 0; a < 10; a++)
+		{
+			float tempdis = enemyNode[a]->getPosition().distance(mSinbadNode->getPosition());
+			Vector3 temp = Vector3((enemyNode[a]->getPosition().x-mSinbadNode->getPosition().x), (enemyNode[a]->getPosition().y - mSinbadNode->getPosition().y) , (enemyNode[a]->getPosition().z - mSinbadNode->getPosition().z) )/ tempdis * evt.timeSinceLastFrame*8;
 
-		enemyNode->setPosition(enemyNode->getPosition() - temp);
+			enemyNode[a]->setPosition(enemyNode[a]->getPosition() - temp);
+		}
 
 		bRunning = false;
 		bJumpStart = false;
@@ -394,8 +383,7 @@ void TutorialApplication::updateControl(const FrameEvent& evt) {
 			}
 		}
 	}
-	//random ogre moving-----------------------------
-	randomSinbadNode[0]->translate(Vector3(-Move->getValue(), 0, 0) * evt.timeSinceLastFrame);
+
 }
 
 void TutorialApplication::updateAnimate(const FrameEvent& evt) {

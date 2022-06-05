@@ -39,9 +39,12 @@ THE SOFTWARE
 #include "OgreTerrainQuadTreeNode.h"
 #include "OgreTerrainMaterialGeneratorA.h"
 #include "OgreTerrainPaging.h"
+#include <vector>
+#include <string>
 
 using namespace Ogre;
 using namespace OgreBites;
+using namespace std;
 
 class TutorialApplication : public BaseApplication
 {
@@ -65,7 +68,7 @@ protected:
 
 	SceneNode* mSinbadNode;
 	SceneNode* floorNode;
-	SceneNode* enemyNode;
+	SceneNode* enemyNode[10];//change to array to store mutiple enemy
 	Camera* sinCamera;
 	SceneNode* sinCameraNode;
 	SceneNode* yawNode;
@@ -75,10 +78,13 @@ protected:
 	Entity* mSwordL;
 	Entity* mSwordR;
 	Entity* floor;
-	Entity* enemy;
+	Entity* enemy[10];//change to array to store mutiple enemy
 
-	SceneNode* randomSinbadNode[10];
-	Entity* randomSinbad[10];
+	
+	string enemyNodeName[10] = {"EmenySinbadNode1", "EmenySinbadNode2", "EmenySinbadNode3", "EmenySinbadNode4", "EmenySinbadNode5", 
+															"EmenySinbadNode6", "EmenySinbadNode7", "EmenySinbadNode8", "EmenySinbadNode9", "EmenySinbadNode10" };
+	string enemySinbadName[10] = {"EnemySinbad1", "EnemySinbad2", "EnemySinbad3", "EnemySinbad4", "EnemySinbad5", 
+																"EnemySinbad6", "EnemySinbad7", "EnemySinbad8", "EnemySinbad9", "EnemySinbad10" };
 
 	bool mSwordAtHand;
 
