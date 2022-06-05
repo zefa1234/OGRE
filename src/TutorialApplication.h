@@ -69,6 +69,9 @@ protected:
 	Entity* mSwordR;
 	Entity* floor;
 
+	SceneNode* randomSinbadNode[10];
+	Entity* randomSinbad[10];
+
 	bool mSwordAtHand;
 
 	AnimationState* mRunBaseState;

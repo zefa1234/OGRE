@@ -100,6 +100,25 @@ void TutorialApplication::createScene(void)
 	// Create SceneNode and attach the entity
 	mSinbadNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("SinbadNode", Vector3(0, 5, 0)); 
 	mSinbadNode->attachObject(mSinbad);
+
+
+	//-----------------------------------------random test
+	randomSinbad[0] = mSceneMgr->createEntity("RadomSinbad1", "Sinbad.mesh"); 
+	randomSinbadNode[0] = mSceneMgr->getRootSceneNode()->createChildSceneNode("randomSinbadNode1", Vector3(Math::RangeRandom(-10, 20) , 5, Math::RangeRandom(-10, 20)));
+	randomSinbadNode[0]->attachObject(randomSinbad[0]);
+
+	randomSinbad[1] = mSceneMgr->createEntity("RadomSinbad2", "Sinbad.mesh");
+	randomSinbadNode[1] = mSceneMgr->getRootSceneNode()->createChildSceneNode("randomSinbadNode2", Vector3(Math::RangeRandom(-10, 20), 5, Math::RangeRandom(-10, 20)));
+	randomSinbadNode[1]->attachObject(randomSinbad[1]);
+
+	randomSinbad[2] = mSceneMgr->createEntity("RadomSinbad3", "Sinbad.mesh");
+	randomSinbadNode[2] = mSceneMgr->getRootSceneNode()->createChildSceneNode("randomSinbadNode3", Vector3(Math::RangeRandom(-10, 20), 5, Math::RangeRandom(-10, 20)));
+	randomSinbadNode[2]->attachObject(randomSinbad[2]);
+
+	randomSinbad[3] = mSceneMgr->createEntity("RadomSinbad4", "Sinbad.mesh");
+	randomSinbadNode[3] = mSceneMgr->getRootSceneNode()->createChildSceneNode("randomSinbadNode4", Vector3(Math::RangeRandom(-10, 20), 5, Math::RangeRandom(-10, 20)));
+	randomSinbadNode[3]->attachObject(randomSinbad[3]);
+	//---------------------------------------------
 	/*
 	floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("FloorNode", Vector3(0, 32, 0));
 	floorNode->attachObject(floor);
@@ -183,6 +202,8 @@ void TutorialApplication::createScene(void)
 
 
 	mSceneMgr->setSkyDome(true, "Examples/CloudySky", 3, 8);
+
+	int rand = Math::RangeRandom(0, 10);
 
 }
 
@@ -283,12 +304,10 @@ void TutorialApplication::updateControl(const FrameEvent& evt) {
 			{
 				mSinbadNode->translate(Vector3(0, -Height->getValue(), 0) * evt.timeSinceLastFrame);
 			}
-
 		}
-
-
 	}
-
+	//random ogre moving-----------------------------
+	randomSinbadNode[0]->translate(Vector3(-Move->getValue(), 0, 0) * evt.timeSinceLastFrame);
 }
 
 void TutorialApplication::updateAnimate(const FrameEvent& evt) {
