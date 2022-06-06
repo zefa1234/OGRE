@@ -33,6 +33,7 @@ THE SOFTWARE
 
 
 #include "BaseApplication.h"
+#include "Bullet.h"
 #include "OgrePageManager.h"
 #include "OgreTerrain.h"
 #include "OgreTerrainGroup.h"
@@ -41,6 +42,7 @@ THE SOFTWARE
 #include "OgreTerrainPaging.h"
 #include <vector>
 #include <string>
+#include <vector>
 
 using namespace Ogre;
 using namespace OgreBites;
@@ -76,11 +78,15 @@ protected:
 	SceneNode* testYawNode;
 	SceneNode* rollNode;
 	SceneNode* muoseCameraNode;
+	SceneNode* KnifeNode;
+	vector<SceneNode*> bulletArray;
+	
 	Entity* mSinbad;
 	Entity* mSwordL;
 	Entity* mSwordR;
 	Entity* floor;
 	Entity* enemy[10];//change to array to store mutiple enemy
+	Entity* Knife;
 
 	
 	string enemyNodeName[10] = {"EmenySinbadNode1", "EmenySinbadNode2", "EmenySinbadNode3", "EmenySinbadNode4", "EmenySinbadNode5", 
@@ -100,6 +106,7 @@ protected:
 	AnimationState* mSwordsHorizon;
 
 	Camera* mouseCamera;
+	Bullet bulletManerger;
 
 	WidgetList MoveSpeed;
 	WidgetList JumpHeight;
@@ -120,6 +127,8 @@ protected:
 	bool bJumpStart = false;
 	bool bJumpLoop = false;
 	bool bJumpEnd = false;
+	bool throwKnife = false;
+	int count = 0;
 
 	std::set<Keycode> mPressKeySet;
 	std::set<unsigned char> mPressMouseSet;

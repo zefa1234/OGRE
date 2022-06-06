@@ -27,12 +27,14 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include "TutorialApplication.h"
+#include "Bullet.h"
 
 
 //-------------------------------------------------------------------------------------
 TutorialApplication::TutorialApplication() : mSinbadNode(nullptr),
 	floor(nullptr),
 	floorNode(nullptr),
+	KnifeNode(nullptr),
 	mSinbad(nullptr),
 	mSwordL(nullptr),
 	mSwordR(nullptr),
@@ -243,11 +245,14 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		
 		r = mTrayMgr->getCursorRay(mouseCamera);
 		
-		mSinbadNode->setDirection(Vector3(-r.getDirection().x,0, -r.getDirection().z));
+		
 		updateControl(evt);
 		updateAnimate(evt);
+		
 		yawNode->setPosition(mSinbadNode->getPosition());
 		yawNode->setOrientation(testYawNode->getOrientation()* rollNode->getOrientation());
+		if(KnifeNode!=nullptr)
+		KnifeNode->translate(KnifeNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
 		for (int a = 0; a < 10; a++)
 		{
 			float tempdis = enemyNode[a]->getPosition().distance(mSinbadNode->getPosition());
@@ -264,6 +269,7 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		lturn = false;
 		forward = false;
 		backward = false;
+		throwKnife = false;
 
 		return true;
 	
@@ -271,6 +277,11 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 
 void TutorialApplication::updateControl(const FrameEvent& evt) {
 
+	if (mPressMouseSet.count(BUTTON_LEFT) != 0) {
+
+		throwKnife = true;
+
+	}
 	if ((mPressKeySet.count('a') == 0) && (mPressKeySet.count('d') != 0))
 	{
 		// Turn left and run
@@ -306,49 +317,51 @@ void TutorialApplication::updateControl(const FrameEvent& evt) {
 	}
 
 	if (rturn == true && forward == true) {
-		//mSinbadNode->setDirection(Vector3(1, 0, 1));
+		
 		mSinbadNode->setOrientation(Quaternion(yawNode->getOrientation().getYaw() - Radian(Degree(45)), testYawNode->getOrientation().yAxis()));
 		mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
 
 	}
 	else if (rturn == true && backward == true) {
 
-		//mSinbadNode->setDirection(Vector3(1, 0, -1));
+		
 		mSinbadNode->setOrientation(Quaternion(yawNode->getOrientation().getYaw() - Radian(Degree(135)), testYawNode->getOrientation().yAxis()));
 		mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
 	}
 	else if (lturn == true && forward == true) {
-		//mSinbadNode->setDirection(Vector3(-1, 0, 1));
+		
 		mSinbadNode->setOrientation(Quaternion(yawNode->getOrientation().getYaw() + Radian(Degree(45)), testYawNode->getOrientation().yAxis()));
 		mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
 	}
 	else if (lturn == true && backward == true) {
-		//mSinbadNode->setDirection(Vector3(-1, 0, -1));
+		
 		mSinbadNode->setOrientation(Quaternion(yawNode->getOrientation().getYaw() + Radian(Degree(135)), testYawNode->getOrientation().yAxis()));
 		mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
 
 	}
 	else if (rturn == true) {
-		//mSinbadNode->setDirection(Vector3(1, 0, 0));
+		
 		mSinbadNode->setDirection(Vector3(yawNode->getOrientation().xAxis().x, 0, yawNode->getOrientation().xAxis().z));
 		mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
 	}
 	else if (lturn == true) {
-		//mSinbadNode->setDirection(Vector3(-1, 0, 0));
+		
 		mSinbadNode->setDirection(Vector3(-yawNode->getOrientation().xAxis().x, 0, -yawNode->getOrientation().xAxis().z));
 		mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
 	}
 	else if (forward == true) {
-		//mSinbadNode->setDirection(Vector3(0, 0, 1));
+		
 		mSinbadNode->setDirection(Vector3(-yawNode->getOrientation().zAxis().x, 0, -yawNode->getOrientation().zAxis().z));
 		mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
 	}
 	else if (backward == true) {
-		//mSinbadNode->setDirection(Vector3(0, 0, -1));
+		
 		mSinbadNode->setDirection(Vector3(yawNode->getOrientation().zAxis().x, 0, yawNode->getOrientation().zAxis().z));
 		mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
 	}
 
+
+	mSinbadNode->setDirection(Vector3(-r.getDirection().x, 0, -r.getDirection().z));
 
 	if ((mPressKeySet.count(' ') != 0))
 	{
@@ -367,6 +380,19 @@ void TutorialApplication::updateControl(const FrameEvent& evt) {
 	}
 
 
+	if (throwKnife == true) {
+
+		
+			KnifeNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("KnifeNode" + std::to_string(count));
+			Knife = mSceneMgr->createEntity("Knife" + std::to_string(count), "Sword.mesh");
+			KnifeNode->attachObject(Knife);
+			KnifeNode->setOrientation(mSinbadNode->getOrientation());
+			KnifeNode->setPosition(mSinbadNode->getPosition());
+			
+		
+		
+		count++;
+	}
 	
 
 	if (mJumpLoop->getEnabled())
