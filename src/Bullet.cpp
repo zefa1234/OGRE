@@ -25,7 +25,7 @@ void Bullet::createScene(void) {
 	bulletNode->setDirection(direct);
 	*/
 }
-void Bullet::createBullet(Vector3 initailPos, Quaternion direction, SceneManager*& mSceneMgr) {
+void Bullet::createBullet(Vector3 initailPos, Quaternion direction, SceneManager*& mSceneMgr, float shootspeed, float shootrange) {
 
 	/*
 	SceneNode* tempNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("KnifeNode" + std::to_string(count));
@@ -36,7 +36,7 @@ void Bullet::createBullet(Vector3 initailPos, Quaternion direction, SceneManager
 	bulletArray.push_back(tempNode);
 	*/
 
-	BulletUnit* temp = new BulletUnit(initailPos, direction, mSceneMgr, count);
+	BulletUnit* temp = new BulletUnit(initailPos, direction, mSceneMgr, count, shootrange, shootspeed);
 	BulletUnitArray.push_back(temp);
 
 	count++;
@@ -58,7 +58,7 @@ bool Bullet::frameRenderingQueued(const FrameEvent& evt) {
 	return true;
 }
 
-void Bullet::updateBullet(const FrameEvent& evt) {
+void Bullet::updateBullet(const FrameEvent& evt, SceneManager*& mSceneMgr) {
 
 	/*
 	for (int i = 0; i < bulletArray.size(); i++) {
@@ -68,12 +68,29 @@ void Bullet::updateBullet(const FrameEvent& evt) {
 
 	}
 	*/
-
+	
 	for (int i = 0; i < BulletUnitArray.size(); i++) {
 
 		BulletUnit* temp = BulletUnitArray[i];
-		temp->update(evt);
+		temp->update(evt, mSceneMgr);
+		
+		
+	}
+
+	vector<BulletUnit*>::iterator h;
+	
+
+	for (h = BulletUnitArray.begin(); h < BulletUnitArray.end(); h++) {
+
+		BulletUnit* temp = *h;
+		if (temp->isOverRange) {
+
+			BulletUnitArray.erase(h);
+
+			delete temp;
+		}
 
 	}
+
 
 }

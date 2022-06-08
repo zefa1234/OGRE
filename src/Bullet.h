@@ -20,12 +20,13 @@ class Bullet : public BaseApplication
 		virtual void setup(void);
 		virtual void createScene(void);
 		virtual bool frameRenderingQueued(const FrameEvent& evt);
-		void createBullet(Vector3 initailPos, Quaternion direction, SceneManager*& mSceneMgr);
-		void updateBullet(const FrameEvent& evt);
+		void createBullet(Vector3 initailPos, Quaternion direction, SceneManager*& mSceneMgr,float shootspeed,float shootrange);
+		void updateBullet(const FrameEvent& evt, SceneManager*& mSceneMgr);
 
 	protected:
 
 		float speed = 30;
+		float fireRange = 40;
 		int count = 0;
 		Vector3 inpos;
 		Vector3 direct;

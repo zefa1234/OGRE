@@ -78,10 +78,15 @@ void TutorialApplication::setup(void)
 	//MoveSpeed.push_back(mTrayMgr->createLongSlider(TL_RIGHT, "MoveSpeed", "MoveSpeed", 250, 80, 44, 0, 1, 11));
 	Move = mTrayMgr->createLongSlider(TrayLocation::TL_BOTTOMRIGHT, "MoveSpeed", "MoveSpeed", 250, 80, 44, 0, 20, 11);
 	Height = mTrayMgr->createLongSlider(TrayLocation::TL_BOTTOMRIGHT, "JumpHeight", "JumpHeight", 250, 80, 44, 0, 100, 11);
+	ShootRange = mTrayMgr->createLongSlider(TrayLocation::TL_BOTTOMRIGHT, "ShootRange", "ShootRange", 250, 80, 44, 0, 120, 11);
+	ShootPower = mTrayMgr->createLongSlider(TrayLocation::TL_BOTTOMRIGHT, "ShootPower", "ShootPower", 250, 80, 44, 0, 150, 11);
+	ShootSpeedPerSec = mTrayMgr->createLongSlider(TrayLocation::TL_BOTTOMRIGHT, "ShootSpeed", "ShootSpeed", 250, 80, 44, 0, 500, 11);
 	
 	Move->setValue(15);
 	Height->setValue(50);
-
+	ShootRange->setValue(40);
+	ShootPower->setValue(30);
+	ShootSpeedPerSec->setValue(350);
 	
 }
 
@@ -257,7 +262,7 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		if(KnifeNode!=nullptr)
 		KnifeNode->translate(KnifeNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
 		*/
-		bulletManager.updateBullet(evt);
+		bulletManager.updateBullet(evt, mSceneMgr);
 
 		for (int a = 0; a < 10; a++)
 		{
@@ -283,7 +288,7 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 
 void TutorialApplication::updateControl(const FrameEvent& evt) {
 
-	if (mPressMouseSet.count(BUTTON_LEFT) != 0&& Knife_timer.getMilliseconds()> throwKinfePerSec) {
+	if (mPressMouseSet.count(BUTTON_LEFT) != 0&& Knife_timer.getMilliseconds()> ShootSpeedPerSec->getValue()) {
 
 		throwKnife = true;
 		Knife_timer.reset();
@@ -398,7 +403,7 @@ void TutorialApplication::updateControl(const FrameEvent& evt) {
 			
 		*/
 		
-		bulletManager.createBullet(mSinbadNode->getPosition(), mSinbadNode->getOrientation(),mSceneMgr);
+		bulletManager.createBullet(mSinbadNode->getPosition(), mSinbadNode->getOrientation(),mSceneMgr, ShootPower->getValue(), ShootRange->getValue());
 		
 		count++;
 	}

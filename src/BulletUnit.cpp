@@ -14,36 +14,50 @@ class BulletUnit
 {
 public:
 
-	BulletUnit(Vector3 initailPos, Quaternion direction, SceneManager*& mSceneMgr,int count) {
+	BulletUnit(Vector3 initailPos, Quaternion direction, SceneManager*& mSceneMgr,int count,float dis,float spd) {
 
 		OriginPos = initailPos;
 		Origindirection = direction;
 		currentmSceneMgr = mSceneMgr;
 		ID = count;
+		disRange = dis;
+		speed = spd;
 
-		BulletNode = currentmSceneMgr->getRootSceneNode()->createChildSceneNode("KnifeNode" + std::to_string(ID));
-		BulletEntity = currentmSceneMgr->createEntity("Knife" + std::to_string(ID), "Sword.mesh");
+		BulletNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("KnifeNode" + std::to_string(ID));
+		BulletEntity = mSceneMgr->createEntity("Knife" + std::to_string(ID), "Sword.mesh");
 		BulletNode->attachObject(BulletEntity);
 		BulletNode->setOrientation(Origindirection);
 		BulletNode->setPosition(OriginPos);
+		
 
 	}
 	~BulletUnit(){
 
-		BulletNode = nullptr;
-		BulletEntity = nullptr;
+		
 
 	}
 
-	void update(const FrameEvent& evt) {
+	void update(const FrameEvent& evt, SceneManager*& mSceneMgr) {
 
+		if (isOverRange == false) {
+
+			BulletNode->translate(BulletNode->getOrientation().zAxis() * evt.timeSinceLastFrame * speed);
+			if (BulletNode->getPosition().distance(OriginPos) > disRange) {
+				isOverRange = true;
+
+				mSceneMgr->destroySceneNode("KnifeNode" + std::to_string(ID));
+				mSceneMgr->destroyEntity("Knife" + std::to_string(ID));
+			}
+
+		}
 		
-		BulletNode->translate(BulletNode->getOrientation().zAxis() * evt.timeSinceLastFrame * speed);
+		
 
 	}
 
 	string type = "";
 	int ID;
+	bool isOverRange = false;
 
 protected:
 
@@ -53,6 +67,7 @@ protected:
 	SceneNode* BulletNode;
 	Entity* BulletEntity;
 	float speed = 30;
+	float disRange = 30;
 
 };
 

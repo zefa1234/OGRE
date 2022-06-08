@@ -113,6 +113,9 @@ protected:
 
 	Slider *Move;
 	Slider* Height;
+	Slider* ShootRange;
+	Slider* ShootPower;
+	Slider* ShootSpeedPerSec;
 
 	Ray r;
 	Timer Knife_timer;
