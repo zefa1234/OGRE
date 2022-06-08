@@ -42,7 +42,7 @@ THE SOFTWARE
 #include "OgreTerrainPaging.h"
 #include <vector>
 #include <string>
-#include <vector>
+#include <OgreTimer.h>
 
 using namespace Ogre;
 using namespace OgreBites;
@@ -115,6 +115,8 @@ protected:
 	Slider* Height;
 
 	Ray r;
+
+	Timer enemyResTimer;
 	
 	float startjumptime = 2;
 	float loopjumptime = 6;

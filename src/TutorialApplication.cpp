@@ -106,17 +106,25 @@ void TutorialApplication::createScene(void)
 	mSinbadNode->attachObject(mSinbad);
 
 
-	//-----------------------------------------enemy
+	//random respawn enemies
+	//enemyResTimer.reset();
+	/*int a = 0;
+	if (((enemyResTimer.getMicroseconds() % 3000) == 0) && (a < 10))
+	{
+		enemy[a] = mSceneMgr->createEntity(enemySinbadName[a], "fish.mesh");
+		enemyNode[a] = mSceneMgr->getRootSceneNode()->createChildSceneNode(enemyNodeName[a], Vector3(Math::RangeRandom(-50, 50), 5, 50));
+		enemyNode[a]->attachObject(enemy[a]);
+
+		//enemyResTimer.reset();
+		a++;
+	}*/
 	for (int a = 0; a < 10; a++)//fish
 	{
 		enemy[a] = mSceneMgr->createEntity(enemySinbadName[a], "fish.mesh");
 		enemyNode[a] = mSceneMgr->getRootSceneNode()->createChildSceneNode(enemyNodeName[a], Vector3(Math::RangeRandom(-50, 50), 5, 50));
 		enemyNode[a]->attachObject(enemy[a]);
 	}
-	//---------------------------------------------
 
-	/*enemyNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("enemyNode", Vector3(20, 5, 0));
-	enemyNode->attachObject(enemy);*/
 
 	/*
 	floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("FloorNode", Vector3(0, 32, 0));
@@ -252,7 +260,8 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		yawNode->setPosition(mSinbadNode->getPosition());
 		yawNode->setOrientation(testYawNode->getOrientation()* rollNode->getOrientation());
 		if(KnifeNode!=nullptr)
-		KnifeNode->translate(KnifeNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
+		KnifeNode->translate(KnifeNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue()*5);
+		
 		for (int a = 0; a < 10; a++)
 		{
 			float tempdis = enemyNode[a]->getPosition().distance(mSinbadNode->getPosition());
