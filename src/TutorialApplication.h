@@ -106,7 +106,7 @@ protected:
 	AnimationState* mSwordsHorizon;
 
 	Camera* mouseCamera;
-	Bullet bulletManerger;
+	Bullet bulletManager;
 
 	WidgetList MoveSpeed;
 	WidgetList JumpHeight;
@@ -115,6 +115,8 @@ protected:
 	Slider* Height;
 
 	Ray r;
+	Timer Knife_timer;
+	float throwKinfePerSec = 350;
 	
 	float startjumptime = 2;
 	float loopjumptime = 6;
@@ -128,6 +130,7 @@ protected:
 	bool bJumpLoop = false;
 	bool bJumpEnd = false;
 	bool throwKnife = false;
+	
 	int count = 0;
 
 	std::set<Keycode> mPressKeySet;
