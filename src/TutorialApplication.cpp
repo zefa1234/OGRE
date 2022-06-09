@@ -48,6 +48,9 @@ TutorialApplication::TutorialApplication() : mSinbadNode(nullptr),
 	mSwordsVertical(nullptr),
 	mSwordsHorizon(nullptr)
 {
+	Knife_timer.reset();
+	enemyResTimer.reset();
+	enemyMovTimer.reset();
 }
 
 
@@ -76,11 +79,16 @@ void TutorialApplication::setup(void)
 
 	//MoveSpeed.push_back(mTrayMgr->createLongSlider(TL_RIGHT, "MoveSpeed", "MoveSpeed", 250, 80, 44, 0, 1, 11));
 	Move = mTrayMgr->createLongSlider(TrayLocation::TL_BOTTOMRIGHT, "MoveSpeed", "MoveSpeed", 250, 80, 44, 0, 20, 11);
-	Height = mTrayMgr->createLongSlider(TrayLocation::TL_BOTTOMRIGHT, "JumpHeight", "JumpHeight", 250, 80, 44, 0, 10, 11);
+	Height = mTrayMgr->createLongSlider(TrayLocation::TL_BOTTOMRIGHT, "JumpHeight", "JumpHeight", 250, 80, 44, 0, 100, 11);
+	ShootRange = mTrayMgr->createLongSlider(TrayLocation::TL_BOTTOMRIGHT, "ShootRange", "ShootRange", 250, 80, 44, 0, 120, 11);
+	ShootPower = mTrayMgr->createLongSlider(TrayLocation::TL_BOTTOMRIGHT, "ShootPower", "ShootPower", 250, 80, 44, 0, 150, 11);
+	ShootSpeedPerSec = mTrayMgr->createLongSlider(TrayLocation::TL_BOTTOMRIGHT, "ShootSpeed", "ShootSpeed", 250, 80, 44, 0, 500, 11);
 	
 	Move->setValue(15);
-	Height->setValue(10);
-
+	Height->setValue(50);
+	ShootRange->setValue(40);
+	ShootPower->setValue(30);
+	ShootSpeedPerSec->setValue(350);
 	
 }
 
@@ -107,25 +115,12 @@ void TutorialApplication::createScene(void)
 
 
 	//random respawn enemies
-	//enemyResTimer.reset();
-	/*int a = 0;
-	if (((enemyResTimer.getMicroseconds() % 3000) == 0) && (a < 10))
-	{
-		enemy[a] = mSceneMgr->createEntity(enemySinbadName[a], "fish.mesh");
-		enemyNode[a] = mSceneMgr->getRootSceneNode()->createChildSceneNode(enemyNodeName[a], Vector3(Math::RangeRandom(-50, 50), 5, 50));
-		enemyNode[a]->attachObject(enemy[a]);
-
-		//enemyResTimer.reset();
-		a++;
-	}*/
 	for (int a = 0; a < 10; a++)//fish
 	{
 		enemy[a] = mSceneMgr->createEntity(enemySinbadName[a], "fish.mesh");
 		enemyNode[a] = mSceneMgr->getRootSceneNode()->createChildSceneNode(enemyNodeName[a], Vector3(Math::RangeRandom(-50, 50), 5, 50));
-		enemyNode[a]->attachObject(enemy[a]);
+		//enemyNode[a]->attachObject(enemy[a]);
 	}
-
-
 	/*
 	floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("FloorNode", Vector3(0, 32, 0));
 	floorNode->attachObject(floor);
@@ -202,13 +197,8 @@ void TutorialApplication::createScene(void)
 	groundEntity->setMaterialName("Examples/Rockwall");
 
 	createOgreCamera();
-	
-
 
 	mSceneMgr->setSkyDome(true, "Examples/CloudySky", 3, 8);
-	
-	
-	
 }
 
 
@@ -259,15 +249,39 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		
 		yawNode->setPosition(mSinbadNode->getPosition());
 		yawNode->setOrientation(testYawNode->getOrientation()* rollNode->getOrientation());
+
+		/*
 		if(KnifeNode!=nullptr)
 		KnifeNode->translate(KnifeNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue()*5);
 		
+		KnifeNode->translate(KnifeNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
+		*/
+		bulletManager.updateBullet(evt, mSceneMgr);
+
+		while(enemyCount < 10  && enemyResTimer.getMilliseconds() > 2000)
+		{
+			enemyNode[enemyCount]->attachObject(enemy[enemyCount]);
+
+			/*float tempdis = enemyNode[enemyCount]->getPosition().distance(mSinbadNode->getPosition());
+			Vector3 temp = Vector3((enemyNode[enemyCount]->getPosition().x-mSinbadNode->getPosition().x), (enemyNode[enemyCount]->getPosition().y - mSinbadNode->getPosition().y) , (enemyNode[enemyCount]->getPosition().z - mSinbadNode->getPosition().z) )/ tempdis * evt.timeSinceLastFrame*8;
+
+			enemyNode[enemyCount]->setPosition(enemyNode[enemyCount]->getPosition() - temp);*/
+
+			enemyCount++;
+			enemyResTimer.reset();
+		}
+
 		for (int a = 0; a < 10; a++)
 		{
-			float tempdis = enemyNode[a]->getPosition().distance(mSinbadNode->getPosition());
-			Vector3 temp = Vector3((enemyNode[a]->getPosition().x-mSinbadNode->getPosition().x), (enemyNode[a]->getPosition().y - mSinbadNode->getPosition().y) , (enemyNode[a]->getPosition().z - mSinbadNode->getPosition().z) )/ tempdis * evt.timeSinceLastFrame*8;
+			if (enemyMovTimer.getMilliseconds() > 2000)
+			{
+				float tempdis = enemyNode[a]->getPosition().distance(mSinbadNode->getPosition());
+				Vector3 temp = Vector3((enemyNode[a]->getPosition().x - mSinbadNode->getPosition().x), (enemyNode[a]->getPosition().y - mSinbadNode->getPosition().y), (enemyNode[a]->getPosition().z - mSinbadNode->getPosition().z)) / tempdis * evt.timeSinceLastFrame * 8;
 
-			enemyNode[a]->setPosition(enemyNode[a]->getPosition() - temp);
+				enemyNode[a]->setPosition(enemyNode[a]->getPosition() - temp);
+				
+				//enemyMovTimer.reset();
+			}
 		}
 
 		bRunning = false;
@@ -286,9 +300,10 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 
 void TutorialApplication::updateControl(const FrameEvent& evt) {
 
-	if (mPressMouseSet.count(BUTTON_LEFT) != 0) {
+	if (mPressMouseSet.count(BUTTON_LEFT) != 0&& Knife_timer.getMilliseconds()> ShootSpeedPerSec->getValue()) {
 
 		throwKnife = true;
+		Knife_timer.reset();
 
 	}
 	if ((mPressKeySet.count('a') == 0) && (mPressKeySet.count('d') != 0))
@@ -391,14 +406,16 @@ void TutorialApplication::updateControl(const FrameEvent& evt) {
 
 	if (throwKnife == true) {
 
-		
+		/*
 			KnifeNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("KnifeNode" + std::to_string(count));
 			Knife = mSceneMgr->createEntity("Knife" + std::to_string(count), "Sword.mesh");
 			KnifeNode->attachObject(Knife);
 			KnifeNode->setOrientation(mSinbadNode->getOrientation());
 			KnifeNode->setPosition(mSinbadNode->getPosition());
 			
+		*/
 		
+		bulletManager.createBullet(mSinbadNode->getPosition(), mSinbadNode->getOrientation(),mSceneMgr, ShootPower->getValue(), ShootRange->getValue());
 		
 		count++;
 	}
@@ -413,41 +430,19 @@ void TutorialApplication::updateControl(const FrameEvent& evt) {
 			if (mJumpLoop->getTimePosition() < 0.5 * mJumpLoop->getLength())
 			{
 
-				mSinbadNode->translate(Vector3(0, Height->getValue(), 0) * evt.timeSinceLastFrame);
+				mSinbadNode->translate(Vector3(0, Height->getValue()* (mJumpLoop->getLength()/2- mJumpLoop->getTimePosition()), 0) * evt.timeSinceLastFrame);
 			}
 			else
 			{
-				mSinbadNode->translate(Vector3(0, -Height->getValue(), 0) * evt.timeSinceLastFrame);
+				mSinbadNode->translate(Vector3(0, -Height->getValue()* (mJumpLoop->getTimePosition()- (mJumpLoop->getLength() / 2)), 0) * evt.timeSinceLastFrame);
 			}
 		}
 	}
 
 }
 
-void TutorialApplication::updateAnimate(const FrameEvent& evt) {
-
-
-	
-
-	if (mSwordsVertical->getEnabled())
-	{
-		mSwordsVertical->addTime(evt.timeSinceLastFrame);
-		if (mSwordsVertical->hasEnded())
-		{
-			mSwordsVertical->setTimePosition(0);
-			mSwordsVertical->setEnabled(false);
-		}
-	}
-
-	if (mSwordsHorizon->getEnabled())
-	{
-		mSwordsHorizon->addTime(evt.timeSinceLastFrame);
-		if (mSwordsHorizon->hasEnded())
-		{
-			mSwordsHorizon->setTimePosition(0);
-			mSwordsHorizon->setEnabled(false);
-		}
-	}
+void TutorialApplication::updateAnimate(const FrameEvent& evt)
+{
 
 	if (mJumpStart->getEnabled())
 	{
@@ -518,6 +513,7 @@ void TutorialApplication::updateAnimate(const FrameEvent& evt) {
 		// Continue drawing or putting swords until ended
 		if (mSwordState->hasEnded())
 		{
+			
 			mSwordState->setEnabled(false);
 			mSwordState->setTimePosition(0);
 
@@ -525,21 +521,15 @@ void TutorialApplication::updateAnimate(const FrameEvent& evt) {
 		}
 		else if (mSwordState->getTimePosition() >= (0.5 * mSwordState->getLength()))
 		{
+			
+
 			// Dettach each sword entity
 			mSinbad->detachObjectFromBone(mSwordL);
 			mSinbad->detachObjectFromBone(mSwordR);
 
-			// Attach each sword entity to sheath or hand
-			if (mSwordAtHand)
-			{
-				mSinbad->attachObjectToBone("Sheath.L", mSwordL);
-				mSinbad->attachObjectToBone("Sheath.R", mSwordR);
-			}
-			else
-			{
-				mSinbad->attachObjectToBone("Handle.L", mSwordL);
-				mSinbad->attachObjectToBone("Handle.R", mSwordR);
-			}
+			mSinbad->attachObjectToBone("Sheath.L", mSwordL);
+			mSinbad->attachObjectToBone("Sheath.R", mSwordR);
+			
 		}
 
 		mSwordState->addTime(evt.timeSinceLastFrame);
