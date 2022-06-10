@@ -273,12 +273,30 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		*/
 		bulletManager.updateBullet(evt, mSceneMgr);
 
+		while (enemyCount < 10 && enemyResTimer.getMilliseconds() > 2000)
+		{
+			enemyNode[enemyCount]->attachObject(enemy[enemyCount]);
+
+			/*float tempdis = enemyNode[enemyCount]->getPosition().distance(mSinbadNode->getPosition());
+			Vector3 temp = Vector3((enemyNode[enemyCount]->getPosition().x-mSinbadNode->getPosition().x), (enemyNode[enemyCount]->getPosition().y - mSinbadNode->getPosition().y) , (enemyNode[enemyCount]->getPosition().z - mSinbadNode->getPosition().z) )/ tempdis * evt.timeSinceLastFrame*8;
+
+			enemyNode[enemyCount]->setPosition(enemyNode[enemyCount]->getPosition() - temp);*/
+
+			enemyCount++;
+			enemyResTimer.reset();
+		}
+
 		for (int a = 0; a < 10; a++)
 		{
-			float tempdis = enemyNode[a]->getPosition().distance(mSinbadNode->getPosition());
-			Vector3 temp = Vector3((enemyNode[a]->getPosition().x-mSinbadNode->getPosition().x), (enemyNode[a]->getPosition().y - mSinbadNode->getPosition().y) , (enemyNode[a]->getPosition().z - mSinbadNode->getPosition().z) )/ tempdis * evt.timeSinceLastFrame*8;
+			if (enemyMovTimer.getMilliseconds() > 2000)
+			{
+				float tempdis = enemyNode[a]->getPosition().distance(mSinbadNode->getPosition());
+				Vector3 temp = Vector3((enemyNode[a]->getPosition().x - mSinbadNode->getPosition().x), (enemyNode[a]->getPosition().y - mSinbadNode->getPosition().y), (enemyNode[a]->getPosition().z - mSinbadNode->getPosition().z)) / tempdis * evt.timeSinceLastFrame * 8;
 
-			enemyNode[a]->setPosition(enemyNode[a]->getPosition() - temp);
+				enemyNode[a]->setPosition(enemyNode[a]->getPosition() - temp);
+
+				//enemyMovTimer.reset();
+			}
 		}
 
 		bRunning = false;
