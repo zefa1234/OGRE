@@ -42,6 +42,8 @@ public:
 		if (isOverRange == false) {
 
 			BulletNode->translate(BulletNode->getOrientation().zAxis() * evt.timeSinceLastFrame * speed);
+			float tempScale = (BulletNode->getPosition().distance(OriginPos) >= 1 ? BulletNode->getPosition().distance(OriginPos)/10  : 1);
+			//BulletNode->setScale(Vector3(1,1,1)*tempScale);
 			if (BulletNode->getPosition().distance(OriginPos) > disRange) {
 				isOverRange = true;
 
@@ -52,6 +54,14 @@ public:
 		}
 		
 		
+
+	}
+
+	bool collisionDetect(SceneNode* otherObject) {
+
+
+
+		return true;
 
 	}
 

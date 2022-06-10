@@ -42,7 +42,7 @@ THE SOFTWARE
 #include "OgreTerrainPaging.h"
 #include <vector>
 #include <string>
-#include <OgreTimer.h>
+#include <vector>
 
 using namespace Ogre;
 using namespace OgreBites;
@@ -116,15 +116,11 @@ protected:
 	Slider* ShootRange;
 	Slider* ShootPower;
 	Slider* ShootSpeedPerSec;
+	OgreBites::ProgressBar* testLifeBar;
+	OgreBites::ProgressBar* monsterLifeBar;
 
 	Ray r;
-
-	Timer enemyResTimer;
-	Timer enemyMovTimer;
-	int enemyCount = 0;
-
 	Timer Knife_timer;
-
 	float throwKinfePerSec = 350;
 	
 	float startjumptime = 2;

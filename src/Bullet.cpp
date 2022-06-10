@@ -40,6 +40,22 @@ void Bullet::createBullet(Vector3 initailPos, Quaternion direction, SceneManager
 	BulletUnitArray.push_back(temp);
 
 	count++;
+	
+	Quaternion test = Quaternion(direction.getYaw() + Radian(Degree(20)), direction.yAxis());
+
+	BulletUnit* temp2 = new BulletUnit(initailPos, test, mSceneMgr, count, shootrange, shootspeed);
+	BulletUnitArray.push_back(temp2);
+
+
+	count++;
+
+	Quaternion test2 = Quaternion(direction.getYaw() - Radian(Degree(20)), direction.yAxis());
+
+	BulletUnit* temp3 = new BulletUnit(initailPos, test2, mSceneMgr, count, shootrange, shootspeed);
+	BulletUnitArray.push_back(temp3);
+
+
+	count++;
 
 }
 bool Bullet::frameRenderingQueued(const FrameEvent& evt) {
