@@ -126,7 +126,7 @@ void TutorialApplication::createScene(void)
 	{
 		enemy[a] = mSceneMgr->createEntity(enemySinbadName[a], "fish.mesh");
 		enemyNode[a] = mSceneMgr->getRootSceneNode()->createChildSceneNode(enemyNodeName[a], Vector3(Math::RangeRandom(-50, 50), 5, 50));
-		enemyNode[a]->attachObject(enemy[a]);
+		//enemyNode[a]->attachObject(enemy[a]);
 	}
 	//---------------------------------------------
 

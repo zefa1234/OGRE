@@ -121,6 +121,7 @@ protected:
 
 	Ray r;
 	Timer Knife_timer;
+	Timer enemyResTimer;
 	Timer enemyMovTimer;
 	int enemyCount = 0;
 	float throwKinfePerSec = 350;
