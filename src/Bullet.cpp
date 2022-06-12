@@ -25,7 +25,7 @@ void Bullet::createScene(void) {
 	bulletNode->setDirection(direct);
 	*/
 }
-void Bullet::createBullet(Vector3 initailPos, Quaternion direction, SceneManager*& mSceneMgr, float shootspeed, float shootrange) {
+void Bullet::createBullet(Vector3 initailPos, Quaternion direction, SceneManager*& mSceneMgr, float shootspeed, float shootrange,Collision* manager) {
 
 	/*
 	SceneNode* tempNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("KnifeNode" + std::to_string(count));
@@ -37,9 +37,13 @@ void Bullet::createBullet(Vector3 initailPos, Quaternion direction, SceneManager
 	*/
 
 	BulletUnit* temp = new BulletUnit(initailPos, direction, mSceneMgr, count, shootrange, shootspeed);
+	
 	BulletUnitArray.push_back(temp);
 
 	count++;
+
+	AddCollision(manager, temp);
+	
 	
 	Quaternion test = Quaternion(direction.getYaw() + Radian(Degree(20)), direction.yAxis());
 
@@ -49,6 +53,8 @@ void Bullet::createBullet(Vector3 initailPos, Quaternion direction, SceneManager
 
 	count++;
 
+	AddCollision(manager, temp2);
+
 	Quaternion test2 = Quaternion(direction.getYaw() - Radian(Degree(20)), direction.yAxis());
 
 	BulletUnit* temp3 = new BulletUnit(initailPos, test2, mSceneMgr, count, shootrange, shootspeed);
@@ -56,6 +62,9 @@ void Bullet::createBullet(Vector3 initailPos, Quaternion direction, SceneManager
 
 
 	count++;
+
+	AddCollision(manager, temp3);
+	
 
 }
 bool Bullet::frameRenderingQueued(const FrameEvent& evt) {
@@ -74,7 +83,18 @@ bool Bullet::frameRenderingQueued(const FrameEvent& evt) {
 	return true;
 }
 
-void Bullet::updateBullet(const FrameEvent& evt, SceneManager*& mSceneMgr) {
+void Bullet::AddCollision(Collision* manager, CollisionListener* object){
+
+	manager->Register(object);
+
+}
+
+void Bullet::RemoveCollision(Collision* manager, CollisionListener* object) {
+
+	manager->UnRegister(object);
+}
+
+void Bullet::updateBullet(const FrameEvent& evt, SceneManager*& mSceneMgr,Collision* manager) {
 
 	/*
 	for (int i = 0; i < bulletArray.size(); i++) {
@@ -101,6 +121,7 @@ void Bullet::updateBullet(const FrameEvent& evt, SceneManager*& mSceneMgr) {
 		BulletUnit* temp = *h;
 		if (temp->isOverRange) {
 
+			RemoveCollision(manager, temp);
 			BulletUnitArray.erase(h);
 
 			delete temp;

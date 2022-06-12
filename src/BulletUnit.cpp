@@ -4,13 +4,14 @@
 
 
 #include "BaseApplication.h"
+#include "CollisionListener.h"
 #include <vector>
 
 using namespace Ogre;
 using namespace OgreBites;
 using namespace std;
 
-class BulletUnit
+class BulletUnit:public CollisionListener
 {
 public:
 
@@ -22,9 +23,11 @@ public:
 		ID = count;
 		disRange = dis;
 		speed = spd;
+		objectTag = "Bullet";
 
 		BulletNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("KnifeNode" + std::to_string(ID));
 		BulletEntity = mSceneMgr->createEntity("Knife" + std::to_string(ID), "Sword.mesh");
+		colliderEntity = mSceneMgr->createEntity("testCollider" + std::to_string(ID), "Barrel.mesh");
 		BulletNode->attachObject(BulletEntity);
 		BulletNode->setOrientation(Origindirection);
 		BulletNode->setPosition(OriginPos);
@@ -53,6 +56,22 @@ public:
 
 		}
 		
+		nodeCurPos = BulletNode->getPosition();
+	}
+
+	virtual void OnCollision(CollisionListener* object)override {
+
+		/*
+		BulletNode->detachObject("Knife" + std::to_string(ID));
+		BulletNode->attachObject(colliderEntity);
+		*/
+		if (object->objectTag != "Bullet") {
+
+			//BulletNode->detachAllObjects();
+			//BulletNode->attachObject(colliderEntity);
+			BulletNode->setScale(Vector3(2, 2, 2));
+
+		}
 		
 
 	}
@@ -76,6 +95,7 @@ protected:
 	SceneManager* currentmSceneMgr;
 	SceneNode* BulletNode;
 	Entity* BulletEntity;
+	Entity* colliderEntity;
 	float speed = 30;
 	float disRange = 30;
 

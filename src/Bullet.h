@@ -5,6 +5,7 @@
 
 #include "BaseApplication.h"
 #include "BulletUnit.cpp"
+#include "Collision.h"
 #include <vector>
 
 using namespace Ogre;
@@ -20,8 +21,11 @@ class Bullet : public BaseApplication
 		virtual void setup(void);
 		virtual void createScene(void);
 		virtual bool frameRenderingQueued(const FrameEvent& evt);
-		void createBullet(Vector3 initailPos, Quaternion direction, SceneManager*& mSceneMgr,float shootspeed,float shootrange);
-		void updateBullet(const FrameEvent& evt, SceneManager*& mSceneMgr);
+		void createBullet(Vector3 initailPos, Quaternion direction, SceneManager*& mSceneMgr,float shootspeed,float shootrange, Collision* manager);
+		void updateBullet(const FrameEvent& evt, SceneManager*& mSceneMgr,Collision* manager);
+		void AddCollision(Collision* manager,CollisionListener* object );
+		void RemoveCollision(Collision* manager, CollisionListener* object);
+
 
 	protected:
 

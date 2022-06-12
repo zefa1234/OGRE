@@ -27,7 +27,6 @@ THE SOFTWARE
 -------------------------------------------------------------------------*/
 
 #include "TutorialApplication.h"
-#include "Bullet.h"
 
 
 //-------------------------------------------------------------------------------------
@@ -49,6 +48,7 @@ TutorialApplication::TutorialApplication() : mSinbadNode(nullptr),
 	mSwordsHorizon(nullptr)
 {
 	Knife_timer.reset();
+	CollisionManager = new Collision();
 }
 
 
@@ -83,6 +83,12 @@ void TutorialApplication::setup(void)
 	ShootSpeedPerSec = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "ShootSpeed", "ShootSpeed", 250, 80, 44, 0, 500, 11);
 	testLifeBar = mTrayMgr->createProgressBar(TrayLocation::TL_TOPLEFT, "OgreLifeBar", "Ogre", 250, 50);
 	monsterLifeBar = mTrayMgr->createProgressBar(TrayLocation::TL_BOTTOM, "monsterLifeBar", "monster", 500, 50);
+
+	StringVector items;
+	items.push_back("debug");
+	DebugDetailsPanel = mTrayMgr->createParamsPanel(TrayLocation::TL_BOTTOM,"debug",250,items);
+	DebugDetailsPanel->setParamValue(0, "test");
+
 
 	monsterLifeBar->setProgress(0.7);
 	
@@ -254,12 +260,9 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 	if (!BaseApplication::frameRenderingQueued(evt)) return false;
 	
 
-		// Check keyboard to determine running mode
-		
-		//mTrayMgr->hideCursor();
-		
 		r = mTrayMgr->getCursorRay(mouseCamera);
 		
+		DebugDetailsPanel->setParamValue(0, CollisionManager->listnum());
 		
 		updateControl(evt);
 		updateAnimate(evt);
@@ -271,7 +274,8 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		if(KnifeNode!=nullptr)
 		KnifeNode->translate(KnifeNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
 		*/
-		bulletManager.updateBullet(evt, mSceneMgr);
+		bulletManager.updateBullet(evt, mSceneMgr, CollisionManager);
+		CollisionManager->CheckCollision();
 
 		while (enemyCount < 10 && enemyResTimer.getMilliseconds() > 2000)
 		{
@@ -430,7 +434,7 @@ void TutorialApplication::updateControl(const FrameEvent& evt) {
 			
 		*/
 		
-		bulletManager.createBullet(mSinbadNode->getPosition(), mSinbadNode->getOrientation(),mSceneMgr, ShootPower->getValue(), ShootRange->getValue());
+		bulletManager.createBullet(mSinbadNode->getPosition(), mSinbadNode->getOrientation(),mSceneMgr, ShootPower->getValue(), ShootRange->getValue(), CollisionManager);
 		
 		count++;
 	}

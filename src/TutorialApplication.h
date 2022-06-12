@@ -34,6 +34,8 @@ THE SOFTWARE
 
 #include "BaseApplication.h"
 #include "Bullet.h"
+#include "Collision.h"
+#include "CollisionListener.h"
 #include "OgrePageManager.h"
 #include "OgreTerrain.h"
 #include "OgreTerrainGroup.h"
@@ -53,6 +55,7 @@ class TutorialApplication : public BaseApplication
 public:
     TutorialApplication();
     virtual ~TutorialApplication();
+	
 
 protected:
 	virtual void createScene(void);
@@ -107,6 +110,7 @@ protected:
 
 	Camera* mouseCamera;
 	Bullet bulletManager;
+	Collision* CollisionManager;
 
 	WidgetList MoveSpeed;
 	WidgetList JumpHeight;
@@ -118,6 +122,7 @@ protected:
 	Slider* ShootSpeedPerSec;
 	OgreBites::ProgressBar* testLifeBar;
 	OgreBites::ProgressBar* monsterLifeBar;
+	ParamsPanel* DebugDetailsPanel;
 
 	Ray r;
 	Timer Knife_timer;

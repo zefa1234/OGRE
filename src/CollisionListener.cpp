@@ -1,27 +1,16 @@
-#ifndef __CollisionListener_cpp_
-#define __CollisionListener_cpp_
+
+#include "CollisionListener.h"
 
 
+void CollisionListener::Init(Vector3 nodePosition, string nameTag) {
 
-#include "BaseApplication.h"
-#include <vector>
+	nodeCurPos = nodePosition;
+	objectTag = nameTag;
 
-using namespace Ogre;
-using namespace OgreBites;
-using namespace std;
-
-
-class CollisionListener {
-
-	public:
+}
+void CollisionListener::UpdateCollision(CollisionListener* object) {
 
 
+	OnCollision(object);
 
-	protected:
-
-
-
-
-};
-
-#endif
+}
