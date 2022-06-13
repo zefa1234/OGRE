@@ -33,7 +33,6 @@ THE SOFTWARE
 TutorialApplication::TutorialApplication() : mSinbadNode(nullptr),
 	floor(nullptr),
 	floorNode(nullptr),
-	KnifeNode(nullptr),
 	mSinbad(nullptr),
 	mSwordL(nullptr),
 	mSwordR(nullptr),
@@ -220,7 +219,7 @@ void TutorialApplication::createScene(void)
 
 	mSceneMgr->setSkyDome(true, "Examples/CloudySky", 3, 8);
 	
-	
+	ogreSin = new OgreSin(mSceneMgr,CollisionManager);
 	
 }
 
@@ -236,11 +235,11 @@ void TutorialApplication::createOgreCamera() {
 	mouseCamera = mSceneMgr->createCamera("mouseCam");
 	mouseCamera->setAutoAspectRatio(true);
 	mouseCamera->setNearClipDistance(5);
-	muoseCameraNode = yawNode->createChildSceneNode("mouseCameraNode");
-	muoseCameraNode->attachObject(mouseCamera);
-	muoseCameraNode->setPosition(0, 50, 0);
-	muoseCameraNode->setAutoTracking(true, yawNode);
-	muoseCameraNode->setFixedYawAxis(true);
+	mouseCameraNode = yawNode->createChildSceneNode("mouseCameraNode");
+	mouseCameraNode->attachObject(mouseCamera);
+	mouseCameraNode->setPosition(0, 50, 0);
+	mouseCameraNode->setAutoTracking(true, yawNode);
+	mouseCameraNode->setFixedYawAxis(true);
 
 	mCameraNode->detachObject("myCam");
 	sinCameraNode = yawNode->createChildSceneNode("sinCameraNode");
@@ -270,10 +269,7 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		yawNode->setPosition(mSinbadNode->getPosition());
 		yawNode->setOrientation(testYawNode->getOrientation()* rollNode->getOrientation());
 
-		/*
-		if(KnifeNode!=nullptr)
-		KnifeNode->translate(KnifeNode->getOrientation().zAxis() * evt.timeSinceLastFrame * Move->getValue());
-		*/
+		
 		bulletManager.updateBullet(evt, mSceneMgr, CollisionManager);
 		CollisionManager->CheckCollision();
 
@@ -312,6 +308,8 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		forward = false;
 		backward = false;
 		throwKnife = false;
+
+		ogreSin->UpdateOgreSin(evt,mSceneMgr,bulletManager,CollisionManager,mTrayMgr,mPressKeySet,mPressMouseSet);
 
 		return true;
 	
@@ -424,19 +422,9 @@ void TutorialApplication::updateControl(const FrameEvent& evt) {
 
 
 	if (throwKnife == true) {
-
-		/*
-			KnifeNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("KnifeNode" + std::to_string(count));
-			Knife = mSceneMgr->createEntity("Knife" + std::to_string(count), "Sword.mesh");
-			KnifeNode->attachObject(Knife);
-			KnifeNode->setOrientation(mSinbadNode->getOrientation());
-			KnifeNode->setPosition(mSinbadNode->getPosition());
-			
-		*/
 		
 		bulletManager.createBullet(mSinbadNode->getPosition(), mSinbadNode->getOrientation(),mSceneMgr, ShootPower->getValue(), ShootRange->getValue(), CollisionManager);
 		
-		count++;
 	}
 	
 

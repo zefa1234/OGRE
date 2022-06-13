@@ -65,11 +65,16 @@ public:
 		BulletNode->detachObject("Knife" + std::to_string(ID));
 		BulletNode->attachObject(colliderEntity);
 		*/
-		if (object->objectTag != "Bullet") {
+		if (object->objectTag == "OgreSin") {
 
-			//BulletNode->detachAllObjects();
+			if (BulletNode->getAttachedObjects().size() != 0) {
+
+				BulletNode->detachAllObjects();
+
+			}
+			
 			//BulletNode->attachObject(colliderEntity);
-			BulletNode->setScale(Vector3(2, 2, 2));
+			//BulletNode->setScale(Vector3(2, 2, 2));
 
 		}
 		

@@ -36,6 +36,7 @@ THE SOFTWARE
 #include "Bullet.h"
 #include "Collision.h"
 #include "CollisionListener.h"
+#include "OgreSin.cpp"
 #include "OgrePageManager.h"
 #include "OgreTerrain.h"
 #include "OgreTerrainGroup.h"
@@ -80,16 +81,13 @@ protected:
 	SceneNode* yawNode;
 	SceneNode* testYawNode;
 	SceneNode* rollNode;
-	SceneNode* muoseCameraNode;
-	SceneNode* KnifeNode;
-	vector<SceneNode*> bulletArray;
+	SceneNode* mouseCameraNode;
 	
 	Entity* mSinbad;
 	Entity* mSwordL;
 	Entity* mSwordR;
 	Entity* floor;
 	Entity* enemy[10];//change to array to store mutiple enemy
-	Entity* Knife;
 
 	
 	string enemyNodeName[10] = {"EmenySinbadNode1", "EmenySinbadNode2", "EmenySinbadNode3", "EmenySinbadNode4", "EmenySinbadNode5", 
@@ -111,6 +109,7 @@ protected:
 	Camera* mouseCamera;
 	Bullet bulletManager;
 	Collision* CollisionManager;
+	OgreSin* ogreSin;
 
 	WidgetList MoveSpeed;
 	WidgetList JumpHeight;
@@ -144,7 +143,6 @@ protected:
 	bool bJumpEnd = false;
 	bool throwKnife = false;
 	
-	int count = 0;
 
 	std::set<Keycode> mPressKeySet;
 	std::set<unsigned char> mPressMouseSet;
