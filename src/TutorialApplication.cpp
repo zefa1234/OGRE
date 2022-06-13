@@ -258,6 +258,7 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 {
 	if (!BaseApplication::frameRenderingQueued(evt)) return false;
 	
+		ogreSin->UpdateOgreSin(evt, bulletManager, mTrayMgr, mPressKeySet, mPressMouseSet);
 
 		r = mTrayMgr->getCursorRay(mouseCamera);
 		
@@ -309,7 +310,7 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		backward = false;
 		throwKnife = false;
 
-		ogreSin->UpdateOgreSin(evt,mSceneMgr,bulletManager,CollisionManager,mTrayMgr,mPressKeySet,mPressMouseSet);
+		
 
 		return true;
 	

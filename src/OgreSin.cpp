@@ -16,18 +16,7 @@ class OgreSin :public CollisionListener, public BaseApplication
 {
 public:
 
-	OgreSin(SceneManager*& curSceneMgr,Collision* CollisionManager ) {
-
-		CreateOgreSin(curSceneMgr);
-		CreateOgreCamera(curSceneMgr);
-		CollisionManager->Register(this);
-		objectTag = "OgreSin";
-	}
-	~OgreSin() {
-
-
-
-	}
+	
 	void createScene(void) {
 		/*
 		bulletEntity = mSceneMgr->createEntity("Bullet", "Sinbad.mesh");
@@ -46,19 +35,20 @@ public:
 		if (object->objectTag == "Bullet") {
 
 			mSinbadNode->setScale(Vector3(2,2,2));
+			//CollisionManager->UnRegister(this);
 
 		}
 
 
 	}
 
-	void CreateOgreSin(SceneManager*& curSceneMgr) {
+	void CreateOgreSin() {
 
 		// Create your scene here :)
 	// Create entities
-		mSinbad = curSceneMgr->createEntity("Sinbad_1", "Sinbad.mesh");
-		mSwordL = curSceneMgr->createEntity("SwordL_1", "Sword.mesh");
-		mSwordR = curSceneMgr->createEntity("SwordR_1", "Sword.mesh");
+		mSinbad = CurSceneMgr->createEntity("Sinbad_1", "Sinbad.mesh");
+		mSwordL = CurSceneMgr->createEntity("SwordL_1", "Sword.mesh");
+		mSwordR = CurSceneMgr->createEntity("SwordR_1", "Sword.mesh");
 
 		//floor = mSceneMgr->createEntity("Floor", "cube.mesh");
 		//enemy = mSceneMgr->createEntity("Floor", "fish.mesh");
@@ -68,7 +58,7 @@ public:
 		mSinbad->attachObjectToBone("Sheath.R", mSwordR);
 
 		// Create SceneNode and attach the entity
-		mSinbadNode = curSceneMgr->getRootSceneNode()->createChildSceneNode("SinbadNode_1", Vector3(-20, 5, 0));
+		mSinbadNode = CurSceneMgr->getRootSceneNode()->createChildSceneNode("SinbadNode_1", Vector3(-20, 5, 0));
 		mSinbadNode->attachObject(mSinbad);
 
 		// Set cumulative blending mode
@@ -116,13 +106,13 @@ public:
 
 	void CreateOgreCamera(SceneManager*& curSceneMgr) {
 
-		testYawNode = curSceneMgr->getRootSceneNode()->createChildSceneNode("testYawNode_1");
-		rollNode = curSceneMgr->getRootSceneNode()->createChildSceneNode("testRollNode_1");
+		testYawNode = CurSceneMgr->getRootSceneNode()->createChildSceneNode("testYawNode_1");
+		rollNode = CurSceneMgr->getRootSceneNode()->createChildSceneNode("testRollNode_1");
 
-		yawNode = curSceneMgr->getRootSceneNode()->createChildSceneNode("pitchNode_1");
+		yawNode = CurSceneMgr->getRootSceneNode()->createChildSceneNode("pitchNode_1");
 
 
-		mouseCamera = curSceneMgr->createCamera("mouseCam_1");
+		mouseCamera = CurSceneMgr->createCamera("mouseCam_1");
 		mouseCamera->setAutoAspectRatio(true);
 		mouseCamera->setNearClipDistance(5);
 		mouseCameraNode = yawNode->createChildSceneNode("mouseCameraNode_1");
@@ -133,12 +123,12 @@ public:
 
 	}
 
-	void UpdateOgreSin(const FrameEvent& evt, SceneManager*& curSceneMgr,Bullet& bulletManager,Collision*& CollisionManager,TrayManager*& mTrayMgr, std::set<Keycode> mPressKeySet, std::set<unsigned char> mPressMouseSet) {
+	void UpdateOgreSin(const FrameEvent& evt, Bullet& bulletManager,TrayManager*& mTrayMgr, std::set<Keycode> mPressKeySet, std::set<unsigned char> mPressMouseSet) {
 
 		r = mTrayMgr->getCursorRay(mouseCamera);
 
-		UpdateControll(evt, curSceneMgr, bulletManager, CollisionManager, mPressKeySet, mPressMouseSet);
-		UpdateAnimate(evt);
+		UpdateControll(evt, bulletManager, mPressKeySet, mPressMouseSet);
+		UpdateAnimate(evt, mPressKeySet, mPressMouseSet);
 
 		yawNode->setPosition(mSinbadNode->getPosition());
 		yawNode->setOrientation(testYawNode->getOrientation() * rollNode->getOrientation());
@@ -158,7 +148,7 @@ public:
 
 	};
 
-	void UpdateControll(const FrameEvent& evt, SceneManager*& curSceneMgr, Bullet& bulletManager, Collision*& CollisionManager, std::set<Keycode> mPressKeySet, std::set<unsigned char> mPressMouseSet) {
+	void UpdateControll(const FrameEvent& evt, Bullet& bulletManager, std::set<Keycode> mPressKeySet, std::set<unsigned char> mPressMouseSet) {
 
 		if (mPressMouseSet.count(BUTTON_LEFT) != 0 && Knife_timer.getMilliseconds() > throwKinfePerSec) {
 
@@ -266,7 +256,7 @@ public:
 
 		if (throwKnife == true) {
 
-			bulletManager.createBullet(mSinbadNode->getPosition(), mSinbadNode->getOrientation(), curSceneMgr, shootPower, shootRange, CollisionManager);
+			bulletManager.createBullet(mSinbadNode->getPosition(), mSinbadNode->getOrientation(), CurSceneMgr, shootPower, shootRange, CollisionManager);
 
 		}
 
@@ -291,8 +281,7 @@ public:
 
 	}
 
-	void UpdateAnimate(const FrameEvent& evt) {
-
+	void UpdateAnimate(const FrameEvent& evt, std::set<Keycode> mPressKeySet, std::set<unsigned char> mPressMouseSet) {
 
 		if (mSwordsVertical->getEnabled())
 		{
@@ -464,34 +453,35 @@ public:
 
 	}
 
-	bool keyPressed(const KeyboardEvent& evt) {
-		mPressKeySet.insert(evt.keysym.sym);
-		return BaseApplication::keyPressed(evt);
-	}
+	
 
-	bool keyReleased(const KeyboardEvent& evt) {
-		mPressKeySet.erase(evt.keysym.sym);
-		return BaseApplication::keyReleased(evt);
+	OgreSin(SceneManager*& curSceneMgr, Collision*& collisionManager):mRunBaseState(nullptr),
+		mRunTopState(nullptr),
+		mSwordState(nullptr),
+		mJumpStart(nullptr),
+		mJumpLoop(nullptr),
+		mJumpEnd(nullptr),
+		mSwordsVertical(nullptr),
+		mSwordsHorizon(nullptr) {
+
+		CurSceneMgr = curSceneMgr;
+		CollisionManager = collisionManager;
+
+		CreateOgreSin();
+		CreateOgreCamera(curSceneMgr);
+		CollisionManager->Register(this);
+		objectTag = "OgreSin";
 	}
-	bool mousePressed(const MouseButtonEvent& evt) {
-		mPressMouseSet.insert(evt.button);
-		return BaseApplication::mousePressed(evt);
-	}
-	bool mouseReleased(const MouseButtonEvent& evt) {
-		mPressMouseSet.erase(evt.button);
-		return BaseApplication::mouseReleased(evt);
-	}
-	bool mouseMoved(const MouseMotionEvent& evt) {
+	~OgreSin() {
 
 
-		//testYawNode->yaw(Radian(Degree(-evt.xrel * 0.3)));
-		//rollNode->pitch(Radian(Degree(evt.yrel * 0.3)));
-		//mSinbadNode->setDirection(Vector3(evt.x, 0, evt.y));
 
-		return BaseApplication::mouseMoved(evt);
 	}
 
 protected:
+
+	SceneManager* CurSceneMgr;
+	Collision* CollisionManager;
 
 	SceneNode* mSinbadNode;
 	Camera* sinCamera;
@@ -540,8 +530,8 @@ protected:
 	bool throwKnife = false;
 
 
-	std::set<Keycode> mPressKeySet;
-	std::set<unsigned char> mPressMouseSet;
+	//std::set<Keycode> mPressKeySet;
+	//std::set<unsigned char> mPressMouseSet;
 
 };
 

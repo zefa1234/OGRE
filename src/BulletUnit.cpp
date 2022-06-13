@@ -69,7 +69,7 @@ public:
 
 			if (BulletNode->getAttachedObjects().size() != 0) {
 
-				BulletNode->detachAllObjects();
+				//BulletNode->detachAllObjects();
 
 			}
 			
