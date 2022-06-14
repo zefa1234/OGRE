@@ -34,8 +34,13 @@ public:
 		*/
 		if (object->objectTag == "Bullet") {
 
-			mSinbadNode->setScale(Vector3(2,2,2));
-			//CollisionManager->UnRegister(this);
+			//mSinbadNode->setScale(Vector3(2,2,2));
+			
+			
+		}
+		else if (object->objectTag == "Speeditem") {
+
+			MoveSpeed += 20;
 
 		}
 
@@ -123,11 +128,11 @@ public:
 
 	}
 
-	void UpdateOgreSin(const FrameEvent& evt, Bullet& bulletManager,TrayManager*& mTrayMgr, std::set<Keycode> mPressKeySet, std::set<unsigned char> mPressMouseSet) {
+	void UpdateOgreSin(const FrameEvent& evt, std::set<Keycode> mPressKeySet, std::set<unsigned char> mPressMouseSet) {
 
-		r = mTrayMgr->getCursorRay(mouseCamera);
+		r = MTrayMgr->getCursorRay(mouseCamera);
 
-		UpdateControll(evt, bulletManager, mPressKeySet, mPressMouseSet);
+		UpdateControll(evt,  mPressKeySet, mPressMouseSet);
 		UpdateAnimate(evt, mPressKeySet, mPressMouseSet);
 
 		yawNode->setPosition(mSinbadNode->getPosition());
@@ -148,7 +153,7 @@ public:
 
 	};
 
-	void UpdateControll(const FrameEvent& evt, Bullet& bulletManager, std::set<Keycode> mPressKeySet, std::set<unsigned char> mPressMouseSet) {
+	void UpdateControll(const FrameEvent& evt, std::set<Keycode> mPressKeySet, std::set<unsigned char> mPressMouseSet) {
 
 		if (mPressMouseSet.count(BUTTON_LEFT) != 0 && Knife_timer.getMilliseconds() > throwKinfePerSec) {
 
@@ -256,7 +261,7 @@ public:
 
 		if (throwKnife == true) {
 
-			bulletManager.createBullet(mSinbadNode->getPosition(), mSinbadNode->getOrientation(), CurSceneMgr, shootPower, shootRange, CollisionManager);
+			BulletManager->createBullet(mSinbadNode->getPosition(), mSinbadNode->getOrientation(),  shootPower, shootRange);
 
 		}
 
@@ -419,6 +424,19 @@ public:
 
 	}
 
+	Vector3 getPosition() {
+
+		return mSinbadNode->getPosition();
+
+	}
+
+	Ray getMouseRay() {
+
+
+		return r;
+
+	}
+
 	void setMoveSpeed(float speed) {
 
 		
@@ -455,7 +473,7 @@ public:
 
 	
 
-	OgreSin(SceneManager*& curSceneMgr, Collision*& collisionManager):mRunBaseState(nullptr),
+	OgreSin(SceneManager*& curSceneMgr, Collision*& collisionManager,Bullet*& bulletManager,TrayManager*& mTrayMgr):mRunBaseState(nullptr),
 		mRunTopState(nullptr),
 		mSwordState(nullptr),
 		mJumpStart(nullptr),
@@ -466,11 +484,14 @@ public:
 
 		CurSceneMgr = curSceneMgr;
 		CollisionManager = collisionManager;
+		BulletManager = bulletManager;
+		MTrayMgr = mTrayMgr;
 
 		CreateOgreSin();
 		CreateOgreCamera(curSceneMgr);
 		CollisionManager->Register(this);
 		objectTag = "OgreSin";
+		colliderRange = 5;
 	}
 	~OgreSin() {
 
@@ -478,10 +499,19 @@ public:
 
 	}
 
+
+	float throwKinfePerSec = 100;
+	float MoveSpeed = 15;
+	float JumpHeight = 50;
+	float shootPower = 108;
+	float shootRange = 60;
+
 protected:
 
 	SceneManager* CurSceneMgr;
 	Collision* CollisionManager;
+	Bullet* BulletManager;
+	TrayManager* MTrayMgr;
 
 	SceneNode* mSinbadNode;
 	Camera* sinCamera;
@@ -497,11 +527,10 @@ protected:
 	Entity* mSwordR;
 
 	bool mSwordAtHand;
-	float throwKinfePerSec = 100;
-	float MoveSpeed = 15;
-	float JumpHeight = 50;
-	float shootPower = 108;
-	float shootRange = 60;
+	
+	float health = 100;
+
+	
 	Timer Knife_timer;
 
 	AnimationState* mRunBaseState;

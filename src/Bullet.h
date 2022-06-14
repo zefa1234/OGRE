@@ -12,22 +12,19 @@ using namespace Ogre;
 using namespace OgreBites;
 using namespace std;
 
-class Bullet : public BaseApplication
+class Bullet
 {
 	public:
 
-		Bullet();
+		Bullet(SceneManager*& mSceneMgr, Collision*& collisionManager);
 		~Bullet();
-		virtual void setup(void);
-		virtual void createScene(void);
-		virtual bool frameRenderingQueued(const FrameEvent& evt);
-		void createBullet(Vector3 initailPos, Quaternion direction, SceneManager*& mSceneMgr,float shootspeed,float shootrange, Collision* manager);
-		void updateBullet(const FrameEvent& evt, SceneManager*& mSceneMgr,Collision* manager);
-		void AddCollision(Collision* manager,CollisionListener* object );
-		void RemoveCollision(Collision* manager, CollisionListener* object);
-
-
+		void createBullet(Vector3 initailPos, Quaternion direction,float shootspeed,float shootrange);
+		void updateBullet(const FrameEvent& evt);
+	
 	protected:
+
+		SceneManager* CurSceneMgr;
+		Collision* CollisionManager;
 
 		float speed = 30;
 		float fireRange = 40;

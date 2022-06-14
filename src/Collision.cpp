@@ -24,34 +24,56 @@ void Collision::CheckCollision() {
 
 	for (h1 = collisionListener.begin(); h1 != collisionListener.end(); h1++) {
 
-		h1++;
-		if (h1 != collisionListener.end()) {
-
-			h2 = h1;
-
-		}
-		else {
-
-			h2 = collisionListener.end();
-		}
-		
-		h1--;
-
 		CollisionListener* temp1 = *h1;
-		//BulletUnit* temp1 = dynamic_cast<BulletUnit*>(*h1);
 
-		for (h2; h2 != collisionListener.end(); h2++) {
+		if (temp1->isTriggerOn == true) {
 
-			CollisionListener* temp2 = *h2;
 
-			if (temp1->nodeCurPos.distance(temp2->nodeCurPos) < 1) {
+			h1++;
+			if (h1 != collisionListener.end()) {
 
-				temp1->UpdateCollision(temp2);
-				temp2->UpdateCollision(temp1);
+				h2 = h1;
+
+			}
+			else {
+
+				h2 = collisionListener.end();
+			}
+
+			h1--;
+
+
+			//BulletUnit* temp1 = dynamic_cast<BulletUnit*>(*h1);
+
+			bool isCollide = false;
+
+			for (h2; h2 != collisionListener.end(); h2++) {
+
+				CollisionListener* temp2 = *h2;
+
+				if (temp2->isTriggerOn == true) {
+
+					float dis = temp1->nodeCurPos.distance(temp2->nodeCurPos);
+					if (dis <= temp1->colliderRange || dis <= temp2->colliderRange) {
+
+						temp1->UpdateCollision(temp2);
+						temp2->UpdateCollision(temp1);
+						isCollide = true;
+					}
+
+
+				}
 
 			}
 
+			if (isCollide == false) {
+
+				temp1->NoCollision();
+			}
+
 		}
+
+		
 
 	}
 

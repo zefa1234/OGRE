@@ -37,6 +37,7 @@ THE SOFTWARE
 #include "Collision.h"
 #include "CollisionListener.h"
 #include "OgreSin.cpp"
+#include "ItemUnit.cpp"
 #include "OgrePageManager.h"
 #include "OgreTerrain.h"
 #include "OgreTerrainGroup.h"
@@ -69,8 +70,6 @@ protected:
 	virtual bool mousePressed(const MouseButtonEvent &evt);
 	virtual bool mouseReleased(const MouseButtonEvent &evt);
 	virtual bool mouseMoved(const MouseMotionEvent& evt);
-	void updateControl(const FrameEvent& evt);
-	void updateAnimate(const FrameEvent& evt);
 	void createOgreCamera();
 
 	SceneNode* mSinbadNode;
@@ -107,9 +106,10 @@ protected:
 	AnimationState* mSwordsHorizon;
 
 	Camera* mouseCamera;
-	Bullet bulletManager;
+	Bullet* bulletManager;
 	Collision* CollisionManager;
 	OgreSin* ogreSin;
+	ItemUnit* testItem;
 
 	WidgetList MoveSpeed;
 	WidgetList JumpHeight;

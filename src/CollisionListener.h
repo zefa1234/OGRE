@@ -34,13 +34,23 @@ class CollisionListener {
 		//void AddToManager(Collision* manager);
 		void UpdateCollision(CollisionListener* object);
 		virtual void OnCollision(CollisionListener* object) = 0;
-		string objectTag = "";
 		
+
+		void NoCollision();
+
+		string objectTag = "";
 		Vector3 nodeCurPos;
+		float colliderRange = 1;
+		bool isTriggerOn = true;
 
 
 	protected:
 
+
+
+		bool triggerEnter = false;
+		bool triggerEnd = false;
+		bool triggerOverlap = false;
 
 
 
