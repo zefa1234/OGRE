@@ -152,7 +152,7 @@ void TutorialApplication::createScene(void)
 	//testItem = new ItemUnit(Vector3(10,5,10),Quaternion().IDENTITY,mSceneMgr,CollisionManager,0);
 	
 	//create enemy
-	//enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, 50), mSceneMgr, CollisionManager);
+	//enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, 50));
 	enemyHAHA = new enemyUnit(Vector3(Math::RangeRandom(-50, 50), 5, 50), mSceneMgr, CollisionManager);
 }
 

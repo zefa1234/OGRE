@@ -15,17 +15,17 @@ using namespace OgreBites;
 class enemyManage : public BaseApplication
 {
 public:
-	enemyManage();
+	enemyManage(SceneManager*& mSceneMgr, Collision*& collisionManager);
 	~enemyManage();
-	virtual void setup(void);
-	virtual void createScene(void);
-	virtual bool frameRenderingQueued(const FrameEvent& evt);
-	void createEnemy(Vector3, SceneManager*&, Collision*&);
+	void createEnemy(Vector3);
 	void updateEnemy(const FrameEvent& evt, Vector3);
-	void AddCollision(Collision* manager, CollisionListener* object);
-	void RemoveCollision(Collision* manager, CollisionListener* object);
+	//void AddCollision(Collision* manager, CollisionListener* object);
+	//void RemoveCollision(Collision* manager, CollisionListener* object);
 
 protected:
+	SceneManager* CurSceneMgr;
+	Collision* CollisionManager;
+
 	vector<enemyUnit*> enemyUnitArr;
 };
 #endif // !ENEMYMANAGE_H
