@@ -294,7 +294,7 @@ public:
 
 	void UpdateAnimate(const FrameEvent& evt, std::set<Keycode> mPressKeySet, std::set<unsigned char> mPressMouseSet) {
 
-		if (mSwordsVertical->getEnabled())
+		/*if (mSwordsVertical->getEnabled())
 		{
 			mSwordsVertical->addTime(evt.timeSinceLastFrame);
 			if (mSwordsVertical->hasEnded())
@@ -312,7 +312,7 @@ public:
 				mSwordsHorizon->setTimePosition(0);
 				mSwordsHorizon->setEnabled(false);
 			}
-		}
+		}*/
 
 		if (mJumpStart->getEnabled())
 		{
@@ -331,11 +331,7 @@ public:
 			if (mJumpLoop->hasEnded())
 			{
 				mJumpEnd->setEnabled(true);
-
 			}
-
-
-
 		}
 
 		if (mJumpEnd->getEnabled())
@@ -400,8 +396,8 @@ public:
 				// Attach each sword entity to sheath or hand
 				if (mSwordAtHand)
 				{
-					mSinbad->attachObjectToBone("Sheath.L", mSwordL);
-					mSinbad->attachObjectToBone("Sheath.R", mSwordR);
+					//mSinbad->attachObjectToBone("Sheath.L", mSwordL);
+					//mSinbad->attachObjectToBone("Sheath.R", mSwordR);
 				}
 				else
 				{

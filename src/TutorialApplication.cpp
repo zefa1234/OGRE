@@ -108,18 +108,6 @@ void TutorialApplication::setup(void)
 //-------------------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
-	
-
-	//-----------------------------------------enemy
-	for (int a = 0; a < 10; a++)//fish
-	{
-		enemy[a] = mSceneMgr->createEntity(enemySinbadName[a], "fish.mesh");
-		enemyNode[a] = mSceneMgr->getRootSceneNode()->createChildSceneNode(enemyNodeName[a], Vector3(Math::RangeRandom(-50, 50), 5, 50));
-		//enemyNode[a]->attachObject(enemy[a]);
-	}
-	//---------------------------------------------
-
-	
 
 	// Set the scene's ambient light
 	mSceneMgr->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
@@ -163,6 +151,9 @@ void TutorialApplication::createScene(void)
 	ogreSin = new OgreSin(mSceneMgr,CollisionManager,bulletManager,mTrayMgr);
 	//testItem = new ItemUnit(Vector3(10,5,10),Quaternion().IDENTITY,mSceneMgr,CollisionManager,0);
 	
+	//create enemy
+	//enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, 50), mSceneMgr, CollisionManager);
+	enemyHAHA = new enemyUnit(Vector3(Math::RangeRandom(-50, 50), 5, 50), mSceneMgr, CollisionManager);
 }
 
 
@@ -198,7 +189,7 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		ShootPower->setValue(ogreSin->shootPower);
 		ShootRange->setValue(ogreSin->shootRange);
 		*/
-	testLifeBar->setProgress(ogreSin->health/100);
+		testLifeBar->setProgress(ogreSin->health/100);
 
 		//->setMoveSpeed(Move->getValue());
 		ogreSin->setJumpHeight(Height->getValue());
@@ -220,31 +211,8 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		bulletManager->updateBullet(evt);
 		CollisionManager->CheckCollision();
 
-		while (enemyCount < 10 && enemyResTimer.getMilliseconds() > 2000)
-		{
-			enemyNode[enemyCount]->attachObject(enemy[enemyCount]);
-
-			/*float tempdis = enemyNode[enemyCount]->getPosition().distance(mSinbadNode->getPosition());
-			Vector3 temp = Vector3((enemyNode[enemyCount]->getPosition().x-mSinbadNode->getPosition().x), (enemyNode[enemyCount]->getPosition().y - mSinbadNode->getPosition().y) , (enemyNode[enemyCount]->getPosition().z - mSinbadNode->getPosition().z) )/ tempdis * evt.timeSinceLastFrame*8;
-
-			enemyNode[enemyCount]->setPosition(enemyNode[enemyCount]->getPosition() - temp);*/
-
-			enemyCount++;
-			enemyResTimer.reset();
-		}
-
-		for (int a = 0; a < 10; a++)
-		{
-			if (enemyMovTimer.getMilliseconds() > 2000)
-			{
-				float tempdis = enemyNode[a]->getPosition().distance(ogreSin->getPosition());
-				Vector3 temp = Vector3((enemyNode[a]->getPosition().x - ogreSin->getPosition().x), (enemyNode[a]->getPosition().y - ogreSin->getPosition().y), (enemyNode[a]->getPosition().z - ogreSin->getPosition().z)) / tempdis * evt.timeSinceLastFrame * 8;
-
-				enemyNode[a]->setPosition(enemyNode[a]->getPosition() - temp);
-
-				//enemyMovTimer.reset();
-			}
-		}
+		//enemyManager->updateEnemy(evt, ogreSin->getPosition());
+		enemyHAHA->update(evt, ogreSin->getPosition());
 
 		return true;
 	

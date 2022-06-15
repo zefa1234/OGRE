@@ -36,6 +36,7 @@ public:
 		
 
 	}
+
 	~BulletUnit(){
 
 		collisionManager->UnRegister(this);
