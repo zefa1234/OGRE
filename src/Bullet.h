@@ -18,7 +18,7 @@ class Bullet
 
 		Bullet(SceneManager*& mSceneMgr, Collision*& collisionManager);
 		~Bullet();
-		void createBullet(Vector3 initailPos, Quaternion direction,float shootspeed,float shootrange);
+		void createBullet(Vector3 initailPos, Quaternion direction,float shootspeed,float shootrange,int knifeNum);
 		void updateBullet(const FrameEvent& evt);
 	
 	protected:

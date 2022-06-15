@@ -38,15 +38,28 @@ public:
 			
 			
 		}
-		else if (object->objectTag == "Speeditem") {
+		else if (object->objectTag == "SpeeditemAndDamage") {
 
 			MoveSpeed += 20;
+
 			health -= 5;
+			if (health < 0) {
+				health = 0;
+			}
 
 		}
 		else if (object->objectTag == "Healitem") {
 
+			
+			health += 5;
+			if (health > 100) {
+				health = 100;
+			}
 
+		}
+		else if (object->objectTag == "upgradeKnife") {
+
+			knifeNum++;
 
 		}
 
@@ -255,19 +268,19 @@ public:
 
 		if ((mPressKeySet.count('z') != 0))
 		{
-			//mSwordsVertical->setEnabled(true);
+			mSwordsVertical->setEnabled(true);
 		}
 
 
 		if ((mPressKeySet.count('x') != 0))
 		{
-			//mSwordsHorizon->setEnabled(true);
+			mSwordsHorizon->setEnabled(true);
 		}
 
 
 		if (throwKnife == true) {
 
-			BulletManager->createBullet(mSinbadNode->getPosition(), mSinbadNode->getOrientation(),  shootPower, shootRange);
+			BulletManager->createBullet(mSinbadNode->getPosition(), mSinbadNode->getOrientation(),  shootPower, shootRange, knifeNum);
 
 		}
 
@@ -294,7 +307,7 @@ public:
 
 	void UpdateAnimate(const FrameEvent& evt, std::set<Keycode> mPressKeySet, std::set<unsigned char> mPressMouseSet) {
 
-		/*if (mSwordsVertical->getEnabled())
+		if (mSwordsVertical->getEnabled())
 		{
 			mSwordsVertical->addTime(evt.timeSinceLastFrame);
 			if (mSwordsVertical->hasEnded())
@@ -312,7 +325,7 @@ public:
 				mSwordsHorizon->setTimePosition(0);
 				mSwordsHorizon->setEnabled(false);
 			}
-		}*/
+		}
 
 		if (mJumpStart->getEnabled())
 		{
@@ -508,6 +521,7 @@ public:
 	float shootPower = 108;
 	float shootRange = 60;
 	float health = 100;
+	int knifeNum = 1;
 
 protected:
 

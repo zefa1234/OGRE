@@ -146,7 +146,9 @@ void TutorialApplication::createScene(void)
 	bulletManager = new Bullet(mSceneMgr, CollisionManager);
 	ItemManager = new Item(mSceneMgr, CollisionManager);
 
-	ItemManager->createItem(Vector3(10, 5, 10), Quaternion().IDENTITY,Vector3(1,1,1),"Speeditem","Barrel.mesh",3);
+	ItemManager->createItem(Vector3(10, 5, 10), Quaternion().IDENTITY,Vector3(1,1,1),"SpeeditemAndDamage","Barrel.mesh",3,50);
+	ItemManager->createItem(Vector3(-10, 2, -10), Quaternion().IDENTITY, Vector3(0.1, 0.1, 0.1), "Healitem", "cube.mesh", 3,50);
+	ItemManager->createItem(Vector3(10, 2, -10), Quaternion().IDENTITY, Vector3(0.1, 0.1, 0.1), "upgradeKnife", "spine.mesh", 3,50);
 
 	ogreSin = new OgreSin(mSceneMgr,CollisionManager,bulletManager,mTrayMgr);
 	

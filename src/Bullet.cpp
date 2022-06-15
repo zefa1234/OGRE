@@ -13,38 +13,95 @@ Bullet::~Bullet() {
 
 }
 
-void Bullet::createBullet(Vector3 initailPos, Quaternion direction, float shootspeed, float shootrange) {
+void Bullet::createBullet(Vector3 initailPos, Quaternion direction, float shootspeed, float shootrange,int KnifeNum) {
 
 	
+	if (KnifeNum == 1) {
 
-	BulletUnit* temp = new BulletUnit(initailPos, direction, CurSceneMgr, CollisionManager, count, shootrange, shootspeed);
-	
-	BulletUnitArray.push_back(temp);
+		BulletUnit* temp = new BulletUnit(initailPos, direction, CurSceneMgr, CollisionManager, count, shootrange, shootspeed);
 
-	count++;
+		BulletUnitArray.push_back(temp);
 
-	//AddCollision(manager, temp);
-	
-	
-	Quaternion test = Quaternion(direction.getYaw() + Radian(Degree(20)), direction.yAxis());
+		count++;
 
-	BulletUnit* temp2 = new BulletUnit(initailPos, test, CurSceneMgr, CollisionManager, count, shootrange, shootspeed);
-	BulletUnitArray.push_back(temp2);
+	}
+	else if (KnifeNum == 2) {
+
+		BulletUnit* temp = new BulletUnit(Vector3(initailPos.x - 2, initailPos.y, initailPos.z), direction, CurSceneMgr, CollisionManager, count, shootrange, shootspeed);
+
+		BulletUnitArray.push_back(temp);
+
+		count++;
+
+		BulletUnit* temp2 = new BulletUnit(Vector3(initailPos.x + 2, initailPos.y, initailPos.z), direction, CurSceneMgr, CollisionManager, count, shootrange, shootspeed);
+
+		BulletUnitArray.push_back(temp2);
+
+		count++;
+
+	}
+	else if (KnifeNum == 3) {
+
+		BulletUnit* temp = new BulletUnit(initailPos, direction, CurSceneMgr, CollisionManager, count, shootrange, shootspeed);
+
+		BulletUnitArray.push_back(temp);
+
+		count++;
 
 
-	count++;
+		Quaternion test = Quaternion(direction.getYaw() + Radian(Degree(15)), direction.yAxis());
 
-	//AddCollision(manager, temp2);
-
-	Quaternion test2 = Quaternion(direction.getYaw() - Radian(Degree(20)), direction.yAxis());
-
-	BulletUnit* temp3 = new BulletUnit(initailPos, test2, CurSceneMgr, CollisionManager, count, shootrange, shootspeed);
-	BulletUnitArray.push_back(temp3);
+		BulletUnit* temp2 = new BulletUnit(initailPos, test, CurSceneMgr, CollisionManager, count, shootrange, shootspeed);
+		BulletUnitArray.push_back(temp2);
 
 
-	count++;
+		count++;
 
-	//AddCollision(manager, temp3);
+
+		Quaternion test2 = Quaternion(direction.getYaw() - Radian(Degree(15)), direction.yAxis());
+
+		BulletUnit* temp3 = new BulletUnit(initailPos, test2, CurSceneMgr, CollisionManager, count, shootrange, shootspeed);
+		BulletUnitArray.push_back(temp3);
+
+
+		count++;
+
+
+	}
+	else if(KnifeNum > 3) {
+
+		BulletUnit* temp = new BulletUnit(Vector3(initailPos.x - 2, initailPos.y, initailPos.z), direction, CurSceneMgr, CollisionManager, count, shootrange, shootspeed);
+
+		BulletUnitArray.push_back(temp);
+
+		count++;
+
+		BulletUnit* temp2 = new BulletUnit(Vector3(initailPos.x + 2, initailPos.y, initailPos.z), direction, CurSceneMgr, CollisionManager, count, shootrange, shootspeed);
+
+		BulletUnitArray.push_back(temp2);
+
+		count++;
+
+		Quaternion test = Quaternion(direction.getYaw() + Radian(Degree(15)), direction.yAxis());
+
+		BulletUnit* temp3 = new BulletUnit(initailPos, test, CurSceneMgr, CollisionManager, count, shootrange, shootspeed);
+		BulletUnitArray.push_back(temp3);
+
+
+		count++;
+
+
+		Quaternion test2 = Quaternion(direction.getYaw() - Radian(Degree(15)), direction.yAxis());
+
+		BulletUnit* temp4 = new BulletUnit(initailPos, test2, CurSceneMgr, CollisionManager, count, shootrange, shootspeed);
+		BulletUnitArray.push_back(temp4);
+
+
+		count++;
+
+	}
+
+
 	
 
 }
