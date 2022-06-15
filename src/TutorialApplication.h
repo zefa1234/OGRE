@@ -45,6 +45,7 @@ THE SOFTWARE
 #include "OgreTerrainQuadTreeNode.h"
 #include "OgreTerrainMaterialGeneratorA.h"
 #include "OgreTerrainPaging.h"
+#include "enemyManage.h"
 #include <vector>
 #include <string>
 #include <vector>
@@ -112,6 +113,7 @@ protected:
 	Item* ItemManager;
 	OgreSin* ogreSin;
 	ItemUnit* testItem;
+	enemyManage* enemyManager;
 
 	WidgetList MoveSpeed;
 	WidgetList JumpHeight;
@@ -149,6 +151,8 @@ protected:
 	std::set<Keycode> mPressKeySet;
 	std::set<unsigned char> mPressMouseSet;
 
+	//
+	enemyUnit* enemyHAHA;
 };
 
 #endif // __TutorialApplication_h_
