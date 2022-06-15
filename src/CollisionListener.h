@@ -36,7 +36,7 @@ class CollisionListener {
 		virtual void OnCollision(CollisionListener* object) = 0;
 		
 
-		void NoCollision();
+		void NoCollision(CollisionListener* object);
 
 		string objectTag = "";
 		Vector3 nodeCurPos;
@@ -46,7 +46,7 @@ class CollisionListener {
 
 	protected:
 
-
+		list<CollisionListener*> collidList;	
 
 		bool triggerEnter = false;
 		bool triggerEnd = false;

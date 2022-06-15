@@ -60,16 +60,23 @@ void Collision::CheckCollision() {
 						temp2->UpdateCollision(temp1);
 						isCollide = true;
 					}
+					else {
+
+						temp1->NoCollision(temp2);
+					}
 
 
 				}
 
 			}
 
+			/*
 			if (isCollide == false) {
 
 				temp1->NoCollision();
+
 			}
+			*/
 
 		}
 
