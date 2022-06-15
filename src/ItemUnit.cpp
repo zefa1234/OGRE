@@ -31,6 +31,7 @@ public:
 		ItemNode = currentmSceneMgr->getRootSceneNode()->createChildSceneNode("ItemNode" + std::to_string(ID));
 		ItemtEntity = currentmSceneMgr->createEntity("Item" + std::to_string(ID), meshName);
 		
+		ItemNode->setScale(scale);
 		ItemNode->attachObject(ItemtEntity);
 		ItemNode->setOrientation(Origindirection);
 		ItemNode->setPosition(OriginPos);
