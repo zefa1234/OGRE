@@ -51,12 +51,8 @@ public:
 
 		if (isDestroy == false) {
 
-			/*
-			ItemNode->translate(ItemNode->getOrientation().zAxis() * evt.timeSinceLastFrame * speed);
-			float tempScale = (ItemNode->getPosition().distance(OriginPos) >= 1 ? ItemNode->getPosition().distance(OriginPos) / 10 : 1);
-			//BulletNode->setScale(Vector3(1,1,1)*tempScale);
-			*/
 
+			ItemNode->rotate(Quaternion().yAxis(), Radian(Degree(1)));
 		}
 
 		nodeCurPos = ItemNode->getPosition();
@@ -99,7 +95,7 @@ protected:
 	Collision* CollisionManager;
 	SceneNode* ItemNode;
 	Entity* ItemtEntity;
-	float speed = 30;
+	float speed = 1;
 
 };
 

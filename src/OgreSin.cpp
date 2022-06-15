@@ -44,6 +44,11 @@ public:
 			health -= 5;
 
 		}
+		else if (object->objectTag == "Healitem") {
+
+
+
+		}
 
 
 	}
