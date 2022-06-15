@@ -36,12 +36,6 @@ public:
 										(enemyNode->getPosition().z - ogrePos.z)) / tempdis * evt.timeSinceLastFrame * 8;
 		enemyNode->setPosition(enemyNode->getPosition() - tempV3);
 
-
-		/*tempdis = enemyNode->getPosition().distance(mSinbadNode->getPosition());
-		tempV3 = Vector3((enemyNode->getPosition().x - mSinbadNode->getPosition().x),
-			(enemyNode->getPosition().y - mSinbadNode->getPosition().y),
-			(enemyNode->getPosition().z - mSinbadNode->getPosition().z)) / tempdis * evt.timeSinceLastFrame * 8;
-		enemyNode->setPosition(enemyNode->getPosition() - tempV3);*/
 	}
 
 	virtual void OnCollision(CollisionListener* object)override
