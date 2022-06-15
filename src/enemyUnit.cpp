@@ -49,6 +49,7 @@ public:
 	{
 		if (object->objectTag == "Bullet")
 		{
+
 			if (enemyNode->getAttachedObjects().size() != 0)
 			{
 				enemyNode->detachAllObjects();

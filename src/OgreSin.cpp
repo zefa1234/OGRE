@@ -255,13 +255,13 @@ public:
 
 		if ((mPressKeySet.count('z') != 0))
 		{
-			mSwordsVertical->setEnabled(true);
+			//mSwordsVertical->setEnabled(true);
 		}
 
 
 		if ((mPressKeySet.count('x') != 0))
 		{
-			mSwordsHorizon->setEnabled(true);
+			//mSwordsHorizon->setEnabled(true);
 		}
 
 

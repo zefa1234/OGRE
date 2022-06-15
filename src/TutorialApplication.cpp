@@ -145,15 +145,14 @@ void TutorialApplication::createScene(void)
 	CollisionManager = new Collision();
 	bulletManager = new Bullet(mSceneMgr, CollisionManager);
 	ItemManager = new Item(mSceneMgr, CollisionManager);
-
-	ItemManager->createItem(Vector3(10, 5, 10), Quaternion().IDENTITY);
+	enemyManager = new enemyManage();
+	ItemManager->createItem(Vector3(10, 5, 10), Quaternion().IDENTITY,Vector3(1,1,1),"Speeditem","Barrel.mesh",2);
 
 	ogreSin = new OgreSin(mSceneMgr,CollisionManager,bulletManager,mTrayMgr);
-	//testItem = new ItemUnit(Vector3(10,5,10),Quaternion().IDENTITY,mSceneMgr,CollisionManager,0);
 	
 	//create enemy
-	//enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, 50), mSceneMgr, CollisionManager);
-	enemyHAHA = new enemyUnit(Vector3(Math::RangeRandom(-50, 50), 5, 50), mSceneMgr, CollisionManager);
+	enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, 50), mSceneMgr, CollisionManager);
+	//enemyHAHA = new enemyUnit(Vector3(Math::RangeRandom(-50, 50), 5, 50), mSceneMgr, CollisionManager);
 }
 
 
@@ -212,7 +211,7 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		CollisionManager->CheckCollision();
 
 		//enemyManager->updateEnemy(evt, ogreSin->getPosition());
-		enemyHAHA->update(evt, ogreSin->getPosition());
+		//enemyHAHA->update(evt, ogreSin->getPosition());
 
 		return true;
 	
