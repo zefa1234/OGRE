@@ -156,8 +156,12 @@ void TutorialApplication::createScene(void)
 	
 	CollisionManager = new Collision();
 	bulletManager = new Bullet(mSceneMgr, CollisionManager);
+	ItemManager = new Item(mSceneMgr, CollisionManager);
+
+	ItemManager->createItem(Vector3(10, 5, 10), Quaternion().IDENTITY);
+
 	ogreSin = new OgreSin(mSceneMgr,CollisionManager,bulletManager,mTrayMgr);
-	testItem = new ItemUnit(Vector3(10,5,10),Quaternion().IDENTITY,mSceneMgr,CollisionManager,0,0,0);
+	//testItem = new ItemUnit(Vector3(10,5,10),Quaternion().IDENTITY,mSceneMgr,CollisionManager,0);
 	
 }
 
@@ -194,7 +198,8 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		ShootPower->setValue(ogreSin->shootPower);
 		ShootRange->setValue(ogreSin->shootRange);
 		*/
-		
+	testLifeBar->setProgress(ogreSin->health/100);
+
 		//->setMoveSpeed(Move->getValue());
 		ogreSin->setJumpHeight(Height->getValue());
 		ogreSin->setThrowKinfePerSec(ShootSpeedPerSec->getValue());
@@ -211,7 +216,7 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		yawNode->setPosition(ogreSin->getPosition());
 		yawNode->setOrientation(testYawNode->getOrientation()* rollNode->getOrientation());
 
-		
+		ItemManager->updateItem(evt);
 		bulletManager->updateBullet(evt);
 		CollisionManager->CheckCollision();
 

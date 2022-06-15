@@ -40,6 +40,9 @@ public:
 
 		collisionManager->UnRegister(this);
 
+		currentmSceneMgr->destroySceneNode("KnifeNode" + std::to_string(ID));
+		currentmSceneMgr->destroyEntity("Knife" + std::to_string(ID));
+
 	}
 
 	void update(const FrameEvent& evt) {
@@ -52,8 +55,6 @@ public:
 			if (BulletNode->getPosition().distance(OriginPos) > disRange) {
 				isOverRange = true;
 
-				currentmSceneMgr->destroySceneNode("KnifeNode" + std::to_string(ID));
-				currentmSceneMgr->destroyEntity("Knife" + std::to_string(ID));
 			}
 
 		}
@@ -72,9 +73,7 @@ public:
 			if (BulletNode->getAttachedObjects().size() != 0) {
 
 				//BulletNode->detachAllObjects();
-				currentmSceneMgr->destroySceneNode("KnifeNode" + std::to_string(ID));
-
-				currentmSceneMgr->destroyEntity("Knife" + std::to_string(ID));
+				
 			}
 			isOverRange = true;
 			//BulletNode->attachObject(colliderEntity);

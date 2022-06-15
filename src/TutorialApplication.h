@@ -38,6 +38,7 @@ THE SOFTWARE
 #include "CollisionListener.h"
 #include "OgreSin.cpp"
 #include "ItemUnit.cpp"
+#include "Item.h"
 #include "OgrePageManager.h"
 #include "OgreTerrain.h"
 #include "OgreTerrainGroup.h"
@@ -108,6 +109,7 @@ protected:
 	Camera* mouseCamera;
 	Bullet* bulletManager;
 	Collision* CollisionManager;
+	Item* ItemManager;
 	OgreSin* ogreSin;
 	ItemUnit* testItem;
 

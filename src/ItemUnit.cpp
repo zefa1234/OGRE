@@ -16,15 +16,13 @@ class ItemUnit :public CollisionListener
 {
 public:
 
-	ItemUnit(Vector3 initailPos, Quaternion direction, SceneManager*& mSceneMgr,Collision *&collisionManager, int count, float dis, float spd) {
+	ItemUnit(Vector3 initailPos, Quaternion direction, SceneManager*& mSceneMgr,Collision *&collisionManager, int count) {
 
 		OriginPos = initailPos;
 		Origindirection = direction;
 		currentmSceneMgr = mSceneMgr;
 		CollisionManager = collisionManager;
 		ID = count;
-		disRange = dis;
-		speed = spd;
 		objectTag = "Speeditem";
 		colliderRange = 2;
 
@@ -42,23 +40,22 @@ public:
 	}
 	~ItemUnit() {
 
-		//CollisionManager->UnRegister(this);
+		CollisionManager->UnRegister(this);
+		currentmSceneMgr->destroySceneNode("ItemNode" + std::to_string(ID));
+
+		currentmSceneMgr->destroyEntity("Item" + std::to_string(ID));
 
 	}
 
-	void update(const FrameEvent& evt, SceneManager*& mSceneMgr) {
+	void update(const FrameEvent& evt) {
 
-		if (isOverRange == false) {
+		if (isDestroy == false) {
 
+			/*
 			ItemNode->translate(ItemNode->getOrientation().zAxis() * evt.timeSinceLastFrame * speed);
 			float tempScale = (ItemNode->getPosition().distance(OriginPos) >= 1 ? ItemNode->getPosition().distance(OriginPos) / 10 : 1);
 			//BulletNode->setScale(Vector3(1,1,1)*tempScale);
-			if (ItemNode->getPosition().distance(OriginPos) > disRange) {
-				isOverRange = true;
-
-				currentmSceneMgr->destroySceneNode("KnifeNode" + std::to_string(ID));
-				currentmSceneMgr->destroyEntity("Knife" + std::to_string(ID));
-			}
+			*/
 
 		}
 
@@ -76,16 +73,14 @@ public:
 			if (ItemNode->getAttachedObjects().size() != 0) {
 
 				//BulletNode->detachAllObjects();
-				//currentmSceneMgr->destroySceneNode("ItemNode" + std::to_string(ID));
-
-				currentmSceneMgr->destroyEntity("Item" + std::to_string(ID));
+				
 
 			
 			}
-			isOverRange = true;
+			isDestroy = true;
 			//BulletNode->attachObject(colliderEntity);
 			//BulletNode->setScale(Vector3(2, 2, 2));
-			isTriggerOn = false;
+			
 		}
 		
 
@@ -94,7 +89,7 @@ public:
 
 	string type = "";
 	int ID;
-	bool isOverRange = false;
+	bool isDestroy = false;
 
 protected:
 
@@ -105,7 +100,6 @@ protected:
 	SceneNode* ItemNode;
 	Entity* ItemtEntity;
 	float speed = 30;
-	float disRange = 30;
 
 };
 

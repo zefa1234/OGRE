@@ -41,6 +41,7 @@ public:
 		else if (object->objectTag == "Speeditem") {
 
 			MoveSpeed += 20;
+			health -= 5;
 
 		}
 
@@ -505,6 +506,7 @@ public:
 	float JumpHeight = 50;
 	float shootPower = 108;
 	float shootRange = 60;
+	float health = 100;
 
 protected:
 
@@ -528,7 +530,7 @@ protected:
 
 	bool mSwordAtHand;
 	
-	float health = 100;
+	
 
 	
 	Timer Knife_timer;
