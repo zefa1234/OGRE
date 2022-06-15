@@ -16,20 +16,20 @@ class ItemUnit :public CollisionListener
 {
 public:
 
-	ItemUnit(Vector3 initailPos, Quaternion direction, SceneManager*& mSceneMgr,Collision *&collisionManager, int count) {
+	ItemUnit(Vector3 initailPos, Quaternion direction,Vector3 scale ,string objTag, string meshName, float collidRange, SceneManager*& mSceneMgr,Collision *&collisionManager, int count) {
 
 		OriginPos = initailPos;
 		Origindirection = direction;
 		currentmSceneMgr = mSceneMgr;
 		CollisionManager = collisionManager;
 		ID = count;
-		objectTag = "Speeditem";
-		colliderRange = 2;
+		objectTag = objTag;
+		colliderRange = collidRange;
 
 		CollisionManager->Register(this);
 
 		ItemNode = currentmSceneMgr->getRootSceneNode()->createChildSceneNode("ItemNode" + std::to_string(ID));
-		ItemtEntity = currentmSceneMgr->createEntity("Item" + std::to_string(ID), "Barrel.mesh");
+		ItemtEntity = currentmSceneMgr->createEntity("Item" + std::to_string(ID), meshName);
 		
 		ItemNode->attachObject(ItemtEntity);
 		ItemNode->setOrientation(Origindirection);
@@ -51,12 +51,8 @@ public:
 
 		if (isDestroy == false) {
 
-			/*
-			ItemNode->translate(ItemNode->getOrientation().zAxis() * evt.timeSinceLastFrame * speed);
-			float tempScale = (ItemNode->getPosition().distance(OriginPos) >= 1 ? ItemNode->getPosition().distance(OriginPos) / 10 : 1);
-			//BulletNode->setScale(Vector3(1,1,1)*tempScale);
-			*/
 
+			ItemNode->rotate(Quaternion().yAxis(), Radian(Degree(1)));
 		}
 
 		nodeCurPos = ItemNode->getPosition();
@@ -99,7 +95,7 @@ protected:
 	Collision* CollisionManager;
 	SceneNode* ItemNode;
 	Entity* ItemtEntity;
-	float speed = 30;
+	float speed = 1;
 
 };
 

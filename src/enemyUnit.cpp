@@ -14,18 +14,19 @@ using namespace std;
 class enemyUnit : public CollisionListener
 {
 public:
-	enemyUnit(Vector3 initailPos, SceneManager*& mSceneMgr, Collision*& Colimanager, int count)
+	enemyUnit(Vector3 initailPos, SceneManager*& mSceneMgr, Collision*& Colimanager)
 	{
-		ID = count;
 		objectTag = "Fish";
-		enemyEntity = mSceneMgr->createEntity("Fish" + std::to_string(ID), "fish.mesh");
-		enemyNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("enemy" + std::to_string(ID), initailPos);
+		enemyEntity = mSceneMgr->createEntity("enemyFish", "fish.mesh");
+		enemyNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("enemy", initailPos);
 		enemyNode->attachObject(enemyEntity);
 		Colimanager->Register(this);
 
-		//anotherEnt = mSceneMgr->createEntity("Barrel", "Barrel.mesh");
+		anotherEnt = mSceneMgr->createEntity("Barrel", "Barrel.mesh");
 
 		nodeCurPos = enemyNode->getPosition();
+
+		
 	}
 
 	void update(const FrameEvent& evt, Vector3 ogrePos)
@@ -48,6 +49,7 @@ public:
 	{
 		if (object->objectTag == "Bullet")
 		{
+
 			if (enemyNode->getAttachedObjects().size() != 0)
 			{
 				enemyNode->detachAllObjects();
@@ -56,7 +58,7 @@ public:
 		}
 	}
 
-	int ID;
+
 	float tempdis;
 	Vector3 tempV3, V3div;
 	SceneNode* enemyNode;

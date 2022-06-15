@@ -23,9 +23,9 @@ public:
 
 	};
 	~Item(){};
-	void createItem(Vector3 initailPos, Quaternion direction) {
+	void createItem(Vector3 initailPos, Quaternion direction,Vector3 scale,string objectTag,string meshName,float colliderRange) {
 
-		ItemUnit* temp = new ItemUnit(initailPos,direction,CurSceneMgr,CollisionManager,count);
+		ItemUnit* temp = new ItemUnit(initailPos,direction, scale, objectTag, meshName, colliderRange,CurSceneMgr,CollisionManager,count);
 		ItemUnitArray.push_back(temp);
 		count++;
 

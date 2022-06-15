@@ -47,7 +47,7 @@ TutorialApplication::TutorialApplication() : mSinbadNode(nullptr),
 	mSwordsHorizon(nullptr)
 {
 	Knife_timer.reset();
-	enemyMovTimer.reset();
+	
 }
 
 
@@ -145,21 +145,14 @@ void TutorialApplication::createScene(void)
 	CollisionManager = new Collision();
 	bulletManager = new Bullet(mSceneMgr, CollisionManager);
 	ItemManager = new Item(mSceneMgr, CollisionManager);
-
-	ItemManager->createItem(Vector3(10, 5, 10), Quaternion().IDENTITY);
+	enemyManager = new enemyManage();
+	ItemManager->createItem(Vector3(10, 5, 10), Quaternion().IDENTITY,Vector3(1,1,1),"Speeditem","Barrel.mesh",2);
 
 	ogreSin = new OgreSin(mSceneMgr,CollisionManager,bulletManager,mTrayMgr);
-	//testItem = new ItemUnit(Vector3(10,5,10),Quaternion().IDENTITY,mSceneMgr,CollisionManager,0);
 	
 	//create enemy
-	while(enemyCount < 10 && enemyMovTimer.getMilliseconds() > 2000)
-	{
-		enemyManager = new enemyManage(mSceneMgr, CollisionManager);
-		enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, 50));
-
-		enemyCount++;
-		enemyMovTimer.reset();
-	}
+	enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, 50), mSceneMgr, CollisionManager);
+	//enemyHAHA = new enemyUnit(Vector3(Math::RangeRandom(-50, 50), 5, 50), mSceneMgr, CollisionManager);
 }
 
 
@@ -186,7 +179,7 @@ void TutorialApplication::createOgreCamera() {
 //-------------------------------------------------------------------------------------
 bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 {
-		if (!BaseApplication::frameRenderingQueued(evt)) return false;
+	if (!BaseApplication::frameRenderingQueued(evt)) return false;
 	
 		/*
 		Move->setValue(ogreSin->MoveSpeed);
@@ -205,8 +198,11 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 
 		ogreSin->UpdateOgreSin(evt, mPressKeySet, mPressMouseSet);
 		
+		
+		
 		DebugDetailsPanel->setParamValue(0, CollisionManager->listnum());
 
+		
 		yawNode->setPosition(ogreSin->getPosition());
 		yawNode->setOrientation(testYawNode->getOrientation()* rollNode->getOrientation());
 
@@ -214,10 +210,11 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		bulletManager->updateBullet(evt);
 		CollisionManager->CheckCollision();
 
-		//for(int a = 0;a < enemyCount;a++)
-		enemyManager->updateEnemy(evt, ogreSin->getPosition());
+		//enemyManager->updateEnemy(evt, ogreSin->getPosition());
+		//enemyHAHA->update(evt, ogreSin->getPosition());
 
 		return true;
+	
 }
 
 
