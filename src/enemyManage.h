@@ -12,17 +12,16 @@ using namespace std;
 using namespace Ogre;
 using namespace OgreBites;
 
-class enemyManage : public BaseApplication
+class enemyManage
 {
 public:
 	enemyManage(SceneManager*& mSceneMgr, Collision*& collisionManager);
 	~enemyManage();
 	void createEnemy(Vector3);
 	void updateEnemy(const FrameEvent& evt, Vector3);
-	//void AddCollision(Collision* manager, CollisionListener* object);
-	//void RemoveCollision(Collision* manager, CollisionListener* object);
 
 protected:
+	int count = 0;
 	SceneManager* CurSceneMgr;
 	Collision* CollisionManager;
 

@@ -14,7 +14,7 @@ enemyManage::~enemyManage()
 
 void enemyManage::createEnemy(Vector3 initailPos)
 {
-	enemyUnit* temp = new enemyUnit(initailPos, CurSceneMgr, CollisionManager);
+	enemyUnit* temp = new enemyUnit(initailPos, CurSceneMgr, CollisionManager, count);
 
 	enemyUnitArr.push_back(temp);
 }
