@@ -15,7 +15,7 @@ class BulletUnit:public CollisionListener
 {
 public:
 
-	BulletUnit(Vector3 initailPos, Quaternion direction, SceneManager*& mSceneMgr,Collision*& CollisionManager,int count,float dis,float spd) {
+	BulletUnit(Vector3 initailPos, Quaternion direction, SceneManager*& mSceneMgr,Collision*& CollisionManager,string objTag, string meshName,int count,float dis,float spd) {
 
 		OriginPos = initailPos;
 		Origindirection = direction;
@@ -24,11 +24,11 @@ public:
 		ID = count;
 		disRange = dis;
 		speed = spd;
-		objectTag = "Bullet";
+		objectTag = objTag;
 
 		collisionManager->Register(this);
 		BulletNode = currentmSceneMgr->getRootSceneNode()->createChildSceneNode("KnifeNode" + std::to_string(ID));
-		BulletEntity = currentmSceneMgr->createEntity("Knife" + std::to_string(ID), "Sword.mesh");
+		BulletEntity = currentmSceneMgr->createEntity("Knife" + std::to_string(ID), meshName);
 		colliderEntity = currentmSceneMgr->createEntity("testCollider" + std::to_string(ID), "Barrel.mesh");
 		BulletNode->attachObject(BulletEntity);
 		BulletNode->setOrientation(Origindirection);
