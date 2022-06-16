@@ -81,6 +81,8 @@ void TutorialApplication::setup(void)
 	ShootRange = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "ShootRange", "ShootRange", 250, 80, 44, 0, 120, 11);
 	ShootPower = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "ShootPower", "ShootPower", 250, 80, 44, 0, 150, 11);
 	ShootSpeedPerSec = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "ShootSpeed", "ShootSpeed", 250, 80, 44, 0, 500, 11);
+	OgreCamDis = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "OgreCamDis", "OgreCamDis", 250, 80, 44, 10, 50, 11);
+	CamMovement = mTrayMgr->createCheckBox(TrayLocation::TL_TOPRIGHT, "CamMovement", "CamMovement", 250 );
 	testLifeBar = mTrayMgr->createProgressBar(TrayLocation::TL_TOPLEFT, "OgreLifeBar", "Ogre", 250, 50);
 	monsterLifeBar = mTrayMgr->createProgressBar(TrayLocation::TL_BOTTOM, "monsterLifeBar", "monster", 500, 50);
 
@@ -102,7 +104,8 @@ void TutorialApplication::setup(void)
 	ShootRange->setValue(108);
 	ShootPower->setValue(60);
 	ShootSpeedPerSec->setValue(100);
-	
+	OgreCamDis->setValue(50);
+	CamMovement->setChecked(false);
 }
 
 
@@ -177,8 +180,9 @@ void TutorialApplication::createOgreCamera() {
 	mCameraNode->detachObject("myCam");
 	sinCameraNode = yawNode->createChildSceneNode("sinCameraNode");
 	sinCameraNode->attachObject(mCamera);
-	sinCameraNode->setPosition(0, 50, -50);
-	sinCameraNode->setAutoTracking(true, yawNode);
+	sinCameraNode->setPosition(0, 50, 50);
+	sinCameraNode->rotate(sinCameraNode->getOrientation().xAxis(),Radian(Degree(-45)));
+	//sinCameraNode->setAutoTracking(true, yawNode);
 	sinCameraNode->setFixedYawAxis(true);
 
 	mCameraNode->setAutoTracking(true, yawNode);
@@ -264,8 +268,12 @@ bool TutorialApplication::mouseMoved(const MouseMotionEvent& evt) {
 	//testYawNode->yaw(Radian(Degree(-evt.xrel * 0.3)));
 	//rollNode->pitch(Radian(Degree(evt.yrel * 0.3)));
 	//mSinbadNode->setDirection(Vector3(evt.x, 0, evt.y));
-
-	//sinCameraNode->setPosition(Vector3(50*-ogreSin->getMouseRay().getDirection().x,50, 50*-ogreSin->getMouseRay().getDirection().z));
+	sinCameraNode->setPosition(0, OgreCamDis->getValue(), OgreCamDis->getValue());
+	if (CamMovement->isChecked()) {
+		sinCameraNode->setPosition(Vector3(OgreCamDis->getValue() * (-ogreSin->getMouseRay().getDirection().x / 4), sinCameraNode->getPosition().y, OgreCamDis->getValue() * (-ogreSin->getMouseRay().getDirection().z / 4) + OgreCamDis->getValue()));
+	}
+	
+	
 
 	return BaseApplication::mouseMoved(evt);
 }
