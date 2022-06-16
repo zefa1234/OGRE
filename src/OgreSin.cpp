@@ -32,22 +32,35 @@ public:
 		BulletNode->detachObject("Knife" + std::to_string(ID));
 		BulletNode->attachObject(colliderEntity);
 		*/
-		if (object->objectTag == "Bullet") {
-
+		if (object->objectTag == "Bullet") 
+		{
 			//mSinbadNode->setScale(Vector3(2,2,2));
-			
-			
 		}
 		else if (object->objectTag == "Speeditem") {
 
-			MoveSpeed += 20;
-			health -= 5;
+			MoveSpeed += 10;
 
 		}
 		else if (object->objectTag == "Healitem") {
 
+			
+			health += 5;
+			if (health > 100) {
+				health = 100;
+			}
 
+		}
+		else if (object->objectTag == "upgradeKnife") {
 
+			knifeNum++;
+
+		}
+		else if (object->objectTag == "fish")
+		{
+			health -= 5;
+			if (health < 0) {
+				health = 0;
+			}
 		}
 	}
 
@@ -253,19 +266,19 @@ public:
 
 		if ((mPressKeySet.count('z') != 0))
 		{
-			//mSwordsVertical->setEnabled(true);
+			mSwordsVertical->setEnabled(true);
 		}
 
 
 		if ((mPressKeySet.count('x') != 0))
 		{
-			//mSwordsHorizon->setEnabled(true);
+			mSwordsHorizon->setEnabled(true);
 		}
 
 
 		if (throwKnife == true) {
 
-			BulletManager->createBullet(mSinbadNode->getPosition(), mSinbadNode->getOrientation(),  shootPower, shootRange);
+			BulletManager->createBullet(mSinbadNode->getPosition(), mSinbadNode->getOrientation(),  shootPower, shootRange, knifeNum);
 
 		}
 
@@ -292,7 +305,7 @@ public:
 
 	void UpdateAnimate(const FrameEvent& evt, std::set<Keycode> mPressKeySet, std::set<unsigned char> mPressMouseSet) {
 
-		/*if (mSwordsVertical->getEnabled())
+		if (mSwordsVertical->getEnabled())
 		{
 			mSwordsVertical->addTime(evt.timeSinceLastFrame);
 			if (mSwordsVertical->hasEnded())
@@ -310,7 +323,7 @@ public:
 				mSwordsHorizon->setTimePosition(0);
 				mSwordsHorizon->setEnabled(false);
 			}
-		}*/
+		}
 
 		if (mJumpStart->getEnabled())
 		{
@@ -500,12 +513,14 @@ public:
 	}
 
 
-	float throwKinfePerSec = 100;
+	float throwKinfePerSec = 500;
 	float MoveSpeed = 15;
 	float JumpHeight = 50;
-	float shootPower = 108;
+	float shootPower = 300;
 	float shootRange = 60;
 	float health = 100;
+	int knifeNum = 1;
+	SceneNode* mSinbadNode;
 
 protected:
 
@@ -514,7 +529,7 @@ protected:
 	Bullet* BulletManager;
 	TrayManager* MTrayMgr;
 
-	SceneNode* mSinbadNode;
+	
 	Camera* sinCamera;
 	SceneNode* sinCameraNode;
 	SceneNode* yawNode;

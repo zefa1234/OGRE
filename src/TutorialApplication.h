@@ -90,12 +90,6 @@ protected:
 	Entity* floor;
 	Entity* enemy[10];//change to array to store mutiple enemy
 
-	
-	string enemyNodeName[10] = {"EmenySinbadNode1", "EmenySinbadNode2", "EmenySinbadNode3", "EmenySinbadNode4", "EmenySinbadNode5", 
-															"EmenySinbadNode6", "EmenySinbadNode7", "EmenySinbadNode8", "EmenySinbadNode9", "EmenySinbadNode10" };
-	string enemySinbadName[10] = {"EnemySinbad1", "EnemySinbad2", "EnemySinbad3", "EnemySinbad4", "EnemySinbad5", 
-																"EnemySinbad6", "EnemySinbad7", "EnemySinbad8", "EnemySinbad9", "EnemySinbad10" };
-
 	bool mSwordAtHand;
 
 	AnimationState* mRunBaseState;
@@ -131,6 +125,10 @@ protected:
 	Timer Knife_timer;
 	Timer enemyResTimer;
 	Timer enemyMovTimer;
+	Timer st1FishTimer;
+	Timer st2PengTimer;
+	int st1fishN = 0;//5
+	int st2pengN = 0;//10
 	int enemyCount = 0;
 	float throwKinfePerSec = 350;
 	

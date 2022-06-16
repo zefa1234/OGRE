@@ -16,7 +16,7 @@ class ItemUnit :public CollisionListener
 {
 public:
 
-	ItemUnit(Vector3 initailPos, Quaternion direction,Vector3 scale ,string objTag, string meshName, float collidRange, SceneManager*& mSceneMgr,Collision *&collisionManager, int count) {
+	ItemUnit(Vector3 initailPos, Quaternion direction,Vector3 scale ,string objTag, string meshName, float collidRange,float rotationSpeed, SceneManager*& mSceneMgr,Collision *&collisionManager, int count) {
 
 		OriginPos = initailPos;
 		Origindirection = direction;
@@ -25,6 +25,7 @@ public:
 		ID = count;
 		objectTag = objTag;
 		colliderRange = collidRange;
+		speed = rotationSpeed;
 
 		CollisionManager->Register(this);
 
@@ -52,8 +53,10 @@ public:
 
 		if (isDestroy == false) {
 
+			
 
-			ItemNode->rotate(Quaternion().yAxis(), Radian(Degree(1)));
+			ItemNode->setPosition(Vector3(ItemNode->getPosition().x, ItemNode->getPosition().y, ItemNode->getPosition().z));
+			ItemNode->rotate(Quaternion().yAxis(), Radian(Degree(speed* evt.timeSinceLastFrame)));
 		}
 
 		nodeCurPos = ItemNode->getPosition();
@@ -96,7 +99,10 @@ protected:
 	Collision* CollisionManager;
 	SceneNode* ItemNode;
 	Entity* ItemtEntity;
-	float speed = 1;
+	float curYfloatPos = 0;
+	float upDownRange = 2;
+	float upDownSpeed = 20;
+	float speed = 50;
 
 };
 

@@ -47,7 +47,8 @@ TutorialApplication::TutorialApplication() : mSinbadNode(nullptr),
 	mSwordsHorizon(nullptr)
 {
 	Knife_timer.reset();
-	
+	st1FishTimer.reset();
+	st2PengTimer.reset();
 }
 
 
@@ -146,8 +147,14 @@ void TutorialApplication::createScene(void)
 	bulletManager = new Bullet(mSceneMgr, CollisionManager);
 	ItemManager = new Item(mSceneMgr, CollisionManager);
 
-	enemyManager = new enemyManage(mSceneMgr, CollisionManager);
-	ItemManager->createItem(Vector3(10, 5, 10), Quaternion().IDENTITY,Vector3(1,1,1),"Speeditem","Barrel.mesh",3);
+	enemyManager = new enemyManage(mSceneMgr, CollisionManager, ItemManager);
+	//ItemManager->createItem(Vector3(10, 5, 10), Quaternion().IDENTITY,Vector3(1,1,1),"Speeditem","Barrel.mesh",3, 50);
+	/*ItemManager->createItem(Vector3(30, 5, 10), Quaternion().IDENTITY, Vector3(1, 1, 1), "SpeeditemAndDamage", "Barrel.mesh", 3, 50);
+	ItemManager->createItem(Vector3(20, 2, -10), Quaternion().IDENTITY, Vector3(0.1, 0.1, 0.1), "Healitem", "cube.mesh", 3,50);
+	ItemManager->createItem(Vector3(10, 2, -10), Quaternion().IDENTITY, Vector3(0.1, 0.1, 0.1), "upgradeKnife", "spine.mesh", 3,50);*/
+	/*ItemManager->createItem(Vector3(0, 5, -10), Quaternion().IDENTITY, Vector3(0.1, 0.1, 0.1), "jaiqua", "jaiqua.mesh", 3, 50);
+	ItemManager->createItem(Vector3(-10, 5, -10), Quaternion().IDENTITY, Vector3(0.1, 0.1, 0.1), "penguin", "penguin.mesh", 3, 50);
+	ItemManager->createItem(Vector3(-20, 5, -10), Quaternion().IDENTITY, Vector3(0.1, 0.1, 0.1), "razor", "razor.mesh", 3, 50);*/
 
 	ogreSin = new OgreSin(mSceneMgr,CollisionManager,bulletManager,mTrayMgr);
 	
@@ -184,16 +191,16 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 {
 	if (!BaseApplication::frameRenderingQueued(evt)) return false;
 	
-		/*
-		Move->setValue(ogreSin->MoveSpeed);
+		
+		/*Move->setValue(ogreSin->MoveSpeed);
 		Height->setValue(ogreSin->JumpHeight);
 		ShootSpeedPerSec->setValue(ogreSin->throwKinfePerSec);
 		ShootPower->setValue(ogreSin->shootPower);
-		ShootRange->setValue(ogreSin->shootRange);
-		*/
+		ShootRange->setValue(ogreSin->shootRange);*/
+	
 		testLifeBar->setProgress(ogreSin->health/100);
 
-		//->setMoveSpeed(Move->getValue());
+		//ogreSin->setMoveSpeed(Move->getValue());
 		ogreSin->setJumpHeight(Height->getValue());
 		ogreSin->setThrowKinfePerSec(ShootSpeedPerSec->getValue());
 		ogreSin->setShootPower(ShootPower->getValue());
@@ -213,8 +220,37 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		bulletManager->updateBullet(evt);
 		CollisionManager->CheckCollision();
 
-		enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, 50));
-		enemyManager->updateEnemy(evt, ogreSin->getPosition());
+		//createEnemy(Vector3 initailPos, Vector3 scale, string objectTag, string objTag, string meshname, int colRange, int movSpd);ref
+
+		enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, Math::RangeRandom(-50, 50)), Vector3(1, 1, 1), "fish", "fish.mesh", 2, 8, 10, 1000);
+		enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, Math::RangeRandom(-50, 50)), Vector3(1, 1, 1), "fish", "fish.mesh", 2, 8, 10, 1000);
+		/*if (st1FishTimer.getMilliseconds() > 1500 && st1fishN < 5)//stage 1 fish*5
+		{
+			enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, Math::RangeRandom(-50, 50)), Vector3(1, 1, 1), "fish", "fish.mesh", 2, 8);
+			st1FishTimer.reset();
+			st1fishN++;
+		}
+		if (st1FishTimer.getMilliseconds() > 4000 && st1fishN < 6)
+		{
+			enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 15, Math::RangeRandom(-50, 50)), Vector3(3, 3, 3), "fish", "fish.mesh", 5, 10);
+			st1FishTimer.reset();
+			st1fishN++;
+		}
+		if (st1FishTimer.getMilliseconds() > 1000 && st2pengN < 10 && st1fishN  <10)
+		{
+			enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 15, Math::RangeRandom(-50, 50)), Vector3(0.1, 0.1, 0.1), "penguin", "penguin.mesh", 5, 12);
+			st2PengTimer.reset();
+			st2pengN++;
+		}
+		if (st1FishTimer.getMilliseconds() > 5000 && st2pengN < 11)
+		{
+			enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 15, Math::RangeRandom(-50, 50)), Vector3(0.3, 0.3, 0.3), "penguin", "penguin.mesh", 10, 15);
+			st2PengTimer.reset();
+			st2pengN++;
+		}*/
+		
+
+		enemyManager->updateEnemy(evt, ogreSin->mSinbadNode);
 
 		return true;
 	

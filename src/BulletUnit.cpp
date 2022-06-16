@@ -65,22 +65,10 @@ public:
 
 	virtual void OnCollision(CollisionListener* object)override {
 
-		/*
-		BulletNode->detachObject("Knife" + std::to_string(ID));
-		BulletNode->attachObject(colliderEntity);
-		*/
-		if (object->objectTag == "enemy" || object->objectTag == "Speeditem") {
-
-			if (BulletNode->getAttachedObjects().size() != 0) {
-
-				//BulletNode->detachAllObjects();
-				
-			}
+		
+		if (object->objectTag == "fish" || object->objectTag == "penguin")
+		{
 			isOverRange = true;
-			//BulletNode->attachObject(colliderEntity);
-			//BulletNode->setScale(Vector3(2, 2, 2));
-
-
 		}
 		else if (object->objectTag == "Speeditem") {
 
