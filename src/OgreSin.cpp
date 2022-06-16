@@ -38,28 +38,40 @@ public:
 		}
 		else if (object->objectTag == "Speeditem") 
 		{
-			MoveSpeed += 10;
+			MoveSpeed += 4;
 		}
-		else if (object->objectTag == "Healitem")
-		{
-			health += 5;
-			if (health > 100)
-				health = 100;
-		}
-		else if (object->objectTag == "upgradeKnife") 
+		else if (object->objectTag == "KnifeItem") 
 		{
 			knifeNum++;
 		}
+		else if (object->objectTag == "Healitem")
+		{
+			health += 10;
+			if (health > 100)
+				health = 100;
+		}
 		else if (object->objectTag == "fish")
 		{
-			health -= 5;
+			health -= 10;
 			if (health < 0) 
+				health = 0;
+		}
+		else if (object->objectTag == "fishKing")
+		{
+			health -= 40;
+			if (health < 0)
 				health = 0;
 		}
 		else if (object->objectTag == "penguin")
 		{
-			health -= 10;
+			health -= 15;
 			if (health < 0) 
+				health = 0;
+		}
+		else if (object->objectTag == "penguinKing")
+		{
+			health -= 50;
+			if (health < 0)
 				health = 0;
 		}
 	}

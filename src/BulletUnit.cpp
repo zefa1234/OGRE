@@ -63,10 +63,9 @@ public:
 		nodeCurPos = BulletNode->getPosition();
 	}
 
-	virtual void OnCollision(CollisionListener* object)override {
-
-		
-		if (object->objectTag == "fish" || object->objectTag == "penguin")
+	virtual void OnCollision(CollisionListener* object)override 
+	{
+		if (object->objectTag == "fish" || object->objectTag == "penguin" || object->objectTag == "fishKing" || object->objectTag == "penguinKing")
 		{
 			isOverRange = true;
 		}

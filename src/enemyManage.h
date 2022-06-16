@@ -31,7 +31,7 @@ protected:
 	int fishCount = 0;
 	int pengCount = 0;
 	int totalCount = 0;
-	bool drop = false;
+	string dropItem;
 	SceneManager* CurSceneMgr;
 	Collision* CollisionManager;
 	Item* ItManager;

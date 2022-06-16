@@ -64,7 +64,7 @@ TutorialApplication::~TutorialApplication(void)
 
 void TutorialApplication::setup(void)
 {
-	//WTF is this???
+	
 	BaseApplication::setup();
 
 	// Show the cursor

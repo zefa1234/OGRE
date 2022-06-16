@@ -15,7 +15,7 @@ using namespace std;
 class enemyUnit : public CollisionListener
 {
 public:
-	enemyUnit(Vector3 initailPos, SceneManager*& mSceneMgr, Collision*& Colimanager, Vector3 scale, string objTag, string meshname, int count, int colRange, int movSpd, Item*& itemManager, bool dropItem)
+	enemyUnit(Vector3 initailPos, SceneManager*& mSceneMgr, Collision*& Colimanager, Vector3 scale, string objTag, string meshname, int count, int colRange, int movSpd, Item*& itemManager, string dropItem)
 	{
 		currentmSceneMgr = mSceneMgr;
 		collisionManager = Colimanager;
@@ -32,9 +32,17 @@ public:
 		colliderRange = colRange;
 		collisionManager->Register(this);
 
-		//anotherEnt = mSceneMgr->createEntity("Barrel", "Barrel.mesh");
-
 		nodeCurPos = enemyNode->getPosition();
+		if (objectTag == "fish")
+			health = 15; 
+		else if (objectTag == "fishKing")
+			health = 50;
+		else if (objectTag == "penguin")
+			health = 20;
+		else if (objectTag == "penguinKing")
+			health = 80;
+
+
 	}
 	~enemyUnit()
 	{
@@ -52,9 +60,9 @@ public:
 											(enemyNode->getPosition().y - mSinbadNode->getPosition().y),
 											(enemyNode->getPosition().z - mSinbadNode->getPosition().z)) / tempdis * evt.timeSinceLastFrame * moveSpeed;
 			enemyNode->setPosition(enemyNode->getPosition() - tempV3);
-			if (objectTag == "fish")
+			if (objectTag == "fish" || objectTag == "fishKing")
 				enemyNode->setAutoTracking(true, mSinbadNode, VectorBase<3, Ogre::Real>::NEGATIVE_UNIT_X);
-			else if (objectTag == "penguin")
+			else if (objectTag == "penguin" || objectTag == "penguinKing")
 				enemyNode->setAutoTracking(true, mSinbadNode, -VectorBase<3, Ogre::Real>::NEGATIVE_UNIT_Z);
 
 			nodeCurPos = enemyNode->getPosition();
@@ -67,9 +75,20 @@ public:
 	{
 		if (object->objectTag == "Bullet")
 		{
-			if(dropIt == true)
-				itManager->createItem(nodeCurPos, Quaternion().IDENTITY, Vector3(0.5, 0.5, 0.5), "Speeditem", "Barrel.mesh", 3, 50);
-			isDead = true;
+			health--;
+			if (health <= 0)
+			{
+				if (dropIt != "no")
+				{
+					if(dropIt == "Speeditem")
+						itManager->createItem(nodeCurPos, Quaternion().IDENTITY, Vector3(0.05, 0.05, 0.05), dropIt, "ninja.mesh", 3, 50);
+					else if (dropIt == "KnifeItem")
+						itManager->createItem(nodeCurPos, Quaternion().IDENTITY, Vector3(0.1, 0.1, 0.1), dropIt, "athene.mesh", 3, 50);
+					else if (dropIt == "Healitem")
+						itManager->createItem(nodeCurPos, Quaternion().IDENTITY, Vector3(0.03, 0.03, 0.03), dropIt, "knot.mesh", 3, 50);
+				}
+				isDead = true;
+			}
 
 		}
 		else if (object->objectTag == "OgreSin")
@@ -79,10 +98,11 @@ public:
 
 	}
 
+	int health = 1;
 	int ID;
 	int moveSpeed;
 	float tempdis;
-	bool dropIt;
+	string dropIt;
 	Vector3 tempV3, V3div;
 	SceneNode* enemyNode;
 	Entity* enemyEntity;
