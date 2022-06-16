@@ -71,41 +71,44 @@ void TutorialApplication::setup(void)
 	mTrayMgr->showCursor();
 
 	// Create slider labels
-	//MoveSpeed.push_back(mTrayMgr->createLabel(TL_NONE, "MoveSpeedLabel", "MoveSpeed"));
-	//JumpHeight.push_back(mTrayMgr->createLabel(TL_NONE, "JumpHeightLabel", "JumpHeight"));
 
-
-	//MoveSpeed.push_back(mTrayMgr->createLongSlider(TL_RIGHT, "MoveSpeed", "MoveSpeed", 250, 80, 44, 0, 1, 11));
+	/*
 	Move = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "MoveSpeed", "MoveSpeed", 250, 80, 44, 0, 20, 11);
 	Height = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "JumpHeight", "JumpHeight", 250, 80, 44, 0, 100, 11);
 	ShootRange = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "ShootRange", "ShootRange", 250, 80, 44, 0, 120, 11);
 	ShootPower = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "ShootPower", "ShootPower", 250, 80, 44, 0, 150, 11);
 	ShootSpeedPerSec = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "ShootSpeed", "ShootSpeed", 250, 80, 44, 0, 500, 11);
+	*/
+
 	OgreCamDis = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "OgreCamDis", "OgreCamDis", 250, 80, 44, 10, 50, 11);
 	CamMovement = mTrayMgr->createCheckBox(TrayLocation::TL_TOPRIGHT, "CamMovement", "CamMovement", 250 );
 	testLifeBar = mTrayMgr->createProgressBar(TrayLocation::TL_TOPLEFT, "OgreLifeBar", "Ogre", 250, 50);
-	monsterLifeBar = mTrayMgr->createProgressBar(TrayLocation::TL_BOTTOM, "monsterLifeBar", "monster", 500, 50);
+	//monsterLifeBar = mTrayMgr->createProgressBar(TrayLocation::TL_BOTTOM, "monsterLifeBar", "monster", 500, 50);
 
 	StringVector items;
-	items.push_back("debug");
-	DebugDetailsPanel = mTrayMgr->createParamsPanel(TrayLocation::TL_BOTTOM,"debug",250,items);
+	items.push_back("You Lose");
+	DebugDetailsPanel = mTrayMgr->createParamsPanel(TrayLocation::TL_BOTTOM,"You Lose",250,items);
 	DebugDetailsPanel->setParamValue(0, "test");
+	DebugDetailsPanel->hide();
 
-
-	monsterLifeBar->setProgress(0.7);
+	//monsterLifeBar->setProgress(0.7);
 	
-	monsterLifeBar->setComment("Life");
+	//monsterLifeBar->setComment("Life");
 
 	testLifeBar->setProgress(0.6);
 	testLifeBar->setComment("Life");
 	
+	/*
 	Move->setValue(15);
 	Height->setValue(50);
 	ShootRange->setValue(108);
 	ShootPower->setValue(60);
 	ShootSpeedPerSec->setValue(100);
+	*/
 	OgreCamDis->setValue(50);
 	CamMovement->setChecked(false);
+
+
 }
 
 
@@ -195,38 +198,44 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 {
 	if (!BaseApplication::frameRenderingQueued(evt)) return false;
 	
+	if (ogreSin->health > 0) {
+
 		
-		/*Move->setValue(ogreSin->MoveSpeed);
-		Height->setValue(ogreSin->JumpHeight);
-		ShootSpeedPerSec->setValue(ogreSin->throwKinfePerSec);
-		ShootPower->setValue(ogreSin->shootPower);
-		ShootRange->setValue(ogreSin->shootRange);*/
-	
-		testLifeBar->setProgress(ogreSin->health/100);
+		testLifeBar->setProgress(ogreSin->health / 100);
 
 		//ogreSin->setMoveSpeed(Move->getValue());
-		ogreSin->setJumpHeight(Height->getValue());
-		ogreSin->setThrowKinfePerSec(ShootSpeedPerSec->getValue());
-		ogreSin->setShootPower(ShootPower->getValue());
-		ogreSin->setShootRange(ShootRange->getValue());
+		//ogreSin->setJumpHeight(Height->getValue());
+		//ogreSin->setThrowKinfePerSec(ShootSpeedPerSec->getValue());
+		//ogreSin->setShootPower(ShootPower->getValue());
+		//ogreSin->setShootRange(ShootRange->getValue());
 
 		ogreSin->UpdateOgreSin(evt, mPressKeySet, mPressMouseSet);
-		
-		
-		
-		DebugDetailsPanel->setParamValue(0, CollisionManager->listnum());
 
+
+		//DebugDetailsPanel->setParamValue(0, "Keep Survive !");
 		
+
+
 		yawNode->setPosition(ogreSin->getPosition());
-		yawNode->setOrientation(testYawNode->getOrientation()* rollNode->getOrientation());
+		yawNode->setOrientation(testYawNode->getOrientation() * rollNode->getOrientation());
 
 		ItemManager->updateItem(evt);
 		bulletManager->updateBullet(evt);
 		CollisionManager->CheckCollision();
-		
+
 		enemyManager->updateEnemy(evt, ogreSin->mSinbadNode);
 
-		return true;
+		
+
+	}
+	else {
+
+		DebugDetailsPanel->show();
+		DebugDetailsPanel->setParamValue(0, "GameOver !");
+
+	}
+		
+	return true;
 	
 }
 
