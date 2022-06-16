@@ -55,7 +55,7 @@ public:
 			if (objectTag == "fish")
 				enemyNode->setAutoTracking(true, mSinbadNode, VectorBase<3, Ogre::Real>::NEGATIVE_UNIT_X);
 			else if (objectTag == "penguin")
-				enemyNode->setAutoTracking(true, mSinbadNode, VectorBase<3, Ogre::Real>::NEGATIVE_UNIT_Y);
+				enemyNode->setAutoTracking(true, mSinbadNode, -VectorBase<3, Ogre::Real>::NEGATIVE_UNIT_Z);
 
 			nodeCurPos = enemyNode->getPosition();
 		}
@@ -68,7 +68,7 @@ public:
 		if (object->objectTag == "Bullet")
 		{
 			if(dropIt == true)
-				itManager->createItem(nodeCurPos, Quaternion().IDENTITY, Vector3(1, 1, 1), "Speeditem", "Barrel.mesh", 3, 50);
+				itManager->createItem(nodeCurPos, Quaternion().IDENTITY, Vector3(0.5, 0.5, 0.5), "Speeditem", "Barrel.mesh", 3, 50);
 			isDead = true;
 
 		}

@@ -36,31 +36,31 @@ public:
 		{
 			//mSinbadNode->setScale(Vector3(2,2,2));
 		}
-		else if (object->objectTag == "Speeditem") {
-
+		else if (object->objectTag == "Speeditem") 
+		{
 			MoveSpeed += 10;
-
 		}
-		else if (object->objectTag == "Healitem") {
-
-			
+		else if (object->objectTag == "Healitem")
+		{
 			health += 5;
-			if (health > 100) {
+			if (health > 100)
 				health = 100;
-			}
-
 		}
-		else if (object->objectTag == "upgradeKnife") {
-
+		else if (object->objectTag == "upgradeKnife") 
+		{
 			knifeNum++;
-
 		}
 		else if (object->objectTag == "fish")
 		{
 			health -= 5;
-			if (health < 0) {
+			if (health < 0) 
 				health = 0;
-			}
+		}
+		else if (object->objectTag == "penguin")
+		{
+			health -= 10;
+			if (health < 0) 
+				health = 0;
 		}
 	}
 

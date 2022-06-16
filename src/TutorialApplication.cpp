@@ -219,38 +219,7 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		ItemManager->updateItem(evt);
 		bulletManager->updateBullet(evt);
 		CollisionManager->CheckCollision();
-
-		//createEnemy(Vector3 initailPos, Vector3 scale, string objectTag, string objTag, string meshname, int colRange, int movSpd, int limit, int resTimer);ref
-
-		enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, Math::RangeRandom(-50, 50)), Vector3(1, 1, 1), "fish", "fish.mesh", 2, 8, 10, 1000);
-		if(enemyManager->enemyUnitArr.size() == 0 && enemyManager->count == 10)
-			enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, Math::RangeRandom(-50, 50)), Vector3(3, 3, 3), "fish", "fish.mesh", 2, 12, 1, 0);
-		/*if (st1FishTimer.getMilliseconds() > 1500 && st1fishN < 5)//stage 1 fish*5
-		{
-			enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, Math::RangeRandom(-50, 50)), Vector3(1, 1, 1), "fish", "fish.mesh", 2, 8);
-			st1FishTimer.reset();
-			st1fishN++;
-		}
-		if (st1FishTimer.getMilliseconds() > 4000 && st1fishN < 6)
-		{
-			enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 15, Math::RangeRandom(-50, 50)), Vector3(3, 3, 3), "fish", "fish.mesh", 5, 10);
-			st1FishTimer.reset();
-			st1fishN++;
-		}
-		if (st1FishTimer.getMilliseconds() > 1000 && st2pengN < 10 && st1fishN  <10)
-		{
-			enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 15, Math::RangeRandom(-50, 50)), Vector3(0.1, 0.1, 0.1), "penguin", "penguin.mesh", 5, 12);
-			st2PengTimer.reset();
-			st2pengN++;
-		}
-		if (st1FishTimer.getMilliseconds() > 5000 && st2pengN < 11)
-		{
-			enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 15, Math::RangeRandom(-50, 50)), Vector3(0.3, 0.3, 0.3), "penguin", "penguin.mesh", 10, 15);
-			st2PengTimer.reset();
-			st2pengN++;
-		}*/
 		
-
 		enemyManager->updateEnemy(evt, ogreSin->mSinbadNode);
 
 		return true;
