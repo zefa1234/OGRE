@@ -178,6 +178,12 @@ public:
 			Knife_timer.reset();
 
 		}
+		if (mPressMouseSet.count(BUTTON_LEFT) != 0) {
+			isFire = true;
+		}
+		else {
+			isFire = false;
+		}
 		if ((mPressKeySet.count('a') == 0) && (mPressKeySet.count('d') != 0))
 		{
 			// Turn left and run
@@ -215,49 +221,112 @@ public:
 		if (rturn == true && forward == true) {
 
 			mSinbadNode->setOrientation(Quaternion(yawNode->getOrientation().getYaw() - Radian(Degree(45)), testYawNode->getOrientation().yAxis()));
-			mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * MoveSpeed);
+			if (isFire == true) {
+				mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * FireSpeed);
+
+			}
+			else {
+				mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * MoveSpeed);
+
+			}
+			
 
 		}
 		else if (rturn == true && backward == true) {
 
 
 			mSinbadNode->setOrientation(Quaternion(yawNode->getOrientation().getYaw() - Radian(Degree(135)), testYawNode->getOrientation().yAxis()));
-			mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * MoveSpeed);
+			if (isFire == true) {
+				mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * FireSpeed);
+			}
+			else {
+
+				mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * MoveSpeed);
+			}
+			
 		}
 		else if (lturn == true && forward == true) {
 
 			mSinbadNode->setOrientation(Quaternion(yawNode->getOrientation().getYaw() + Radian(Degree(45)), testYawNode->getOrientation().yAxis()));
-			mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * MoveSpeed);
+			if (isFire == true) {
+
+				mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * FireSpeed);
+			}
+			else {
+
+				mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * MoveSpeed);
+			}
+			
 		}
 		else if (lturn == true && backward == true) {
 
 			mSinbadNode->setOrientation(Quaternion(yawNode->getOrientation().getYaw() + Radian(Degree(135)), testYawNode->getOrientation().yAxis()));
-			mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * MoveSpeed);
+			if (isFire == true) {
+
+				mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * FireSpeed);
+			}
+			else {
+
+				mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * MoveSpeed);
+			}
+			
 
 		}
 		else if (rturn == true) {
 
 			mSinbadNode->setDirection(Vector3(yawNode->getOrientation().xAxis().x, 0, yawNode->getOrientation().xAxis().z));
-			mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * MoveSpeed);
+			if (isFire == true) {
+
+				mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * FireSpeed);
+			}
+			else {
+
+				mSinbadNode->translate(mSinbadNode->getOrientation().zAxis()* evt.timeSinceLastFrame* MoveSpeed);
+			}
+			
 		}
 		else if (lturn == true) {
 
 			mSinbadNode->setDirection(Vector3(-yawNode->getOrientation().xAxis().x, 0, -yawNode->getOrientation().xAxis().z));
-			mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * MoveSpeed);
+			if (isFire == true) {
+
+				mSinbadNode->translate(mSinbadNode->getOrientation().zAxis()* evt.timeSinceLastFrame* FireSpeed);
+			}
+			else {
+
+				mSinbadNode->translate(mSinbadNode->getOrientation().zAxis()* evt.timeSinceLastFrame* MoveSpeed);
+			}
+			
 		}
 		else if (forward == true) {
 
 			mSinbadNode->setDirection(Vector3(-yawNode->getOrientation().zAxis().x, 0, -yawNode->getOrientation().zAxis().z));
-			mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * MoveSpeed);
+			if (isFire == true) {
+
+				mSinbadNode->translate(mSinbadNode->getOrientation().zAxis()* evt.timeSinceLastFrame* FireSpeed);
+			}
+			else {
+
+				mSinbadNode->translate(mSinbadNode->getOrientation().zAxis()* evt.timeSinceLastFrame* MoveSpeed);
+			}
+			
 		}
 		else if (backward == true) {
 
 			mSinbadNode->setDirection(Vector3(yawNode->getOrientation().zAxis().x, 0, yawNode->getOrientation().zAxis().z));
-			mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * MoveSpeed);
+			if (isFire == true) {
+
+				mSinbadNode->translate(mSinbadNode->getOrientation().zAxis() * evt.timeSinceLastFrame * FireSpeed);
+			}
+			else {
+				mSinbadNode->translate(mSinbadNode->getOrientation().zAxis()* evt.timeSinceLastFrame* MoveSpeed);
+
+			}
+			
 		}
 
 
-		mSinbadNode->setDirection(Vector3(-r.getDirection().x, 0, -r.getDirection().z));
+		
 
 		if ((mPressKeySet.count(' ') != 0))
 		{
@@ -275,12 +344,17 @@ public:
 			mSwordsHorizon->setEnabled(true);
 		}
 
+		if (isFire == true) {
 
+			mSinbadNode->setDirection(Vector3(-r.getDirection().x, 0, -r.getDirection().z));
+		}
 		if (throwKnife == true) {
-
-			BulletManager->createBullet(mSinbadNode->getPosition(), mSinbadNode->getOrientation(),  shootPower, shootRange, knifeNum);
+			
+			
+			BulletManager->createBullet(mSinbadNode->getPosition(), mSinbadNode->getOrientation(),"Bullet","Sword.mesh", shootPower, shootRange, knifeNum);
 
 		}
+		
 
 
 		if (mJumpLoop->getEnabled())
@@ -505,6 +579,7 @@ public:
 		CollisionManager->Register(this);
 		objectTag = "OgreSin";
 		colliderRange = 5;
+		
 	}
 	~OgreSin() {
 
@@ -515,11 +590,13 @@ public:
 
 	float throwKinfePerSec = 500;
 	float MoveSpeed = 15;
+	float FireSpeed = 10;
 	float JumpHeight = 50;
 	float shootPower = 300;
 	float shootRange = 60;
 	float health = 100;
 	int knifeNum = 1;
+
 	SceneNode* mSinbadNode;
 
 protected:
@@ -573,6 +650,7 @@ protected:
 	bool bJumpLoop = false;
 	bool bJumpEnd = false;
 	bool throwKnife = false;
+	bool isFire = false;
 
 
 	//std::set<Keycode> mPressKeySet;
