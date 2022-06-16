@@ -2,11 +2,12 @@
 #include "Item.h"
 
 
-enemyManage::enemyManage(SceneManager*& mSceneMgr, Collision*& collisionManager, Item*& itemManager)
+enemyManage::enemyManage(SceneManager*& mSceneMgr, Collision*& collisionManager, Item*& itemManager, Bullet*& BulletManager)
 {
 	CurSceneMgr = mSceneMgr;
 	CollisionManager = collisionManager;
 	ItManager = itemManager;
+	bulletManager = BulletManager;
 	enemyResTimer.reset();
 }
 
@@ -28,7 +29,7 @@ void enemyManage::createEnemy(Vector3 initailPos, Vector3 scale, string objectTa
 	else//µL
 		dropItem = "no";
 
-		enemyUnit* temp = new enemyUnit(initailPos, CurSceneMgr, CollisionManager, scale, objectTag, meshname, totalCount, colRange, movSpd, ItManager, dropItem);
+		enemyUnit* temp = new enemyUnit(initailPos, CurSceneMgr, CollisionManager, bulletManager, scale, objectTag, meshname, totalCount, colRange, movSpd, ItManager, dropItem);
 		totalCount++;
 		enemyUnitArr.push_back(temp);
 }
@@ -55,7 +56,7 @@ void enemyManage::updateEnemy(const FrameEvent& evt, SceneNode* mSinbadNode)
 	}
 	if (stagePengEnd == false && enemyUnitArr.size() == 0 && pengCount == 20)
 	{
-		createEnemy(Vector3(Math::RangeRandom(-50, 50), 20, Math::RangeRandom(-50, 50)), Vector3(0.7, 0.7, 0.7), "penguinKing", "penguin.mesh", 10, 15);
+		createEnemy(Vector3(Math::RangeRandom(-50, 50), 20, Math::RangeRandom(-50, 50)), Vector3(0.7, 0.7, 0.7), "penguinKing", "penguin.mesh", 10, 13);
 		stagePengEnd = true;
 	}
 

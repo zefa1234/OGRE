@@ -20,7 +20,7 @@ class Bullet
 		~Bullet();
 		void createBullet(Vector3 initailPos, Quaternion direction, string objTag, string meshName, float shootspeed,float shootrange,int knifeNum);
 		void updateBullet(const FrameEvent& evt);
-	
+		bool isGameOver = false;
 	protected:
 
 		SceneManager* CurSceneMgr;

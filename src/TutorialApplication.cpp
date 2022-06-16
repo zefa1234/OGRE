@@ -86,8 +86,8 @@ void TutorialApplication::setup(void)
 	//monsterLifeBar = mTrayMgr->createProgressBar(TrayLocation::TL_BOTTOM, "monsterLifeBar", "monster", 500, 50);
 
 	StringVector items;
-	items.push_back("You Lose");
-	DebugDetailsPanel = mTrayMgr->createParamsPanel(TrayLocation::TL_BOTTOM,"You Lose",250,items);
+	items.push_back("Congratulation");
+	DebugDetailsPanel = mTrayMgr->createParamsPanel(TrayLocation::TL_BOTTOM,"Congratulation",250,items);
 	DebugDetailsPanel->setParamValue(0, "test");
 	DebugDetailsPanel->hide();
 
@@ -153,7 +153,7 @@ void TutorialApplication::createScene(void)
 	bulletManager = new Bullet(mSceneMgr, CollisionManager);
 	ItemManager = new Item(mSceneMgr, CollisionManager);
 
-	enemyManager = new enemyManage(mSceneMgr, CollisionManager, ItemManager);
+	enemyManager = new enemyManage(mSceneMgr, CollisionManager, ItemManager,bulletManager);
 	//ItemManager->createItem(Vector3(10, 5, 10), Quaternion().IDENTITY,Vector3(1,1,1),"Speeditem","Barrel.mesh",3, 50);
 	/*ItemManager->createItem(Vector3(30, 5, 10), Quaternion().IDENTITY, Vector3(1, 1, 1), "SpeeditemAndDamage", "Barrel.mesh", 3, 50);
 	ItemManager->createItem(Vector3(20, 2, -10), Quaternion().IDENTITY, Vector3(0.1, 0.1, 0.1), "Healitem", "cube.mesh", 3,50);
@@ -225,13 +225,19 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 
 		enemyManager->updateEnemy(evt, ogreSin->mSinbadNode);
 
+		if (bulletManager->isGameOver == true) {
+
+			DebugDetailsPanel->show();
+			DebugDetailsPanel->setParamValue(0, "You Win !");
+
+		}
 		
 
 	}
 	else {
 
 		DebugDetailsPanel->show();
-		DebugDetailsPanel->setParamValue(0, "GameOver !");
+		DebugDetailsPanel->setParamValue(0, "You Lose, GameOver !");
 
 	}
 		

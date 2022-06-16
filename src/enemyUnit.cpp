@@ -5,6 +5,7 @@
 
 #include "BaseApplication.h"
 #include "CollisionListener.h"
+#include "Bullet.h"
 #include "Item.h"
 #include <vector>
 
@@ -15,15 +16,17 @@ using namespace std;
 class enemyUnit : public CollisionListener
 {
 public:
-	enemyUnit(Vector3 initailPos, SceneManager*& mSceneMgr, Collision*& Colimanager, Vector3 scale, string objTag, string meshname, int count, int colRange, int movSpd, Item*& itemManager, string dropItem)
+	enemyUnit(Vector3 initailPos, SceneManager*& mSceneMgr, Collision*& Colimanager,Bullet*& BulletManager, Vector3 scale, string objTag, string meshname, int count, int colRange, int movSpd, Item*& itemManager, string dropItem)
 	{
 		currentmSceneMgr = mSceneMgr;
 		collisionManager = Colimanager;
 		itManager = itemManager;
+		bulletManager = BulletManager;
 		objectTag = objTag;
 		ID = count;
 		moveSpeed = movSpd;
 		dropIt = dropItem;
+		shootTimer.reset();
 
 		enemyEntity = currentmSceneMgr->createEntity("enemy" + std::to_string(ID), meshname);
 		enemyNode = currentmSceneMgr->getRootSceneNode()->createChildSceneNode("enemyNode" + std::to_string(ID), initailPos);
@@ -36,11 +39,11 @@ public:
 		if (objectTag == "fish")
 			health = 15; 
 		else if (objectTag == "fishKing")
-			health = 50;
+			health = 150;
 		else if (objectTag == "penguin")
 			health = 20;
 		else if (objectTag == "penguinKing")
-			health = 80;
+			health = 250;
 
 
 	}
@@ -60,10 +63,32 @@ public:
 											(enemyNode->getPosition().y - mSinbadNode->getPosition().y),
 											(enemyNode->getPosition().z - mSinbadNode->getPosition().z)) / tempdis * evt.timeSinceLastFrame * moveSpeed;
 			enemyNode->setPosition(enemyNode->getPosition() - tempV3);
-			if (objectTag == "fish" || objectTag == "fishKing")
+			if (objectTag == "fish" || objectTag == "fishKing") {
+
 				enemyNode->setAutoTracking(true, mSinbadNode, VectorBase<3, Ogre::Real>::NEGATIVE_UNIT_X);
-			else if (objectTag == "penguin" || objectTag == "penguinKing")
+
+				if (objectTag == "fishKing" && shootTimer.getMilliseconds() > 600) {
+
+					bulletManager->createBullet(enemyNode->getPosition(), Quaternion(enemyNode->getOrientation().getYaw() + Radian(Degree(-90)), enemyNode->getOrientation().yAxis()), "fishKingBullet", "Sword.mesh", 20, 108, 1);
+					shootTimer.reset();
+				}
+
+				
+			}
+				
+			else if (objectTag == "penguin" || objectTag == "penguinKing") {
+
 				enemyNode->setAutoTracking(true, mSinbadNode, -VectorBase<3, Ogre::Real>::NEGATIVE_UNIT_Z);
+
+				if (objectTag == "penguinKing" && shootTimer.getMilliseconds() > 3000) {
+
+					bulletManager->createBullet(enemyNode->getPosition(), enemyNode->getOrientation(), "penguinKingBullet", "Barrel.mesh", 20, 108, 3);
+					shootTimer.reset();
+				}
+
+				
+			}
+				
 
 			nodeCurPos = enemyNode->getPosition();
 		}
@@ -88,6 +113,11 @@ public:
 						itManager->createItem(nodeCurPos, Quaternion().IDENTITY, Vector3(0.03, 0.03, 0.03), dropIt, "knot.mesh", 3, 50);
 				}
 				isDead = true;
+
+				if (objectTag == "penguinKing") {
+					bulletManager->isGameOver = true;
+				}
+
 			}
 
 		}
@@ -110,6 +140,8 @@ public:
 	Collision* collisionManager;
 	SceneManager* currentmSceneMgr;
 	Item* itManager;
+	Bullet* bulletManager;
+	Timer shootTimer;
 
 	bool isDead = false;
 };

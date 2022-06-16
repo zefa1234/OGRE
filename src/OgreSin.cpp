@@ -74,6 +74,18 @@ public:
 			if (health < 0)
 				health = 0;
 		}
+		else if (object->objectTag == "penguinKingBullet")
+		{
+			health -= 20;
+			if (health < 0)
+				health = 0;
+		}
+		else if (object->objectTag == "fishKingBullet")
+		{
+			health -= 5;
+			if (health < 0)
+				health = 0;
+		}
 	}
 
 	void CreateOgreSin() {
