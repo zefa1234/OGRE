@@ -600,12 +600,12 @@ public:
 	}
 
 
-	float throwKinfePerSec = 300;
+	float throwKinfePerSec = 90;
 	float MoveSpeed = 15;
 	float FireSpeed = 10;
 	float JumpHeight = 50;
-	float shootPower = 150;
-	float shootRange = 200;
+	float shootPower = 60;
+	float shootRange = 100;
 	float health = 100;
 	int knifeNum = 1;
 

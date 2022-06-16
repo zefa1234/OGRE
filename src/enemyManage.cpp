@@ -43,7 +43,7 @@ void enemyManage::updateEnemy(const FrameEvent& evt, SceneNode* mSinbadNode)
 	}
 	if (stageFishEnd == false && enemyUnitArr.size() == 0 && fishCount == 10)
 	{
-		createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, Math::RangeRandom(-50, 50)), Vector3(3, 3, 3), "fishKing", "fish.mesh", 5, 12);
+		createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, Math::RangeRandom(-50, 50)), Vector3(4, 4, 4), "fishKing", "fish.mesh", 5, 12);
 		fishCount++;
 		stageFishEnd = true;
 	}

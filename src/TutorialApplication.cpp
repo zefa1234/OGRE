@@ -72,13 +72,13 @@ void TutorialApplication::setup(void)
 
 	// Create slider labels
 
-	/*
-	Move = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "MoveSpeed", "MoveSpeed", 250, 80, 44, 0, 20, 11);
+	
+	/*Move = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "MoveSpeed", "MoveSpeed", 250, 80, 44, 0, 20, 11);
 	Height = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "JumpHeight", "JumpHeight", 250, 80, 44, 0, 100, 11);
 	ShootRange = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "ShootRange", "ShootRange", 250, 80, 44, 0, 120, 11);
 	ShootPower = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "ShootPower", "ShootPower", 250, 80, 44, 0, 150, 11);
-	ShootSpeedPerSec = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "ShootSpeed", "ShootSpeed", 250, 80, 44, 0, 500, 11);
-	*/
+	ShootSpeedPerSec = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "ShootSpeed", "ShootSpeed", 250, 80, 44, 0, 500, 11);*/
+	
 
 	OgreCamDis = mTrayMgr->createLongSlider(TrayLocation::TL_TOPRIGHT, "OgreCamDis", "OgreCamDis", 250, 80, 44, 10, 50, 11);
 	CamMovement = mTrayMgr->createCheckBox(TrayLocation::TL_TOPRIGHT, "CamMovement", "CamMovement", 250 );
@@ -98,13 +98,13 @@ void TutorialApplication::setup(void)
 	testLifeBar->setProgress(0.6);
 	testLifeBar->setComment("Life");
 	
-	/*
-	Move->setValue(15);
+	
+	/*Move->setValue(15);
 	Height->setValue(50);
 	ShootRange->setValue(108);
 	ShootPower->setValue(60);
-	ShootSpeedPerSec->setValue(100);
-	*/
+	ShootSpeedPerSec->setValue(100);*/
+	
 	OgreCamDis->setValue(50);
 	CamMovement->setChecked(false);
 
@@ -203,11 +203,11 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		
 		testLifeBar->setProgress(ogreSin->health / 100);
 
-		//ogreSin->setMoveSpeed(Move->getValue());
-		//ogreSin->setJumpHeight(Height->getValue());
-		//ogreSin->setThrowKinfePerSec(ShootSpeedPerSec->getValue());
-		//ogreSin->setShootPower(ShootPower->getValue());
-		//ogreSin->setShootRange(ShootRange->getValue());
+		/*ogreSin->setMoveSpeed(Move->getValue());
+		ogreSin->setJumpHeight(Height->getValue());
+		ogreSin->setThrowKinfePerSec(ShootSpeedPerSec->getValue());
+		ogreSin->setShootPower(ShootPower->getValue());
+		ogreSin->setShootRange(ShootRange->getValue());*/
 
 		ogreSin->UpdateOgreSin(evt, mPressKeySet, mPressMouseSet);
 
