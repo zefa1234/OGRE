@@ -25,6 +25,17 @@ public:
 		disRange = dis;
 		speed = spd;
 		objectTag = objTag;
+		if (objectTag == "Bullet"|| objectTag == "fishKingBullet") {
+
+			colliderRange = 1.1;
+
+		}
+		else if(objectTag == "penguinKingBullet") {
+		
+			colliderRange = 4;
+		
+		}
+		
 
 		collisionManager->Register(this);
 		BulletNode = currentmSceneMgr->getRootSceneNode()->createChildSceneNode("KnifeNode" + std::to_string(ID));
@@ -65,6 +76,7 @@ public:
 
 	virtual void OnCollision(CollisionListener* object)override 
 	{
+		if(objectTag != "fishKingBullet" && objectTag != "penguinKingBullet")
 		if (object->objectTag == "fish" || object->objectTag == "penguin" || object->objectTag == "fishKing" || object->objectTag == "penguinKing")
 		{
 			isOverRange = true;

@@ -74,6 +74,18 @@ public:
 			if (health < 0)
 				health = 0;
 		}
+		else if (object->objectTag == "penguinKingBullet")
+		{
+			health -= 20;
+			if (health < 0)
+				health = 0;
+		}
+		else if (object->objectTag == "fishKingBullet")
+		{
+			health -= 5;
+			if (health < 0)
+				health = 0;
+		}
 	}
 
 	void CreateOgreSin() {
@@ -600,14 +612,14 @@ public:
 	}
 
 
-	float throwKinfePerSec = 300;
+	float throwKinfePerSec = 50;
 	float MoveSpeed = 15;
 	float FireSpeed = 10;
 	float JumpHeight = 50;
 	float shootPower = 150;
 	float shootRange = 200;
 	float health = 100;
-	int knifeNum = 1;
+	int knifeNum = 4;
 
 	SceneNode* mSinbadNode;
 
