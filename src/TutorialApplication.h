@@ -117,6 +117,7 @@ protected:
 	Slider* ShootRange;
 	Slider* ShootPower;
 	Slider* ShootSpeedPerSec;
+	Slider* OgreCamDis;
 	OgreBites::ProgressBar* testLifeBar;
 	OgreBites::ProgressBar* monsterLifeBar;
 	ParamsPanel* DebugDetailsPanel;
