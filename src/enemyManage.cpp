@@ -19,9 +19,19 @@ void enemyManage::createEnemy(Vector3 initailPos, Vector3 scale, string objectTa
 {//enemyUnit(Vector3 initailPos, SceneManager * &mSceneMgr, Collision * &Colimanager, Vector3 scale, string objTag, string meshname, int count, int colRange, int movSpd)ref
 
 	threshhold = limit;
-	if (count < threshhold && enemyResTimer.getMilliseconds() > resTimer)
+	if (resTimer == 0 && count < threshhold)
 	{
-		enemyUnit* temp = new enemyUnit(initailPos, CurSceneMgr, CollisionManager, scale, objectTag, meshname, count, colRange, movSpd, ItManager);
+		enemyUnit* temp = new enemyUnit(initailPos, CurSceneMgr, CollisionManager, scale, objectTag, meshname, count, colRange, movSpd, ItManager, drop);
+		enemyUnitArr.push_back(temp);
+		count++;
+	}
+	else if (count < threshhold && enemyResTimer.getMilliseconds() > resTimer)
+	{
+		if (count % 3 == 1)
+			drop = true;
+		else
+			drop = false;
+		enemyUnit* temp = new enemyUnit(initailPos, CurSceneMgr, CollisionManager, scale, objectTag, meshname, count, colRange, movSpd, ItManager, drop);
 		enemyUnitArr.push_back(temp);
 		count++;
 		enemyResTimer.reset();

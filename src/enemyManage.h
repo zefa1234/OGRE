@@ -21,14 +21,16 @@ public:
 	void createEnemy(Vector3 initailPos, Vector3 scale, string objectTag,  string meshname, int colRange, int movSpd, int limit, int resTimer);
 	void updateEnemy(const FrameEvent& evt, SceneNode* mSinbadNode);
 
-protected:
+	vector<enemyUnit*> enemyUnitArr;
+	bool stageEnd = false;
 	int count = 0;
+protected:
 	int threshhold;
+	bool drop = false;
 	SceneManager* CurSceneMgr;
 	Collision* CollisionManager;
 	Item* ItManager;
 	Timer enemyResTimer;
 
-	vector<enemyUnit*> enemyUnitArr;
 };
 #endif // !ENEMYMANAGE_H

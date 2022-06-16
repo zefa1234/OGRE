@@ -15,7 +15,7 @@ using namespace std;
 class enemyUnit : public CollisionListener
 {
 public:
-	enemyUnit(Vector3 initailPos, SceneManager*& mSceneMgr, Collision*& Colimanager, Vector3 scale, string objTag, string meshname, int count, int colRange, int movSpd, Item*& itemManager)
+	enemyUnit(Vector3 initailPos, SceneManager*& mSceneMgr, Collision*& Colimanager, Vector3 scale, string objTag, string meshname, int count, int colRange, int movSpd, Item*& itemManager, bool dropItem)
 	{
 		currentmSceneMgr = mSceneMgr;
 		collisionManager = Colimanager;
@@ -23,6 +23,7 @@ public:
 		objectTag = objTag;
 		ID = count;
 		moveSpeed = movSpd;
+		dropIt = dropItem;
 
 		enemyEntity = currentmSceneMgr->createEntity("enemy" + std::to_string(ID), meshname);
 		enemyNode = currentmSceneMgr->getRootSceneNode()->createChildSceneNode("enemyNode" + std::to_string(ID), initailPos);
@@ -66,7 +67,8 @@ public:
 	{
 		if (object->objectTag == "Bullet")
 		{
-			itManager->createItem(nodeCurPos, Quaternion().IDENTITY, Vector3(1, 1, 1), "Speeditem", "Barrel.mesh", 3, 50);
+			if(dropIt == true)
+				itManager->createItem(nodeCurPos, Quaternion().IDENTITY, Vector3(1, 1, 1), "Speeditem", "Barrel.mesh", 3, 50);
 			isDead = true;
 
 		}
@@ -80,6 +82,7 @@ public:
 	int ID;
 	int moveSpeed;
 	float tempdis;
+	bool dropIt;
 	Vector3 tempV3, V3div;
 	SceneNode* enemyNode;
 	Entity* enemyEntity;

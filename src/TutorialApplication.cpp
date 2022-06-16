@@ -220,10 +220,11 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		bulletManager->updateBullet(evt);
 		CollisionManager->CheckCollision();
 
-		//createEnemy(Vector3 initailPos, Vector3 scale, string objectTag, string objTag, string meshname, int colRange, int movSpd);ref
+		//createEnemy(Vector3 initailPos, Vector3 scale, string objectTag, string objTag, string meshname, int colRange, int movSpd, int limit, int resTimer);ref
 
 		enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, Math::RangeRandom(-50, 50)), Vector3(1, 1, 1), "fish", "fish.mesh", 2, 8, 10, 1000);
-		enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, Math::RangeRandom(-50, 50)), Vector3(1, 1, 1), "fish", "fish.mesh", 2, 8, 10, 1000);
+		if(enemyManager->enemyUnitArr.size() == 0 && enemyManager->count == 10)
+			enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, Math::RangeRandom(-50, 50)), Vector3(3, 3, 3), "fish", "fish.mesh", 2, 12, 1, 0);
 		/*if (st1FishTimer.getMilliseconds() > 1500 && st1fishN < 5)//stage 1 fish*5
 		{
 			enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, Math::RangeRandom(-50, 50)), Vector3(1, 1, 1), "fish", "fish.mesh", 2, 8);
