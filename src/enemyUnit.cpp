@@ -16,25 +16,37 @@ class enemyUnit : public CollisionListener
 public:
 	enemyUnit(Vector3 initailPos, SceneManager*& mSceneMgr, Collision*& Colimanager, int count)
 	{
+		collisionManager = Colimanager;
+		currentmSceneMgr = mSceneMgr;
 		ID = count;
 		objectTag = "Fish";
-		enemyEntity = mSceneMgr->createEntity("Fish" + std::to_string(ID), "fish.mesh");
-		enemyNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("enemy" + std::to_string(ID), initailPos);
+		enemyEntity = currentmSceneMgr->createEntity("Fish" + std::to_string(ID), "fish.mesh");
+		enemyNode = currentmSceneMgr->getRootSceneNode()->createChildSceneNode("FishNode" + std::to_string(ID), initailPos);
 		enemyNode->attachObject(enemyEntity);
-		Colimanager->Register(this);
+		colliderRange = 7;
+		collisionManager->Register(this);
 
 		//anotherEnt = mSceneMgr->createEntity("Barrel", "Barrel.mesh");
 
 		nodeCurPos = enemyNode->getPosition();
 	}
+	~enemyUnit()
+	{
+		collisionManager->UnRegister(this);
 
+		currentmSceneMgr->destroySceneNode("FishNode" + std::to_string(ID));
+		currentmSceneMgr->destroyEntity("Fish" + std::to_string(ID));
+	}
 	void update(const FrameEvent& evt, Vector3 ogrePos)
 	{
-		tempdis = enemyNode->getPosition().distance(ogrePos);
-		tempV3 = Vector3((enemyNode->getPosition().x - ogrePos.x),
-										(enemyNode->getPosition().y - ogrePos.y),
-										(enemyNode->getPosition().z - ogrePos.z)) / tempdis * evt.timeSinceLastFrame * 8;
-		enemyNode->setPosition(enemyNode->getPosition() - tempV3);
+		if (isDead == false)
+		{
+			tempdis = enemyNode->getPosition().distance(ogrePos);
+			tempV3 = Vector3((enemyNode->getPosition().x - ogrePos.x),
+											(enemyNode->getPosition().y - ogrePos.y),
+											(enemyNode->getPosition().z - ogrePos.z)) / tempdis * evt.timeSinceLastFrame * 8;
+			enemyNode->setPosition(enemyNode->getPosition() - tempV3);
+		}
 
 	}
 
@@ -47,6 +59,7 @@ public:
 				enemyNode->detachAllObjects();
 				//enemyNode->attachObject(anotherEnt);
 			}
+			isDead = true;
 		}
 	}
 
@@ -56,5 +69,9 @@ public:
 	SceneNode* enemyNode;
 	Entity* enemyEntity;
 	Entity* anotherEnt;
+	Collision* collisionManager;
+	SceneManager* currentmSceneMgr;
+
+	bool isDead = false;
 };
 #endif

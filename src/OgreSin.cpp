@@ -49,8 +49,6 @@ public:
 
 
 		}
-
-
 	}
 
 	void CreateOgreSin() {

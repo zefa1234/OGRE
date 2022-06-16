@@ -22,6 +22,7 @@ public:
 
 protected:
 	int count = 0;
+	int threshhold = 10;
 	SceneManager* CurSceneMgr;
 	Collision* CollisionManager;
 

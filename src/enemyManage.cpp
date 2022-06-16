@@ -14,9 +14,12 @@ enemyManage::~enemyManage()
 
 void enemyManage::createEnemy(Vector3 initailPos)
 {
-	enemyUnit* temp = new enemyUnit(initailPos, CurSceneMgr, CollisionManager, count);
-
-	enemyUnitArr.push_back(temp);
+	if (count < threshhold)
+	{
+		enemyUnit* temp = new enemyUnit(initailPos, CurSceneMgr, CollisionManager, count);
+		count++;
+		enemyUnitArr.push_back(temp);
+	}
 }
 
 void enemyManage::updateEnemy(const FrameEvent& evt, Vector3 ogrePos)
@@ -25,5 +28,19 @@ void enemyManage::updateEnemy(const FrameEvent& evt, Vector3 ogrePos)
 	{
 		enemyUnit* temp = enemyUnitArr[a];
 		temp->update(evt,  ogrePos);
+	}
+
+	vector<enemyUnit*>::iterator h;
+
+	for (h = enemyUnitArr.begin(); h < enemyUnitArr.end(); h++) {
+
+		enemyUnit* temp = *h;
+		if (temp->isDead) {
+
+			enemyUnitArr.erase(h);
+
+			delete temp;
+		}
+
 	}
 }

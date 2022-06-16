@@ -146,19 +146,16 @@ void TutorialApplication::createScene(void)
 	bulletManager = new Bullet(mSceneMgr, CollisionManager);
 	ItemManager = new Item(mSceneMgr, CollisionManager);
 
+	enemyManager = new enemyManage(mSceneMgr, CollisionManager);
 	ItemManager->createItem(Vector3(10, 5, 10), Quaternion().IDENTITY,Vector3(1,1,1),"Speeditem","Barrel.mesh",3);
 
 	ogreSin = new OgreSin(mSceneMgr,CollisionManager,bulletManager,mTrayMgr);
 	
 	//create enemy
-	while(enemyCount < 10 && enemyMovTimer.getMilliseconds() > 2000)
-	{
-		enemyManager = new enemyManage(mSceneMgr, CollisionManager);
-		enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, 50));
+		//enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, 50));
 
-		enemyCount++;
-		enemyMovTimer.reset();
-	}
+		//enemyCount++;
+		//enemyMovTimer.reset();
 }
 
 
@@ -216,6 +213,7 @@ bool TutorialApplication::frameRenderingQueued(const FrameEvent& evt)
 		bulletManager->updateBullet(evt);
 		CollisionManager->CheckCollision();
 
+		enemyManager->createEnemy(Vector3(Math::RangeRandom(-50, 50), 5, 50));
 		enemyManager->updateEnemy(evt, ogreSin->getPosition());
 
 		return true;
